@@ -1,5 +1,24 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
   const backgroundColor = "white";
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      console.log("Dragging at:", e.clientX, e.clientY);
+    }
+  };
 
   return (
     <main
@@ -7,7 +26,9 @@ export default function Home() {
       style={{ backgroundColor }}
     >
       <div
-        className="relative w-[80vw] h-[80vw] max-w-[80vh] max-h-[80vh] rounded-full"
+        className={`relative w-[80vw] h-[80vw] max-w-[80vh] max-h-[80vh] rounded-full ${
+          isDragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
         style={{
           background: `
                repeating-radial-gradient(
@@ -23,10 +44,14 @@ export default function Home() {
                )
              `,
         }}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onMouseMove={handleMouseMove}
       >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] bg-gray-600 rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] bg-gray-600 rounded-full pointer-events-none" />
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2%] h-[2%] rounded-full"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2%] h-[2%] rounded-full pointer-events-none"
           style={{ backgroundColor }}
         />
       </div>
