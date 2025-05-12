@@ -213,9 +213,9 @@ export default function VinylRecord({
           className="w-full h-full"
           style={{
             background: `
-              radial-gradient(circle at 30% 30%, #d32f2f 0%, #f44336 50%, #ef5350 100%),
-              radial-gradient(circle at 70% 70%, #e53935 0%, #ef5350 100%)
-            `,
+          radial-gradient(circle at 30% 30%, #1a4027 0%, #275c3a 50%, #347a4d 100%),
+          radial-gradient(circle at 70% 70%, #234f33 0%, #2d6942 100%)
+        `,
             boxShadow: "inset 0 0 10px rgba(0,0,0,0.2)",
           }}
         />
@@ -223,21 +223,21 @@ export default function VinylRecord({
           className="absolute inset-0"
           style={{
             background: `
-              repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 5px,
-                rgba(0,0,0,0.02) 5px,
-                rgba(0,0,0,0.02) 6px
-              ),
-              repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 5px,
-                rgba(0,0,0,0.02) 5px,
-                rgba(0,0,0,0.02) 6px
-              )
-            `,
+          repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 5px,
+            rgba(0,0,0,0.02) 5px,
+            rgba(0,0,0,0.02) 6px
+          ),
+          repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 5px,
+            rgba(0,0,0,0.02) 5px,
+            rgba(0,0,0,0.02) 6px
+          )
+        `,
           }}
         />
       </div>
