@@ -52,7 +52,8 @@ export default function VinylRecord({
       if (angleDiff < -180) normalizedDiff += 360;
 
       if (timeDiff > 0) {
-        const newVelocity = (normalizedDiff / timeDiff) * 16;
+        let newVelocity = (normalizedDiff / timeDiff) * 16;
+        newVelocity = Math.max(-10, Math.min(10, newVelocity));
         setVelocity(newVelocity);
       }
 
@@ -87,7 +88,8 @@ export default function VinylRecord({
         if (angleDiff < -180) normalizedDiff += 360;
 
         if (timeDiff > 0) {
-          const newVelocity = (normalizedDiff / timeDiff) * 16;
+          let newVelocity = (normalizedDiff / timeDiff) * 16;
+          newVelocity = Math.max(-10, Math.min(10, newVelocity));
           setVelocity(newVelocity);
         }
 
@@ -119,7 +121,7 @@ export default function VinylRecord({
     if (!isDragging && Math.abs(velocity) > 0.1) {
       const animate = () => {
         setVelocity((v) => {
-          const newVelocity = v * 0.98;
+          const newVelocity = v * 0.92;
 
           setRotation((r) => r + v);
 
@@ -149,21 +151,9 @@ export default function VinylRecord({
       ref={recordRef}
       className={`relative w-[80vw] h-[80vw] max-w-[80vh] max-h-[80vh] rounded-full ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
-      } touch-none`}
+      } touch-none overflow-hidden`}
       style={{
-        background: `
-          repeating-radial-gradient(
-            circle,
-            #6b7280 0px,
-            #6b7280 3px,
-            #9ca3af 3px,
-            #9ca3af 4px,
-            #6b7280 4px,
-            #6b7280 8px,
-            #9ca3af 8px,
-            #9ca3af 10px
-          )
-        `,
+        background: "#0f0f0f",
         transform: `rotate(${rotation}deg)`,
       }}
       onMouseDown={handleMouseDown}
@@ -171,12 +161,121 @@ export default function VinylRecord({
       onMouseLeave={handleMouseUp}
       onMouseMove={handleMouseMove}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] bg-gray-600 rounded-full pointer-events-none" />
-      <div className="absolute top-[35%] left-1/2 -translate-x-1/2 text-gray-400 text-lg font-bold tracking-wider pointer-events-none">
-        Side A
-      </div>
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 200 200"
+        style={{ pointerEvents: "none" }}
+      >
+        {Array.from({ length: 65 }, (_, i) => {
+          const radius = 35 + i * 1;
+          const strokeWidth = i % 3 === 0 ? 0.8 : 0.4;
+          const opacity = i % 3 === 0 ? 0.7 : 0.4;
+
+          return (
+            <circle
+              key={i}
+              cx="100"
+              cy="100"
+              r={radius}
+              fill="none"
+              stroke={i % 2 === 0 ? "#2a2a2a" : "#1a1a1a"}
+              strokeWidth={strokeWidth}
+              opacity={opacity}
+            />
+          );
+        })}
+      </svg>
+
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2%] h-[2%] rounded-full pointer-events-none"
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: `
+            conic-gradient(
+              from 90deg at 50% 50%,
+              transparent 0deg,
+              rgba(255,255,255,0.05) 45deg,
+              rgba(255,255,255,0.1) 90deg,
+              rgba(255,255,255,0.05) 135deg,
+              transparent 180deg,
+              transparent 360deg
+            ),
+            radial-gradient(
+              circle at 30% 30%,
+              rgba(255,255,255,0.06) 0%,
+              transparent 50%
+            )
+          `,
+        }}
+      />
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] rounded-full pointer-events-none overflow-hidden">
+        <div
+          className="w-full h-full"
+          style={{
+            background: `
+              radial-gradient(circle at 30% 30%, #d32f2f 0%, #f44336 50%, #ef5350 100%),
+              radial-gradient(circle at 70% 70%, #e53935 0%, #ef5350 100%)
+            `,
+            boxShadow: "inset 0 0 10px rgba(0,0,0,0.2)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(0,0,0,0.02) 5px,
+                rgba(0,0,0,0.02) 6px
+              ),
+              repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 5px,
+                rgba(0,0,0,0.02) 5px,
+                rgba(0,0,0,0.02) 6px
+              )
+            `,
+          }}
+        />
+      </div>
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] pointer-events-none">
+        <div className="absolute top-[22%] left-1/2 -translate-x-1/2 text-white/90 text-[0.5rem] sm:text-xs font-medium tracking-widest">
+          CALEB VAN LUE
+        </div>
+
+        <div className="absolute top-[42%] left-1/2 -translate-x-1/2 text-white text-base sm:text-xl md:text-2xl font-bold tracking-wider">
+          SIDE A
+        </div>
+
+        <div className="absolute top-[58%] left-1/2 -translate-x-1/2 text-white/80 text-[0.5rem] sm:text-xs">
+          33⅓ RPM
+        </div>
+
+        <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 text-white/70 text-[0.4rem] sm:text-xs font-mono">
+          CV-2000-0{new Date().getFullYear() - 2000}
+        </div>
+
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+          <defs>
+            <path id="bottom-arc" d="M 15,50 A 35,35 0 0,0 85,50" />
+          </defs>
+          <text
+            className="fill-white/60"
+            style={{ fontSize: "2.5px", letterSpacing: "0.6px" }}
+          >
+            <textPath href="#bottom-arc" startOffset="50%" textAnchor="middle">
+              STEREO • MADE IN USA • ALL RIGHTS RESERVED
+            </textPath>
+          </text>
+        </svg>
+      </div>
+
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[3%] h-[3%] rounded-full pointer-events-none"
         style={{ backgroundColor }}
       />
     </div>
