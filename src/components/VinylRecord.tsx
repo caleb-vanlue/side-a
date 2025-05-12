@@ -256,7 +256,11 @@ export default function VinylRecord({
         </div>
 
         <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 text-white/70 text-[0.4rem] sm:text-xs font-mono">
-          CV-2000-0{new Date().getFullYear() - 2000}
+          CV-2000-0
+          {Math.floor(
+            (new Date().getTime() - new Date("2000-09-05").getTime()) /
+              (365.25 * 24 * 60 * 60 * 1000)
+          )}
         </div>
 
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
