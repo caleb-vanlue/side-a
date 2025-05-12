@@ -11,8 +11,11 @@ export default function VinylRecord({
 }: VinylRecordProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
+  const [velocity, setVelocity] = useState(0);
   const recordRef = useRef<HTMLDivElement>(null);
   const lastAngleRef = useRef(0);
+  const lastTimeRef = useRef(Date.now());
+  const animationRef = useRef<number | null>(null);
 
   const calculateAngle = (clientX: number, clientY: number) => {
     if (!recordRef.current) return 0;
@@ -40,14 +43,22 @@ export default function VinylRecord({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging) {
       const currentAngle = calculateAngle(e.clientX, e.clientY);
+      const currentTime = Date.now();
       const angleDiff = currentAngle - lastAngleRef.current;
+      const timeDiff = currentTime - lastTimeRef.current;
 
       let normalizedDiff = angleDiff;
       if (angleDiff > 180) normalizedDiff -= 360;
       if (angleDiff < -180) normalizedDiff += 360;
 
+      if (timeDiff > 0) {
+        const newVelocity = (normalizedDiff / timeDiff) * 16;
+        setVelocity(newVelocity);
+      }
+
       setRotation((prev) => prev + normalizedDiff);
       lastAngleRef.current = currentAngle;
+      lastTimeRef.current = currentTime;
     }
   };
 
@@ -67,14 +78,22 @@ export default function VinylRecord({
       if (isDragging) {
         const touch = e.touches[0];
         const currentAngle = calculateAngle(touch.clientX, touch.clientY);
+        const currentTime = Date.now();
         const angleDiff = currentAngle - lastAngleRef.current;
+        const timeDiff = currentTime - lastTimeRef.current;
 
         let normalizedDiff = angleDiff;
         if (angleDiff > 180) normalizedDiff -= 360;
         if (angleDiff < -180) normalizedDiff += 360;
 
+        if (timeDiff > 0) {
+          const newVelocity = (normalizedDiff / timeDiff) * 16;
+          setVelocity(newVelocity);
+        }
+
         setRotation((prev) => prev + normalizedDiff);
         lastAngleRef.current = currentAngle;
+        lastTimeRef.current = currentTime;
       }
     };
 
@@ -94,7 +113,36 @@ export default function VinylRecord({
       element.removeEventListener("touchmove", touchMoveHandler);
       element.removeEventListener("touchend", touchEndHandler);
     };
-  }, [isDragging]);
+  });
+
+  useEffect(() => {
+    if (!isDragging && Math.abs(velocity) > 0.1) {
+      const animate = () => {
+        setVelocity((v) => {
+          const newVelocity = v * 0.98;
+
+          setRotation((r) => r + v);
+
+          if (Math.abs(newVelocity) < 0.1) {
+            return 0;
+          }
+          return newVelocity;
+        });
+
+        animationRef.current = requestAnimationFrame(animate);
+      };
+
+      animationRef.current = requestAnimationFrame(animate);
+    } else if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isDragging, velocity]);
 
   return (
     <div
@@ -117,7 +165,6 @@ export default function VinylRecord({
           )
         `,
         transform: `rotate(${rotation}deg)`,
-        transition: isDragging ? "none" : "transform 0.1s ease-out",
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
