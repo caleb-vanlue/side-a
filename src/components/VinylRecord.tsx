@@ -8,15 +8,16 @@ import SpindleHole from "./SpindleHole";
 
 interface VinylRecordProps {
   backgroundColor?: string;
+  isSpinning?: boolean;
 }
 
 export default function VinylRecord({
   backgroundColor = "white",
+  isSpinning = false,
 }: VinylRecordProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [velocity, setVelocity] = useState(0);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const recordRef = useRef<HTMLDivElement>(null);
   const lastAngleRef = useRef(0);
   const lastTimeRef = useRef(Date.now());
@@ -46,16 +47,6 @@ export default function VinylRecord({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (recordRef.current) {
-      const rect = recordRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      setMousePosition({
-        x: e.clientX - centerX,
-        y: e.clientY - centerY,
-      });
-    }
-
     if (isDragging) {
       const currentAngle = calculateAngle(e.clientX, e.clientY);
       const currentTime = Date.now();
@@ -79,18 +70,10 @@ export default function VinylRecord({
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    // Update mouse position based on wheel event location
     if (recordRef.current) {
       const rect = recordRef.current.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
       const currentX = e.clientX - centerX;
-      const currentY = e.clientY - centerY;
-
-      setMousePosition({
-        x: currentX,
-        y: currentY,
-      });
 
       const isOnRightHalf = currentX > 0;
       const scrollDirection = e.deltaY > 0 ? 1 : -1;
@@ -169,7 +152,14 @@ export default function VinylRecord({
   });
 
   useEffect(() => {
-    if (!isDragging && Math.abs(velocity) > 0.1) {
+    if (isSpinning && !isDragging) {
+      const animate = () => {
+        setRotation((r) => r + 1);
+        animationRef.current = requestAnimationFrame(animate);
+      };
+
+      animationRef.current = requestAnimationFrame(animate);
+    } else if (!isDragging && Math.abs(velocity) > 0.1) {
       const animate = () => {
         setVelocity((v) => {
           const newVelocity = v * 0.92;
@@ -195,7 +185,7 @@ export default function VinylRecord({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isDragging, velocity]);
+  }, [isDragging, velocity, isSpinning]);
 
   return (
     <div
