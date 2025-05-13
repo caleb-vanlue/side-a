@@ -1,6 +1,6 @@
 import VinylRecord from "../components/VinylRecord";
 import GitHubBadge from "../components/GitHubBadge";
-import ToneArm from "../components/ToneArm";
+import ToneArmContainer from "../components/ToneArmContainer";
 
 export default function Home() {
   const backgroundColor = "white";
@@ -10,14 +10,22 @@ export default function Home() {
       className={`flex min-h-screen flex-col items-center justify-center p-4 relative overflow-x-hidden`}
       style={{ backgroundColor }}
     >
+      {/* Mobile: custom positioning, Desktop: normal centered layout */}
       <div className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0">
+        {/* Vinyl Record - partial off-screen on mobile, normal on desktop */}
         <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin]">
           <VinylRecord backgroundColor={backgroundColor} />
         </div>
+
+        {/* Gap on mobile to push tone arm right */}
         <div className="w-8 sm:hidden"></div>
-        <div className="w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center">
-          <ToneArm />
+
+        {/* Tone Arm - stays on screen */}
+        <div className="w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center relative z-10 overflow-visible">
+          <ToneArmContainer />
         </div>
+
+        {/* Right padding to ensure tone arm stays visible */}
         <div className="w-4 sm:hidden"></div>
       </div>
 
