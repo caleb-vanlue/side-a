@@ -43,25 +43,64 @@ export default function VinylLabel() {
         />
       </div>
 
-      {/* Label text */}
+      {/* Label text container with consistent scaling */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] pointer-events-none">
-        <div className="absolute top-[22%] left-1/2 -translate-x-1/2 text-white/90 text-[0.5rem] sm:text-xs font-medium tracking-widest">
-          CALEB VAN LUE
-        </div>
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {/* Use SVG for precise text positioning that scales with container */}
 
-        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 text-white text-base sm:text-xl md:text-2xl font-bold tracking-wider">
-          SIDE A
-        </div>
+          {/* Artist name */}
+          <text
+            x="50"
+            y="25"
+            textAnchor="middle"
+            className="fill-white/90"
+            style={{ fontSize: "4px", letterSpacing: "1px", fontWeight: "500" }}
+          >
+            CALEB VAN LUE
+          </text>
 
-        <div className="absolute top-[58%] left-1/2 -translate-x-1/2 text-white/80 text-[0.5rem] sm:text-xs">
-          33⅓ RPM
-        </div>
+          {/* Side indicator */}
+          <text
+            x="50"
+            y="35"
+            textAnchor="middle"
+            className="fill-white"
+            style={{ fontSize: "8px", letterSpacing: "1px", fontWeight: "700" }}
+          >
+            SIDE A
+          </text>
 
-        <div className="absolute bottom-[28%] left-1/2 -translate-x-1/2 text-white/70 text-[0.4rem] sm:text-xs font-mono">
-          CV-2000-0{getCurrentYear()}
-        </div>
+          {/* RPM indicator */}
+          <text
+            x="50"
+            y="60"
+            textAnchor="middle"
+            className="fill-white/80"
+            style={{ fontSize: "3.5px" }}
+          >
+            33⅓ RPM
+          </text>
 
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+          {/* Catalog number */}
+          <text
+            x="50"
+            y="75"
+            textAnchor="middle"
+            className="fill-white/70"
+            style={{
+              fontSize: "3px",
+              letterSpacing: "0.5px",
+              fontFamily: "monospace",
+            }}
+          >
+            CV-2000-0{getCurrentYear()}
+          </text>
+
+          {/* Bottom arc text */}
           <defs>
             <path id="bottom-arc" d="M 15,50 A 35,35 0 0,0 85,50" />
           </defs>

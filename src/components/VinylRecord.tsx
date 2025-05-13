@@ -68,7 +68,7 @@ export default function VinylRecord({
 
       if (timeDiff > 0) {
         let newVelocity = (normalizedDiff / timeDiff) * 16;
-        newVelocity = Math.max(-5, Math.min(5, newVelocity)); // Reduced from -10/10 to -5/5
+        newVelocity = Math.max(-5, Math.min(5, newVelocity));
         setVelocity(newVelocity);
       }
 
@@ -79,25 +79,33 @@ export default function VinylRecord({
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    const isOnRightHalf = mousePosition.x > 0;
+    // Update mouse position based on wheel event location
+    if (recordRef.current) {
+      const rect = recordRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const currentX = e.clientX - centerX;
+      const currentY = e.clientY - centerY;
 
-    // Calculate rotation direction based on scroll direction and cursor position
-    // Right half + scroll down = counter-clockwise (negative)
-    // Right half + scroll up = clockwise (positive)
-    // Left half + scroll down = clockwise (positive)
-    // Left half + scroll up = counter-clockwise (negative)
-    const scrollDirection = e.deltaY > 0 ? 1 : -1;
-    const rotationDirection = isOnRightHalf
-      ? -scrollDirection
-      : scrollDirection;
+      setMousePosition({
+        x: currentX,
+        y: currentY,
+      });
 
-    const scrollIntensity = Math.min(Math.abs(e.deltaY) / 100, 1);
-    const newVelocity = rotationDirection * scrollIntensity * 4; // Reduced from 8 to 4
+      const isOnRightHalf = currentX > 0;
+      const scrollDirection = e.deltaY > 0 ? 1 : -1;
+      const rotationDirection = isOnRightHalf
+        ? -scrollDirection
+        : scrollDirection;
 
-    setVelocity((prev) => {
-      const combined = prev + newVelocity;
-      return Math.max(-5, Math.min(5, combined)); // Reduced from -10/10 to -5/5
-    });
+      const scrollIntensity = Math.min(Math.abs(e.deltaY) / 100, 1);
+      const newVelocity = rotationDirection * scrollIntensity * 4;
+
+      setVelocity((prev) => {
+        const combined = prev + newVelocity;
+        return Math.max(-5, Math.min(5, combined));
+      });
+    }
   };
 
   useEffect(() => {
@@ -130,7 +138,7 @@ export default function VinylRecord({
 
         if (timeDiff > 0) {
           let newVelocity = (normalizedDiff / timeDiff) * 16;
-          newVelocity = Math.max(-5, Math.min(5, newVelocity)); // Reduced from -10/10 to -5/5
+          newVelocity = Math.max(-5, Math.min(5, newVelocity));
           setVelocity(newVelocity);
         }
 
@@ -192,7 +200,7 @@ export default function VinylRecord({
   return (
     <div
       ref={recordRef}
-      className={`relative w-[80vw] h-[80vw] max-w-[80vh] max-h-[80vh] rounded-full ${
+      className={`relative aspect-square w-[80vmin] rounded-full ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       } touch-none overflow-hidden`}
       style={{
