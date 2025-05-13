@@ -79,8 +79,6 @@ export default function VinylRecord({
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
-
     const isOnRightHalf = mousePosition.x > 0;
 
     // Calculate rotation direction based on scroll direction and cursor position
