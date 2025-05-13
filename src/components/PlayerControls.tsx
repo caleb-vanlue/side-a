@@ -12,7 +12,7 @@ export default function PlayerControls({
   disabled = false,
 }: PlayerControlsProps) {
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 z-50 flex flex-row md:flex-col gap-6">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-6 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 z-50 flex flex-row lg:flex-col gap-6">
       <button
         onClick={onStart}
         disabled={disabled || isPlaying}
