@@ -200,7 +200,7 @@ export default function VinylRecord({
   return (
     <div
       ref={recordRef}
-      className={`relative aspect-square w-[80vmin] rounded-full ${
+      className={`relative aspect-square w-full h-full rounded-full ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       } touch-none overflow-hidden`}
       style={{
