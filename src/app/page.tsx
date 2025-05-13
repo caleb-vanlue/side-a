@@ -1,4 +1,5 @@
 import VinylRecord from "../components/VinylRecord";
+import GitHubBadge from "../components/GitHubBadge";
 
 export default function Home() {
   const backgroundColor = "white";
@@ -9,22 +10,7 @@ export default function Home() {
       style={{ backgroundColor }}
     >
       <VinylRecord backgroundColor={backgroundColor} />
-
-      {/* GitHub Badge */}
-      <a
-        href="https://github.com/caleb-vanlue/portfolio"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 hover:opacity-80 transition-opacity"
-      >
-        <img
-          src="/images/github-mark.svg"
-          alt="GitHub"
-          width="48"
-          height="48"
-          className="w-12 h-12"
-        />
-      </a>
+      <GitHubBadge repoUrl="https://github.com/caleb-vanlue/portfolio" />
     </main>
   );
 }
