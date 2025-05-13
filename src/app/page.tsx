@@ -29,6 +29,14 @@ export default function Home() {
     setIsControlledPlayback(false);
   };
 
+  const handleRotationChange = (rotation: number) => {
+    setToneArmRotation(rotation);
+    // If user manually drags needle off the record while in controlled playback, stop it
+    if (rotation < 25 && isControlledPlayback) {
+      setIsControlledPlayback(false);
+    }
+  };
+
   useEffect(() => {
     if (
       targetRotation !== null &&
@@ -36,7 +44,7 @@ export default function Home() {
     ) {
       setTimeout(() => {
         setTargetRotation(null);
-      }, 500);
+      }, 100);
     }
   }, [toneArmRotation, targetRotation]);
 
@@ -98,7 +106,7 @@ export default function Home() {
           <div className="w-8 sm:hidden"></div>
           <div className="w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center relative z-10 overflow-visible">
             <ToneArmContainer
-              onRotationChange={setToneArmRotation}
+              onRotationChange={handleRotationChange}
               isPlaying={isPlaying}
               targetRotation={targetRotation}
             />

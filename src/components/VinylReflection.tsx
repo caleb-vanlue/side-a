@@ -1,4 +1,6 @@
-export default function VinylReflection() {
+import React from "react";
+
+const VinylReflection = React.memo(() => {
   return (
     <div
       className="absolute inset-0 rounded-full pointer-events-none"
@@ -22,4 +24,8 @@ export default function VinylReflection() {
       }}
     />
   );
-}
+});
+
+VinylReflection.displayName = "VinylReflection";
+
+export default VinylReflection;

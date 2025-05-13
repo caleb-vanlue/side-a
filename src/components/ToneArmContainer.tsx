@@ -7,19 +7,21 @@ interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
   isPlaying?: boolean;
   targetRotation?: number | null;
+  onDragStart?: () => void;
 }
 
 export default function ToneArmContainer({
   onRotationChange,
   isPlaying,
   targetRotation = null,
+  onDragStart,
 }: ToneArmContainerProps) {
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
-  const playbackAnimationRef = useRef<number | null>(null);
-  const targetAnimationRef = useRef<number | null>(null);
+  const animationRef = useRef<number | null>(null);
+  const lastRotationRef = useRef(0);
 
   useEffect(() => {
     const updatePivotPoint = () => {
@@ -43,16 +45,15 @@ export default function ToneArmContainer({
     const deltaX = clientX - pivotRef.current.x;
     const deltaY = clientY - pivotRef.current.y;
 
-    let angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    angle = Math.max(0, Math.min(45, angle));
-
-    return angle;
+    const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
+    return Math.max(0, Math.min(45, angle));
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     const target = e.target as SVGElement;
     if (target.closest("g.cursor-grab")) {
       setIsDragging(true);
+      onDragStart?.();
       e.preventDefault();
     }
   };
@@ -76,12 +77,14 @@ export default function ToneArmContainer({
       const target = e.target as SVGElement;
       if (target.closest("g.cursor-grab")) {
         setIsDragging(true);
+        onDragStart?.();
         e.preventDefault();
       }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (isDragging && e.touches.length > 0) {
+        e.preventDefault();
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
         setRotation(newRotation);
@@ -107,69 +110,62 @@ export default function ToneArmContainer({
   }, [isDragging, onRotationChange]);
 
   useEffect(() => {
-    onRotationChange?.(rotation);
+    const timeoutId = setTimeout(() => {
+      onRotationChange?.(rotation);
+    }, 16);
+
+    return () => clearTimeout(timeoutId);
   }, [rotation, onRotationChange]);
 
   useEffect(() => {
-    if (targetRotation !== null && !isDragging) {
-      if (playbackAnimationRef.current) {
-        cancelAnimationFrame(playbackAnimationRef.current);
-        playbackAnimationRef.current = null;
+    let currentRotation = rotation;
+
+    const animate = () => {
+      let needsUpdate = false;
+      let newRotation = currentRotation;
+
+      if (targetRotation !== null && !isDragging) {
+        const diff = targetRotation - currentRotation;
+        if (Math.abs(diff) >= 0.5) {
+          newRotation = currentRotation + diff * 0.02;
+          needsUpdate = true;
+        }
+      } else if (
+        isPlaying &&
+        targetRotation === null &&
+        currentRotation < 47 &&
+        !isDragging
+      ) {
+        newRotation = Math.min(currentRotation + 0.005, 47);
+        needsUpdate = true;
       }
 
-      const animate = () => {
-        setRotation((prevRotation) => {
-          const diff = targetRotation - prevRotation;
-          const speed = 0.001;
+      if (needsUpdate) {
+        currentRotation = newRotation;
+        if (Math.abs(newRotation - lastRotationRef.current) > 0.01) {
+          setRotation(newRotation);
+          lastRotationRef.current = newRotation;
+        }
+        animationRef.current = requestAnimationFrame(animate);
+      } else {
+        animationRef.current = null;
+      }
+    };
 
-          if (Math.abs(diff) < 0.5) {
-            if (targetAnimationRef.current) {
-              cancelAnimationFrame(targetAnimationRef.current);
-              targetAnimationRef.current = null;
-            }
-            return targetRotation;
-          }
-
-          const newRotation = prevRotation + diff * speed;
-          targetAnimationRef.current = requestAnimationFrame(animate);
-          return newRotation;
-        });
-      };
-
-      targetAnimationRef.current = requestAnimationFrame(animate);
+    if (
+      (targetRotation !== null || (isPlaying && rotation < 47)) &&
+      !isDragging
+    ) {
+      animationRef.current = requestAnimationFrame(animate);
     }
 
     return () => {
-      if (targetAnimationRef.current) {
-        cancelAnimationFrame(targetAnimationRef.current);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
     };
-  }, [targetRotation, isDragging]);
-
-  useEffect(() => {
-    if (isPlaying && targetRotation === null && rotation < 47) {
-      const animate = () => {
-        setRotation((prevRotation) => {
-          const newRotation = prevRotation + 0.005;
-          if (newRotation >= 47) {
-            return 47;
-          }
-
-          return newRotation;
-        });
-
-        playbackAnimationRef.current = requestAnimationFrame(animate);
-      };
-
-      playbackAnimationRef.current = requestAnimationFrame(animate);
-    }
-
-    return () => {
-      if (playbackAnimationRef.current) {
-        cancelAnimationFrame(playbackAnimationRef.current);
-      }
-    };
-  }, [isPlaying, targetRotation]);
+  }, [targetRotation, isPlaying, isDragging, rotation]);
 
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {

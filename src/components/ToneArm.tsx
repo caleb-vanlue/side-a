@@ -1,8 +1,10 @@
+import React from "react";
+
 interface ToneArmProps {
   rotation?: number;
 }
 
-export default function ToneArm({ rotation = 0 }: ToneArmProps) {
+const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
   return (
     <div className="relative w-full h-full overflow-visible">
       <svg
@@ -24,6 +26,7 @@ export default function ToneArm({ rotation = 0 }: ToneArmProps) {
           style={{
             transform: `rotate(${rotation}deg)`,
             transformOrigin: "50px 20px",
+            willChange: "transform",
           }}
         >
           <rect x="47" y="20" width="6" height="180" fill="#3a3a3a" rx="3" />
@@ -60,4 +63,8 @@ export default function ToneArm({ rotation = 0 }: ToneArmProps) {
       </svg>
     </div>
   );
-}
+});
+
+ToneArm.displayName = "ToneArm";
+
+export default ToneArm;

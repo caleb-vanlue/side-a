@@ -1,10 +1,12 @@
-export default function VinylLabel() {
-  const getCurrentYear = () => {
+import React from "react";
+
+const VinylLabel = React.memo(() => {
+  const currentYear = React.useMemo(() => {
     return Math.floor(
       (new Date().getTime() - new Date("2000-09-05").getTime()) /
         (365.25 * 24 * 60 * 60 * 1000)
     );
-  };
+  }, []);
 
   return (
     <>
@@ -88,7 +90,7 @@ export default function VinylLabel() {
               fontFamily: "monospace",
             }}
           >
-            CV-2000-0{getCurrentYear()}
+            CV-2000-0{currentYear}
           </text>
 
           <defs>
@@ -106,4 +108,8 @@ export default function VinylLabel() {
       </div>
     </>
   );
-}
+});
+
+VinylLabel.displayName = "VinylLabel";
+
+export default VinylLabel;

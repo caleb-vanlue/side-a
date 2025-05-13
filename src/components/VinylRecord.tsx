@@ -199,6 +199,10 @@ export default function VinylRecord({
         WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
         maskSize: "100% 100%",
         WebkitMaskSize: "100% 100%",
+        willChange:
+          isDragging || isSpinning || Math.abs(velocity) > 0.1
+            ? "transform"
+            : "auto",
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
