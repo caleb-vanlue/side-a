@@ -203,6 +203,9 @@ export default function VinylRecord({
           isDragging || isSpinning || Math.abs(velocity) > 0.1
             ? "transform"
             : "auto",
+        contain: "layout style",
+        backfaceVisibility: "hidden",
+        perspective: 1000,
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}

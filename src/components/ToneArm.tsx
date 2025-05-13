@@ -27,6 +27,7 @@ const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
             transform: `rotate(${rotation}deg)`,
             transformOrigin: "50px 20px",
             willChange: "transform",
+            backfaceVisibility: "hidden",
           }}
         >
           <rect x="47" y="20" width="6" height="180" fill="#3a3a3a" rx="3" />

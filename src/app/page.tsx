@@ -96,11 +96,11 @@ export default function Home() {
   }, [isPlaying]);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden">
+    <main className="relative min-h-screen overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
         <div className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0">
-          <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin]">
+          <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin] overflow-hidden relative">
             <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
           </div>
           <div className="w-8 sm:hidden"></div>
