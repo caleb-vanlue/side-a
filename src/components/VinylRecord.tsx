@@ -16,6 +16,7 @@ export default function VinylRecord({
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [velocity, setVelocity] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const recordRef = useRef<HTMLDivElement>(null);
   const lastAngleRef = useRef(0);
   const lastTimeRef = useRef(Date.now());
@@ -45,6 +46,16 @@ export default function VinylRecord({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (recordRef.current) {
+      const rect = recordRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      setMousePosition({
+        x: e.clientX - centerX,
+        y: e.clientY - centerY,
+      });
+    }
+
     if (isDragging) {
       const currentAngle = calculateAngle(e.clientX, e.clientY);
       const currentTime = Date.now();
@@ -57,7 +68,7 @@ export default function VinylRecord({
 
       if (timeDiff > 0) {
         let newVelocity = (normalizedDiff / timeDiff) * 16;
-        newVelocity = Math.max(-10, Math.min(10, newVelocity));
+        newVelocity = Math.max(-5, Math.min(5, newVelocity)); // Reduced from -10/10 to -5/5
         setVelocity(newVelocity);
       }
 
@@ -67,9 +78,37 @@ export default function VinylRecord({
     }
   };
 
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+
+    const isOnRightHalf = mousePosition.x > 0;
+
+    // Calculate rotation direction based on scroll direction and cursor position
+    // Right half + scroll down = counter-clockwise (negative)
+    // Right half + scroll up = clockwise (positive)
+    // Left half + scroll down = clockwise (positive)
+    // Left half + scroll up = counter-clockwise (negative)
+    const scrollDirection = e.deltaY > 0 ? 1 : -1;
+    const rotationDirection = isOnRightHalf
+      ? -scrollDirection
+      : scrollDirection;
+
+    const scrollIntensity = Math.min(Math.abs(e.deltaY) / 100, 1);
+    const newVelocity = rotationDirection * scrollIntensity * 4; // Reduced from 8 to 4
+
+    setVelocity((prev) => {
+      const combined = prev + newVelocity;
+      return Math.max(-5, Math.min(5, combined)); // Reduced from -10/10 to -5/5
+    });
+  };
+
   useEffect(() => {
     const element = recordRef.current;
     if (!element) return;
+
+    const preventDefaultWheel = (e: WheelEvent) => {
+      e.preventDefault();
+    };
 
     const touchStartHandler = (e: TouchEvent) => {
       e.preventDefault();
@@ -93,7 +132,7 @@ export default function VinylRecord({
 
         if (timeDiff > 0) {
           let newVelocity = (normalizedDiff / timeDiff) * 16;
-          newVelocity = Math.max(-10, Math.min(10, newVelocity));
+          newVelocity = Math.max(-5, Math.min(5, newVelocity)); // Reduced from -10/10 to -5/5
           setVelocity(newVelocity);
         }
 
@@ -108,6 +147,7 @@ export default function VinylRecord({
       setIsDragging(false);
     };
 
+    element.addEventListener("wheel", preventDefaultWheel, { passive: false });
     element.addEventListener("touchstart", touchStartHandler, {
       passive: false,
     });
@@ -115,6 +155,7 @@ export default function VinylRecord({
     element.addEventListener("touchend", touchEndHandler, { passive: false });
 
     return () => {
+      element.removeEventListener("wheel", preventDefaultWheel);
       element.removeEventListener("touchstart", touchStartHandler);
       element.removeEventListener("touchmove", touchMoveHandler);
       element.removeEventListener("touchend", touchEndHandler);
@@ -164,6 +205,7 @@ export default function VinylRecord({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
       onMouseMove={handleMouseMove}
+      onWheel={handleWheel}
     >
       <VinylGrooves />
       <VinylReflection />
