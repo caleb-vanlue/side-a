@@ -8,7 +8,6 @@ export default function VinylLabel() {
 
   return (
     <>
-      {/* Green label background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] rounded-full pointer-events-none overflow-hidden">
         <div
           className="w-full h-full"
@@ -42,17 +41,12 @@ export default function VinylLabel() {
           }}
         />
       </div>
-
-      {/* Label text container with consistent scaling */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] pointer-events-none">
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"
         >
-          {/* Use SVG for precise text positioning that scales with container */}
-
-          {/* Artist name */}
           <text
             x="50"
             y="25"
@@ -63,7 +57,6 @@ export default function VinylLabel() {
             CALEB VAN LUE
           </text>
 
-          {/* Side indicator */}
           <text
             x="50"
             y="35"
@@ -74,7 +67,6 @@ export default function VinylLabel() {
             SIDE A
           </text>
 
-          {/* RPM indicator */}
           <text
             x="50"
             y="60"
@@ -85,7 +77,6 @@ export default function VinylLabel() {
             33⅓ RPM
           </text>
 
-          {/* Catalog number */}
           <text
             x="50"
             y="75"
@@ -100,7 +91,6 @@ export default function VinylLabel() {
             CV-2000-0{getCurrentYear()}
           </text>
 
-          {/* Bottom arc text */}
           <defs>
             <path id="bottom-arc" d="M 15,50 A 35,35 0 0,0 85,50" />
           </defs>

@@ -5,15 +5,18 @@ import ToneArm from "./ToneArm";
 
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
+  isPlaying?: boolean;
 }
 
 export default function ToneArmContainer({
   onRotationChange,
+  isPlaying,
 }: ToneArmContainerProps) {
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
+  const playbackAnimationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const updatePivotPoint = () => {
@@ -55,7 +58,6 @@ export default function ToneArmContainer({
     if (isDragging) {
       const newRotation = calculateRotation(e.clientX, e.clientY);
       setRotation(newRotation);
-      onRotationChange?.(newRotation);
     }
   };
 
@@ -102,11 +104,39 @@ export default function ToneArmContainer({
   }, [isDragging, onRotationChange]);
 
   useEffect(() => {
+    onRotationChange?.(rotation);
+  }, [rotation, onRotationChange]);
+
+  useEffect(() => {
+    if (isPlaying && rotation < 47) {
+      const animate = () => {
+        setRotation((prevRotation) => {
+          const newRotation = prevRotation + 0.005;
+          if (newRotation >= 47) {
+            return 47;
+          }
+
+          return newRotation;
+        });
+
+        playbackAnimationRef.current = requestAnimationFrame(animate);
+      };
+
+      playbackAnimationRef.current = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      if (playbackAnimationRef.current) {
+        cancelAnimationFrame(playbackAnimationRef.current);
+      }
+    };
+  }, [isPlaying]);
+
+  useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
       if (isDragging) {
         const newRotation = calculateRotation(e.clientX, e.clientY);
         setRotation(newRotation);
-        onRotationChange?.(newRotation);
       }
     };
 
@@ -115,7 +145,6 @@ export default function ToneArmContainer({
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
         setRotation(newRotation);
-        onRotationChange?.(newRotation);
       }
     };
 

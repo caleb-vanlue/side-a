@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import VinylGrooves from "./VinylGrooves";
 import VinylReflection from "./VinylReflection";
 import VinylLabel from "./VinylLabel";
-import SpindleHole from "./SpindleHole";
 
 interface VinylRecordProps {
   backgroundColor?: string;
@@ -196,6 +195,10 @@ export default function VinylRecord({
       style={{
         background: "#0f0f0f",
         transform: `rotate(${rotation}deg)`,
+        maskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
+        WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
+        maskSize: "100% 100%",
+        WebkitMaskSize: "100% 100%",
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
@@ -206,7 +209,6 @@ export default function VinylRecord({
       <VinylGrooves />
       <VinylReflection />
       <VinylLabel />
-      <SpindleHole backgroundColor={backgroundColor} />
     </div>
   );
 }
