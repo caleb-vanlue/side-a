@@ -6,17 +6,20 @@ import ToneArm from "./ToneArm";
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
   isPlaying?: boolean;
+  targetRotation?: number | null;
 }
 
 export default function ToneArmContainer({
   onRotationChange,
   isPlaying,
+  targetRotation = null,
 }: ToneArmContainerProps) {
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
   const playbackAnimationRef = useRef<number | null>(null);
+  const targetAnimationRef = useRef<number | null>(null);
 
   useEffect(() => {
     const updatePivotPoint = () => {
@@ -108,7 +111,43 @@ export default function ToneArmContainer({
   }, [rotation, onRotationChange]);
 
   useEffect(() => {
-    if (isPlaying && rotation < 47) {
+    if (targetRotation !== null && !isDragging) {
+      if (playbackAnimationRef.current) {
+        cancelAnimationFrame(playbackAnimationRef.current);
+        playbackAnimationRef.current = null;
+      }
+
+      const animate = () => {
+        setRotation((prevRotation) => {
+          const diff = targetRotation - prevRotation;
+          const speed = 0.001;
+
+          if (Math.abs(diff) < 0.5) {
+            if (targetAnimationRef.current) {
+              cancelAnimationFrame(targetAnimationRef.current);
+              targetAnimationRef.current = null;
+            }
+            return targetRotation;
+          }
+
+          const newRotation = prevRotation + diff * speed;
+          targetAnimationRef.current = requestAnimationFrame(animate);
+          return newRotation;
+        });
+      };
+
+      targetAnimationRef.current = requestAnimationFrame(animate);
+    }
+
+    return () => {
+      if (targetAnimationRef.current) {
+        cancelAnimationFrame(targetAnimationRef.current);
+      }
+    };
+  }, [targetRotation, isDragging]);
+
+  useEffect(() => {
+    if (isPlaying && targetRotation === null && rotation < 47) {
       const animate = () => {
         setRotation((prevRotation) => {
           const newRotation = prevRotation + 0.005;
@@ -130,7 +169,7 @@ export default function ToneArmContainer({
         cancelAnimationFrame(playbackAnimationRef.current);
       }
     };
-  }, [isPlaying]);
+  }, [isPlaying, targetRotation]);
 
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
