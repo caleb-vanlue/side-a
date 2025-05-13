@@ -49,7 +49,7 @@ export default function VinylLabel() {
           CALEB VAN LUE
         </div>
 
-        <div className="absolute top-[42%] left-1/2 -translate-x-1/2 text-white text-base sm:text-xl md:text-2xl font-bold tracking-wider">
+        <div className="absolute top-[30%] left-1/2 -translate-x-1/2 text-white text-base sm:text-xl md:text-2xl font-bold tracking-wider">
           SIDE A
         </div>
 
