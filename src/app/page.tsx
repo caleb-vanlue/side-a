@@ -111,7 +111,10 @@ export default function Home() {
       <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
-        <div className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0">
+        <div
+          className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0"
+          style={{ transformStyle: "preserve-3d" }}
+        >
           <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin] relative">
             <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
           </div>
