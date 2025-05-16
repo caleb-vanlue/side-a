@@ -8,3 +8,11 @@
     scroll-behavior: smooth;
   }
 }
+
+@media (max-width: 768px) {
+  .mobile-tone-arm-fix {
+    z-index: 50 !important;
+    overflow: visible !important;
+    transform: translateZ(0);
+  }
+}
