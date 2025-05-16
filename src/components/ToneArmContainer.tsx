@@ -46,7 +46,7 @@ export default function ToneArmContainer({
     const deltaY = clientY - pivotRef.current.y;
 
     const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    return Math.max(0, Math.min(45, angle));
+    return Math.max(0, Math.min(29, angle));
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

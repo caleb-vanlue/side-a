@@ -18,7 +18,18 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
   const lastAngleRef = useRef(0);
   const lastTimeRef = useRef(Date.now());
   const animationRef = useRef<number | null>(null);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const calculateAngle = (clientX: number, clientY: number) => {
     if (!recordRef.current) return 0;
