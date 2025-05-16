@@ -149,11 +149,15 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
 
   useEffect(() => {
     if (isSpinning && !isDragging) {
-      const animate = () => {
-        setRotation((r) => r + 1);
+      let lastTimestamp = 0;
+
+      const animate = (timestamp: number) => {
+        if (timestamp - lastTimestamp > 16) {
+          setRotation((r) => r + 1);
+          lastTimestamp = timestamp;
+        }
         animationRef.current = requestAnimationFrame(animate);
       };
-
       animationRef.current = requestAnimationFrame(animate);
     } else if (!isDragging && Math.abs(velocity) > 0.1) {
       const animate = () => {
