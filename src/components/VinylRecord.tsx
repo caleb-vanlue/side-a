@@ -183,26 +183,20 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
     };
   }, [isDragging, velocity, isSpinning]);
 
+  // In VinylRecord.tsx
   return (
     <div
       ref={recordRef}
       className={`relative aspect-square w-full h-full rounded-full ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
-      } touch-none overflow-hidden`}
+      } touch-none`}
       style={{
         background: "#0f0f0f",
         transform: `rotate(${rotation}deg)`,
-        maskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
-        WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
-        maskSize: "100% 100%",
-        WebkitMaskSize: "100% 100%",
-        willChange:
-          isDragging || isSpinning || Math.abs(velocity) > 0.1
-            ? "transform"
-            : "auto",
-        contain: "layout style",
-        backfaceVisibility: "hidden",
-        perspective: 1000,
+        willChange: "transform",
+        contain: "layout style paint",
+        isolation: "isolate",
+        // Remove all mask properties
       }}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
