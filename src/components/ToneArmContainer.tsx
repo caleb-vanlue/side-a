@@ -136,7 +136,7 @@ export default function ToneArmContainer({
         currentRotation < 47 &&
         !isDragging
       ) {
-        newRotation = Math.min(currentRotation + 0.005, 47);
+        newRotation = Math.min(currentRotation + 0.005, 29);
         needsUpdate = true;
       }
 
