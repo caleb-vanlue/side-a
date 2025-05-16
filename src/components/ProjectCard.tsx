@@ -54,7 +54,7 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
               </div>
 
               <p className="text-zinc-300 mb-2 text-xs">
-                Come check out what I am watching or listening to!
+                Come check out what I am watching or listening to right now!
               </p>
 
               <div className="flex items-center justify-between">
