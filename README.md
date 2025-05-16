@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Side A
+
+An interactive portfolio website with a vinyl record player interface. Place the needle on the record to see it spin and reveal another of my projects.
+
+![Side A](screenshots/preview.png)
+
+## Overview
+
+This portfolio site combines the nostalgic feel of vinyl records with modern web technologies. The centerpiece is an interactive record player where visitors can drag the tone arm onto a vinyl record, watch it spin, and discover my projects (more on the way!).
+
+## Features
+
+- **Interactive Vinyl Record**: A realistic vinyl record that spins when the needle is placed on it
+- **Draggable Tone Arm**: Drag and drop the tone arm onto the record
+- **Ambient Background**: Dynamic gradient background that animates when the record plays
+- **Responsive Design**: Fully responsive layout that works on desktop and mobile devices
+- **Project Showcase**: Card that appears when the record is playing to showcase projects
+- **Elegant Side Navigation**: Accessible side drawer menu with social links
+
+## Technologies
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Framer Motion](https://www.framer.com/motion/) - Animations
+- [Granim.js](https://sarcadass.github.io/granim.js/) - Gradient animations
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v14 or higher)
+- npm or yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone https://github.com/caleb-vanlue/side-a.git
+   ```
 
-## Learn More
+2. Navigate to the project directory
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cd side-a
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-## Deploy on Vercel
+4. Start the development server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Usage
+
+- **Drag the tone arm**: Click and drag the tone arm onto the record to start playback
+- **Control buttons**: Use the play/stop buttons to control the record player
+- **Menu**: Click the hamburger button in the top left to open the side drawer
+- **Project card**: When the record is playing, a project card will appear with details about the "Now Playing" project
