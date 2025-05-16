@@ -10,10 +10,7 @@ interface VinylRecordProps {
   isSpinning?: boolean;
 }
 
-export default function VinylRecord({
-  backgroundColor = "white",
-  isSpinning = false,
-}: VinylRecordProps) {
+export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [velocity, setVelocity] = useState(0);
