@@ -6,11 +6,14 @@ import VinylRecord from "../components/VinylRecord";
 import GitHubBadge from "../components/GitHubBadge";
 import ToneArmContainer from "../components/ToneArmContainer";
 import PlayerControls from "../components/PlayerControls";
+import HamburgerButton from "../components/HamburgerButton";
+import SideDrawer from "../components/SideDrawer";
 
 export default function Home() {
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [isControlledPlayback, setIsControlledPlayback] = useState(false);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const granimRef = useRef<Granim | null>(null);
 
@@ -98,6 +101,14 @@ export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+
+      {/* Add hamburger button and drawer */}
+      <HamburgerButton
+        isOpen={menuOpen}
+        onClick={() => setMenuOpen(!menuOpen)}
+      />
+      <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
         <div className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0">
           <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin] overflow-hidden relative">
