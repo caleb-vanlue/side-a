@@ -116,7 +116,11 @@ export default function Home() {
             <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
           </div>
           <div className="w-8 sm:hidden"></div>
-          <div className="w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center relative z-10 overflow-visible">
+          <div
+            className="w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center relative z-10 overflow-visible"
+            style={{ isolation: "isolate" }}
+          >
+            {" "}
             <ToneArmContainer
               onRotationChange={handleRotationChange}
               isPlaying={isPlaying}
