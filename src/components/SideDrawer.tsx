@@ -6,7 +6,6 @@ interface SideDrawerProps {
 }
 
 export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
-  // Close the drawer when ESC key is pressed
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -18,7 +17,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
-  // Prevent scrolling of the body when drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -33,7 +31,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
 
   return (
     <>
-      {/* Backdrop with improved transition */}
       <div
         className={`fixed inset-0 bg-black transition-opacity duration-500 ease-in-out z-40 ${
           isOpen ? "opacity-50" : "opacity-0 pointer-events-none"
@@ -42,7 +39,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
         aria-hidden="true"
       />
 
-      {/* Drawer with enhanced styling */}
       <div
         className={`fixed top-0 left-0 h-full w-64 sm:w-80 bg-zinc-900 z-50 transform transition-transform duration-500 ease-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -52,7 +48,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
         }}
       >
         <div className="flex flex-col h-full font-sans">
-          {/* Header section with better proportions */}
           <div className="pt-20 pb-8 px-6 text-center">
             <h2 className="text-4xl font-light text-white mb-3">
               Nice to meet you!
@@ -62,7 +57,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
             </p>
           </div>
 
-          {/* Main content with better spacing */}
           <div className="flex-grow flex flex-col justify-center">
             <nav className="py-8 space-y-16">
               <a
@@ -94,7 +88,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
             </nav>
           </div>
 
-          {/* Footer section */}
           <div className="mt-auto">
             <div className="border-t border-zinc-800 pt-6 pb-8">
               <div className="flex flex-col items-center">
