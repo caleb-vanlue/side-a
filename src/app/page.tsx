@@ -8,6 +8,7 @@ import ToneArmContainer from "../components/ToneArmContainer";
 import PlayerControls from "../components/PlayerControls";
 import HamburgerButton from "../components/HamburgerButton";
 import SideDrawer from "../components/SideDrawer";
+import ProjectCard from "../components/ProjectCard";
 
 export default function Home() {
   const [toneArmRotation, setToneArmRotation] = useState(0);
@@ -130,6 +131,8 @@ export default function Home() {
           onStop={handleStop}
           isPlaying={isPlaying}
         />
+
+        <ProjectCard isVisible={isNeedleOnRecord} />
         <GitHubBadge repoUrl="https://github.com/caleb-vanlue/portfolio" />
       </div>
     </main>
