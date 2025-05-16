@@ -28,6 +28,9 @@ const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
             transformOrigin: "50px 20px",
             willChange: "transform",
             backfaceVisibility: "hidden",
+            position: "relative",
+            zIndex: 999,
+            transformStyle: "preserve-3d",
           }}
         >
           <rect x="47" y="20" width="6" height="180" fill="#3a3a3a" rx="3" />
