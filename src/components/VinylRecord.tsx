@@ -199,7 +199,6 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
     };
   }, [isDragging, velocity, isSpinning]);
 
-  // In VinylRecord.tsx
   return (
     <div
       ref={recordRef}

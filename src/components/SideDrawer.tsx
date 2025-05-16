@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Image from "next/image";
 
 interface SideDrawerProps {
   isOpen: boolean;
@@ -47,23 +48,36 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
           boxShadow: "0 4px 30px rgba(0,0,0,0.3)",
         }}
       >
-        <div className="flex flex-col h-full font-sans">
-          <div className="pt-20 pb-8 px-6 text-center">
-            <h2 className="text-4xl font-light text-white mb-3">
-              Nice to meet you!
-            </h2>
-            <p className="text-zinc-400 text-lg max-w-xs mx-auto">
-              Software Engineer & Music Enthusiast
-            </p>
+        <div className="flex flex-col h-full font-sans justify-between">
+          <div>
+            <div className="flex justify-center pt-6">
+              <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-500 shadow-lg">
+                <Image
+                  src="/images/avatar.jpeg"
+                  alt="Profile Avatar"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="pt-4 pb-4 px-6 text-center">
+              <h2 className="text-3xl font-light text-white mb-2">
+                Nice to meet you!
+              </h2>
+              <p className="text-zinc-400 text-base max-w-xs mx-auto">
+                Software Engineer & Music Enthusiast
+              </p>
+            </div>
           </div>
 
-          <div className="flex-grow flex flex-col justify-center">
-            <nav className="py-8 space-y-16">
+          <nav className="py-2">
+            <div className="space-y-8">
               <a
                 href="https://www.linkedin.com/in/calebvanlue/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center text-2xl text-white hover:text-emerald-400 transition-colors duration-300"
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 LinkedIn
               </a>
@@ -72,7 +86,7 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 href="https://github.com/caleb-vanlue"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center text-2xl text-white hover:text-emerald-400 transition-colors duration-300"
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 GitHub
               </a>
@@ -81,7 +95,7 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 href="https://www.discogs.com/user/Irrelativity/collection"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center text-2xl text-white hover:text-emerald-400 transition-colors duration-300"
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 Discogs
               </a>
@@ -90,15 +104,15 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 href="mailto:vanluecaleb@outlook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center text-2xl text-white hover:text-emerald-400 transition-colors duration-300"
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 Email
               </a>
-            </nav>
-          </div>
+            </div>
+          </nav>
 
-          <div className="mt-auto">
-            <div className="border-t border-zinc-800 pt-6 pb-8">
+          <div className="pb-6 pt-4">
+            <div className="border-t border-zinc-800 pt-4">
               <div className="flex flex-col items-center">
                 <p className="text-sm text-zinc-500">
                   © {new Date().getFullYear()} Caleb Van Lue
