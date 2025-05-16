@@ -85,6 +85,15 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
               >
                 Discogs
               </a>
+
+              <a
+                href="mailto:vanluecaleb@outlook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center text-2xl text-white hover:text-emerald-400 transition-colors duration-300"
+              >
+                Email
+              </a>
             </nav>
           </div>
 
