@@ -23,6 +23,17 @@ export default function ToneArmContainer({
   const animationRef = useRef<number | null>(null);
   const lastRotationRef = useRef(0);
 
+  const resetContainerStyle = () => {
+    if (containerRef.current) {
+      containerRef.current.style.transform = "translateZ(0.01px)";
+      setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.style.transform = "translateZ(0)";
+        }
+      }, 10);
+    }
+  };
+
   useEffect(() => {
     const updatePivotPoint = () => {
       if (containerRef.current) {
@@ -46,7 +57,7 @@ export default function ToneArmContainer({
     const deltaY = clientY - pivotRef.current.y;
 
     const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    return Math.max(0, Math.min(29, angle));
+    return Math.max(0, Math.min(29, angle)); // Limit to 29 degrees to match auto-move
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -118,6 +129,10 @@ export default function ToneArmContainer({
   }, [rotation, onRotationChange]);
 
   useEffect(() => {
+    resetContainerStyle();
+  }, [isPlaying, targetRotation]);
+
+  useEffect(() => {
     let currentRotation = rotation;
 
     const animate = () => {
@@ -129,11 +144,15 @@ export default function ToneArmContainer({
         if (Math.abs(diff) >= 0.5) {
           newRotation = currentRotation + diff * 0.02;
           needsUpdate = true;
+
+          if (Math.abs(diff) > 3) {
+            resetContainerStyle();
+          }
         }
       } else if (
         isPlaying &&
         targetRotation === null &&
-        currentRotation < 47 &&
+        currentRotation < 29 &&
         !isDragging
       ) {
         newRotation = Math.min(currentRotation + 0.005, 29);
@@ -153,7 +172,7 @@ export default function ToneArmContainer({
     };
 
     if (
-      (targetRotation !== null || (isPlaying && rotation < 47)) &&
+      (targetRotation !== null || (isPlaying && rotation < 29)) &&
       !isDragging
     ) {
       animationRef.current = requestAnimationFrame(animate);
@@ -215,6 +234,13 @@ export default function ToneArmContainer({
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      style={{
+        transformStyle: "preserve-3d",
+        transform: "translateZ(0)",
+        backfaceVisibility: "hidden",
+        position: "relative",
+        zIndex: 50,
+      }}
     >
       <ToneArm rotation={rotation} />
     </div>

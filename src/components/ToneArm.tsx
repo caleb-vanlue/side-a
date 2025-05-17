@@ -11,6 +11,11 @@ const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
         viewBox="0 0 100 300"
         className="w-full h-full overflow-visible"
         preserveAspectRatio="xMidYMid meet"
+        style={{
+          isolation: "isolate",
+          transformStyle: "preserve-3d",
+          transform: "translateZ(0)",
+        }}
       >
         <circle
           cx="50"
