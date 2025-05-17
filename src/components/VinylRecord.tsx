@@ -18,18 +18,6 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
   const lastAngleRef = useRef(0);
   const lastTimeRef = useRef(Date.now());
   const animationRef = useRef<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const calculateAngle = (clientX: number, clientY: number) => {
     if (!recordRef.current) return 0;
@@ -209,14 +197,10 @@ export default function VinylRecord({ isSpinning = false }: VinylRecordProps) {
         background: "#0f0f0f",
         transform: `rotate(${rotation}deg)`,
         isolation: "isolate",
-        ...(isMobile
-          ? {}
-          : {
-              maskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
-              WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
-              maskSize: "100% 100%",
-              WebkitMaskSize: "100% 100%",
-            }),
+        maskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
+        WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
+        maskSize: "100% 100%",
+        WebkitMaskSize: "100% 100%",
         willChange:
           isDragging || isSpinning || Math.abs(velocity) > 0.1
             ? "transform"
