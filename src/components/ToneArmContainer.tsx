@@ -57,7 +57,7 @@ export default function ToneArmContainer({
     const deltaY = clientY - pivotRef.current.y;
 
     const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    return Math.max(0, Math.min(29, angle)); // Limit to 29 degrees to match auto-move
+    return Math.max(0, Math.min(45, angle));
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -152,10 +152,10 @@ export default function ToneArmContainer({
       } else if (
         isPlaying &&
         targetRotation === null &&
-        currentRotation < 29 &&
+        currentRotation < 47 &&
         !isDragging
       ) {
-        newRotation = Math.min(currentRotation + 0.005, 29);
+        newRotation = Math.min(currentRotation + 0.005, 47);
         needsUpdate = true;
       }
 
@@ -172,7 +172,7 @@ export default function ToneArmContainer({
     };
 
     if (
-      (targetRotation !== null || (isPlaying && rotation < 29)) &&
+      (targetRotation !== null || (isPlaying && rotation < 47)) &&
       !isDragging
     ) {
       animationRef.current = requestAnimationFrame(animate);
