@@ -54,7 +54,11 @@ const VinylLabel = React.memo(() => {
             y="25"
             textAnchor="middle"
             className="fill-white/90"
-            style={{ fontSize: "4px", letterSpacing: "1px", fontWeight: "500" }}
+            style={{
+              fontSize: "5.5px",
+              letterSpacing: "1px",
+              fontWeight: "500",
+            }}
           >
             CALEB VAN LUE
           </text>
@@ -64,7 +68,7 @@ const VinylLabel = React.memo(() => {
             y="35"
             textAnchor="middle"
             className="fill-white"
-            style={{ fontSize: "8px", letterSpacing: "1px", fontWeight: "700" }}
+            style={{ fontSize: "7px", letterSpacing: "1px", fontWeight: "700" }}
           >
             SIDE A
           </text>
@@ -74,7 +78,7 @@ const VinylLabel = React.memo(() => {
             y="60"
             textAnchor="middle"
             className="fill-white/80"
-            style={{ fontSize: "3.5px" }}
+            style={{ fontSize: "4px" }}
           >
             33⅓ RPM
           </text>
@@ -85,7 +89,7 @@ const VinylLabel = React.memo(() => {
             textAnchor="middle"
             className="fill-white/70"
             style={{
-              fontSize: "3px",
+              fontSize: "4px",
               letterSpacing: "0.5px",
             }}
           >
@@ -97,7 +101,7 @@ const VinylLabel = React.memo(() => {
           </defs>
           <text
             className="fill-white/60"
-            style={{ fontSize: "2.5px", letterSpacing: "0.6px" }}
+            style={{ fontSize: "3.5px", letterSpacing: "0.6px" }}
           >
             <textPath href="#bottom-arc" startOffset="50%" textAnchor="middle">
               STEREO • MADE IN USA • ALL RIGHTS RESERVED
