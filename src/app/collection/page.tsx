@@ -131,12 +131,9 @@ export default function Collection() {
   const [collectionPageSize, setCollectionPageSize] = useState(50);
   const [collectionTotalItems, setCollectionTotalItems] = useState(0);
 
-  // Wantlist pagination and sorting
+  // Wantlist pagination
   const [wantlistPage, setWantlistPage] = useState(1);
   const [wantlistTotalPages, setWantlistTotalPages] = useState(1);
-  const [wantlistSort, setWantlistSort] = useState<SortOption>("added");
-  const [wantlistSortOrder, setWantlistSortOrder] = useState<SortOrder>("desc");
-  const [wantlistSortValue, setWantlistSortValue] = useState("added_desc");
   const [wantlistPageSize, setWantlistPageSize] = useState(50);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
@@ -154,7 +151,7 @@ export default function Collection() {
     if (activeTab === "wantlist") {
       fetchWantlist();
     }
-  }, [wantlistPage, wantlistSort, wantlistSortOrder, wantlistPageSize]);
+  }, [wantlistPage, wantlistPageSize]);
 
   const fetchCollection = async () => {
     try {
@@ -184,7 +181,7 @@ export default function Collection() {
     try {
       setLoadingWantlist(true);
       const response = await fetch(
-        `/api/discogs/collection?type=wantlist&page=${wantlistPage}&per_page=${wantlistPageSize}&sort=${wantlistSort}&sort_order=${wantlistSortOrder}`
+        `/api/discogs/collection?type=wantlist&page=${wantlistPage}&per_page=${wantlistPageSize}`
       );
 
       if (!response.ok) {
@@ -222,18 +219,6 @@ export default function Collection() {
       setCollectionSortOrder(sortOption.order);
       setCollectionSortValue(sortValue);
       setCollectionPage(1); // Reset to first page when sorting changes
-    }
-  };
-
-  const handleWantlistSortChange = (sortValue: string) => {
-    const sortOption = SORT_OPTIONS.find(
-      (option) => option.value === sortValue
-    );
-    if (sortOption) {
-      setWantlistSort(sortOption.sort);
-      setWantlistSortOrder(sortOption.order);
-      setWantlistSortValue(sortValue);
-      setWantlistPage(1);
     }
   };
 
@@ -541,14 +526,6 @@ export default function Collection() {
             </div>
           ) : (
             <div>
-              {renderControls(
-                "wantlist",
-                wantlistSortValue,
-                wantlistPageSize,
-                wantlistTotalItems,
-                handleWantlistSortChange,
-                handleWantlistPageSizeChange
-              )}
               {renderReleases(
                 wantlist,
                 loadingWantlist,
