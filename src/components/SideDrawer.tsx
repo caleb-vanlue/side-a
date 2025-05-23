@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface SideDrawerProps {
   isOpen: boolean;
@@ -73,6 +74,22 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
 
           <nav className="py-2">
             <div className="space-y-8">
+              <Link
+                href="/"
+                onClick={onClose}
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
+              >
+                Home
+              </Link>
+
+              <Link
+                href="/collection"
+                onClick={onClose}
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
+              >
+                My Records
+              </Link>
+
               <a
                 href="https://www.linkedin.com/in/calebvanlue/"
                 target="_blank"
@@ -89,15 +106,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 GitHub
-              </a>
-
-              <a
-                href="https://www.discogs.com/user/Irrelativity/collection"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                Discogs
               </a>
 
               <a
