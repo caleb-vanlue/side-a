@@ -40,7 +40,12 @@ interface BasicInformation {
   cover_image: string;
   artists: Artist[];
   labels: Array<{ name: string; catno: string }>;
-  formats: Array<{ name: string; qty: string; descriptions: string[] }>;
+  formats: Array<{
+    name: string;
+    qty: string;
+    descriptions: string[];
+    text?: string;
+  }>;
   genres?: string[];
   styles?: string[];
 }
@@ -227,6 +232,33 @@ export default function Collection() {
     return artists.map((artist) => artist.name || artist.anv).join(", ");
   };
 
+  const getVinylColor = (formats: BasicInformation["formats"]) => {
+    const colorFormat = formats.find(
+      (format) => format.text && format.text.trim() !== ""
+    );
+
+    if (colorFormat?.text) {
+      let color = colorFormat.text;
+      color = color.replace(/,\s*$/, "").replace(/,\s+/g, ", ").trim();
+
+      return color || null;
+    }
+
+    return null;
+  };
+
+  const getFormatInfo = (formats: BasicInformation["formats"]) => {
+    if (!formats || formats.length === 0) return null;
+
+    const format = formats[0];
+    const parts = [];
+
+    if (format.name) parts.push(format.name);
+    if (format.qty && format.qty !== "1") parts.push(`(${format.qty})`);
+
+    return parts.join(" ");
+  };
+
   const handleReleaseClick = (release: Release) => {
     const discogsUrl = `https://www.discogs.com/release/${release.basic_information.id}`;
     window.open(discogsUrl, "_blank", "noopener,noreferrer");
@@ -341,93 +373,83 @@ export default function Collection() {
     return (
       <>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-          {releases.map((release) => (
-            <div
-              key={release.id}
-              className="group cursor-pointer"
-              onClick={() => handleReleaseClick(release)}
-            >
-              <div className="aspect-square relative overflow-hidden rounded-lg shadow-md transition-transform duration-200 group-hover:scale-105">
-                {release.basic_information.cover_image &&
-                release.basic_information.cover_image !== "" ? (
-                  <Image
-                    src={release.basic_information.cover_image}
-                    alt={`${release.basic_information.title} cover`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <svg
-                      className="w-12 h-12 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                      />
-                    </svg>
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-lg" />
-              </div>
-              <div className="mt-2 text-center sm:text-left">
-                <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
-                  {release.basic_information.title}
-                </p>
-                <p className="text-xs text-gray-600 truncate">
-                  {formatArtists(release.basic_information.artists)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {release.basic_information.year}
-                </p>
-                {release.basic_information.formats &&
-                  release.basic_information.formats.length > 0 && (
-                    <div className="text-xs text-gray-600 mt-1">
-                      {release.basic_information.formats.map((format, idx) => (
-                        <span key={idx}>
-                          {format.name}
-                          {format.descriptions &&
-                            format.descriptions.length > 0 && (
-                              <span className="text-gray-500">
-                                {" · "}
-                                {format.descriptions.join(", ")}
-                              </span>
-                            )}
-                          {format.qty && format.qty !== "1" && (
-                            <span className="text-gray-500">
-                              {" "}
-                              ({format.qty})
-                            </span>
-                          )}
+          {releases.map((release) => {
+            const vinylColor = getVinylColor(release.basic_information.formats);
+            const formatInfo = getFormatInfo(release.basic_information.formats);
+
+            return (
+              <div
+                key={release.id}
+                className="group cursor-pointer"
+                onClick={() => handleReleaseClick(release)}
+              >
+                <div className="aspect-square relative overflow-hidden rounded-lg shadow-md transition-transform duration-200 group-hover:scale-105">
+                  {release.basic_information.cover_image &&
+                  release.basic_information.cover_image !== "" ? (
+                    <Image
+                      src={release.basic_information.cover_image}
+                      alt={`${release.basic_information.title} cover`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <svg
+                        className="w-12 h-12 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-lg" />
+                </div>
+                <div className="mt-2 text-center sm:text-left">
+                  <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
+                    {release.basic_information.title}
+                  </p>
+                  <p className="text-xs text-gray-600 truncate">
+                    {formatArtists(release.basic_information.artists)}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {release.basic_information.year}
+                  </p>
+                  {formatInfo && (
+                    <p className="text-xs text-gray-600 mt-1">{formatInfo}</p>
+                  )}
+                  {vinylColor && (
+                    <div className="text-xs text-emerald-600 font-medium mt-1">
+                      {vinylColor}
+                    </div>
+                  )}
+                  {release.rating > 0 && (
+                    <div className="flex justify-center sm:justify-start mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`text-xs ${
+                            i < release.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        >
+                          ★
                         </span>
                       ))}
                     </div>
                   )}
-                {release.rating > 0 && (
-                  <div className="flex justify-center sm:justify-start mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`text-xs ${
-                          i < release.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {totalPages > 1 && (
