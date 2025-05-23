@@ -5,6 +5,28 @@ import Image from "next/image";
 import HamburgerButton from "../../components/HamburgerButton";
 import SideDrawer from "../../components/SideDrawer";
 
+function DiscogsBanner({ className = "" }: { className?: string }) {
+  return (
+    <a
+      href="https://www.discogs.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`flex items-center justify-center gap-3 py-3 px-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer ${className}`}
+    >
+      <span className="text-gray-600 text-sm font-medium">Powered by</span>
+      <div className="flex items-center gap-2">
+        <Image
+          src="/images/discogs.svg"
+          alt="Discogs"
+          width={24}
+          height={24}
+          className="w-14 h-8"
+        />
+      </div>
+    </a>
+  );
+}
+
 interface Artist {
   name: string;
   anv: string;
@@ -466,7 +488,12 @@ export default function Collection() {
       <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-center mb-8 mt-12 sm:mt-0">
+        {/* Discogs Banner - positioned at the top */}
+        <div className="flex justify-center mb-6 mt-12 sm:mt-4">
+          <DiscogsBanner className="max-w-sm" />
+        </div>
+
+        <div className="flex justify-center mb-8">
           <div className="inline-flex rounded-lg bg-gray-100 p-1">
             <button
               onClick={() => setActiveTab("collection")}
