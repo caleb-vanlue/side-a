@@ -134,7 +134,7 @@ export default function Collection() {
   // Wantlist pagination
   const [wantlistPage, setWantlistPage] = useState(1);
   const [wantlistTotalPages, setWantlistTotalPages] = useState(1);
-  const [wantlistPageSize, setWantlistPageSize] = useState(50);
+  const [wantlistPageSize] = useState(50);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
   useEffect(() => {
@@ -225,11 +225,6 @@ export default function Collection() {
   const handleCollectionPageSizeChange = (newPageSize: number) => {
     setCollectionPageSize(newPageSize);
     setCollectionPage(1);
-  };
-
-  const handleWantlistPageSizeChange = (newPageSize: number) => {
-    setWantlistPageSize(newPageSize);
-    setWantlistPage(1);
   };
 
   const renderControls = (
