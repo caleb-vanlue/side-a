@@ -16,3 +16,14 @@
     transform: translateZ(0);
   }
 }
+
+@font-face {
+  font-family: "Handwriting";
+  src: url("/fonts/Myfont-regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Handwriting", sans-serif;
+}

@@ -87,7 +87,6 @@ const VinylLabel = React.memo(() => {
             style={{
               fontSize: "3px",
               letterSpacing: "0.5px",
-              fontFamily: "monospace",
             }}
           >
             CV-2000-0{currentYear}

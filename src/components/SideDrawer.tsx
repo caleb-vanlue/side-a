@@ -49,7 +49,7 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
           boxShadow: "0 4px 30px rgba(0,0,0,0.3)",
         }}
       >
-        <div className="flex flex-col h-full font-sans justify-between">
+        <div className="flex flex-col h-full justify-between">
           <div>
             <div className="flex justify-center pt-6">
               <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-500 shadow-lg">
