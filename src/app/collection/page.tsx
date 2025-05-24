@@ -510,7 +510,6 @@ export default function Collection() {
       <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Discogs Banner - positioned at the top */}
         <div className="flex justify-center mb-6 mt-12 sm:mt-4">
           <DiscogsBanner className="max-w-sm" />
         </div>

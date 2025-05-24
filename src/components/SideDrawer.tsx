@@ -83,6 +83,14 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
               </Link>
 
               <Link
+                href="/portfolio"
+                onClick={onClose}
+                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
+              >
+                Portfolio
+              </Link>
+
+              <Link
                 href="/collection"
                 onClick={onClose}
                 className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
@@ -106,15 +114,6 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
                 className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
               >
                 GitHub
-              </a>
-
-              <a
-                href="mailto:vanluecaleb@outlook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                Email
               </a>
             </div>
           </nav>
