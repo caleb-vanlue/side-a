@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Granim from "granim";
 import VinylRecord from "../components/VinylRecord";
-import GitHubBadge from "../components/GitHubBadge";
 import ToneArmContainer from "../components/ToneArmContainer";
 import PlayerControls from "../components/PlayerControls";
 import HamburgerButton from "../components/HamburgerButton";
@@ -146,7 +145,6 @@ export default function Home() {
         />
 
         <ProjectCard isVisible={isNeedleOnRecord} />
-        <GitHubBadge repoUrl="https://github.com/caleb-vanlue/portfolio" />
       </div>
     </main>
   );

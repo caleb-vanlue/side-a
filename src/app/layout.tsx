@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import GitHubBadge from "../components/GitHubBadge";
 
 const handwritingFont = localFont({
   src: "../../public/fonts/Myfont-Regular.otf",
@@ -28,6 +29,7 @@ export default function RootLayout({
       </head>
       <body className={`${handwritingFont.variable} antialiased`}>
         {children}
+        <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
       </body>
     </html>
   );
