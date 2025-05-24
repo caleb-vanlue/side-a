@@ -27,8 +27,8 @@ export default function Portfolio() {
           <Hero />
           <WhatIDo />
           <TechnicalSkills />
-          <AreasOfFocus />
           <FeaturedProjects />
+          <AreasOfFocus />
           <SideProjects />
           <ContactSection />
         </div>
