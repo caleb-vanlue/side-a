@@ -23,7 +23,6 @@ export default function FeaturedProjects() {
       title: "Discogs Collection API",
       description:
         "An intermediary web API to serve information from the official Discogs API from a cached source to avoid rate limiting. Currently powering the My Records page of this site! Authentication key required for API calls.",
-      liveUrl: "https://discogs-api.calebvanlue.com/api",
       githubUrl: "https://github.com/caleb-vanlue/discogs-api",
       tags: ["NestJS", "Railway", "OpenAPI", "TypeORM", "PostgreSQL"],
     },
@@ -43,21 +42,23 @@ export default function FeaturedProjects() {
                 {project.title}
               </h3>
               <div className="flex gap-2">
-                <ExternalLink href={project.liveUrl} ariaLabel="View project">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </ExternalLink>
+                {project.liveUrl && (
+                  <ExternalLink href={project.liveUrl} ariaLabel="View project">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </ExternalLink>
+                )}
                 <ExternalLink
                   href={project.githubUrl}
                   ariaLabel="View source code"
