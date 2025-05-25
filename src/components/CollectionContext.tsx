@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
 
 export interface Artist {
   name: string;
@@ -97,6 +103,8 @@ interface CollectionContextType {
   // Actions
   fetchCollection: () => Promise<void>;
   fetchWantlist: () => Promise<void>;
+  refreshCollection: () => Promise<void>;
+  refreshWantlist: () => Promise<void>;
   handleCollectionSortChange: (sortValue: string) => void;
   handleWantlistSortChange: (sortValue: string) => void;
 
@@ -134,6 +142,8 @@ const defaultContext: CollectionContextType = {
   wantlistSortValue: "added_desc",
   fetchCollection: async () => {},
   fetchWantlist: async () => {},
+  refreshCollection: async () => {},
+  refreshWantlist: async () => {},
   handleCollectionSortChange: () => {},
   handleWantlistSortChange: () => {},
   formatArtists: () => "",
@@ -272,7 +282,16 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [wantlistPageSize, setWantlistPageSize] = useState(50);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
-  const fetchCollection = async () => {
+  // Cache control
+  const [collectionFetched, setCollectionFetched] = useState(false);
+  const [wantlistFetched, setWantlistFetched] = useState(false);
+
+  const fetchCollection = useCallback(async () => {
+    // Only fetch if not already fetched (caching behavior)
+    if (collectionFetched && collection.length > 0) {
+      return;
+    }
+
     try {
       setLoadingCollection(true);
       setCollectionError(null);
@@ -289,6 +308,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollection(data.releases);
       setCollectionTotalPages(data.pagination.pages);
       setCollectionTotalItems(data.pagination.items);
+      setCollectionFetched(true);
     } catch (err) {
       console.error("Collection fetch error:", err);
       setCollectionError(
@@ -297,9 +317,21 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoadingCollection(false);
     }
-  };
+  }, [
+    collectionPage,
+    collectionPageSize,
+    collectionSort,
+    collectionSortOrder,
+    collectionFetched,
+    collection.length,
+  ]);
 
-  const fetchWantlist = async () => {
+  const fetchWantlist = useCallback(async () => {
+    // Only fetch if not already fetched (caching behavior)
+    if (wantlistFetched && wantlist.length > 0) {
+      return;
+    }
+
     try {
       setLoadingWantlist(true);
       setWantlistError(null);
@@ -316,6 +348,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlist(data.wants);
       setWantlistTotalPages(data.pagination.pages);
       setWantlistTotalItems(data.pagination.items);
+      setWantlistFetched(true);
     } catch (err) {
       console.error("Wantlist fetch error:", err);
       setWantlistError(
@@ -324,7 +357,25 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoadingWantlist(false);
     }
-  };
+  }, [
+    wantlistPage,
+    wantlistPageSize,
+    wantlistSort,
+    wantlistSortOrder,
+    wantlistFetched,
+    wantlist.length,
+  ]);
+
+  // Force refresh functions (ignore cache)
+  const refreshCollection = useCallback(async () => {
+    setCollectionFetched(false);
+    await fetchCollection();
+  }, [fetchCollection]);
+
+  const refreshWantlist = useCallback(async () => {
+    setWantlistFetched(false);
+    await fetchWantlist();
+  }, [fetchWantlist]);
 
   const formatArtists = (artists: Artist[]) => {
     return artists.map((artist) => artist.name || artist.anv).join(", ");
@@ -370,6 +421,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollectionSortOrder(sortOption.order);
       setCollectionSortValue(sortValue);
       setCollectionPage(1); // Reset to first page when sorting changes
+      setCollectionFetched(false); // Force refetch with new sort
     }
   };
 
@@ -382,17 +434,20 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlistSortOrder(sortOption.order);
       setWantlistSortValue(sortValue);
       setWantlistPage(1); // Reset to first page when sorting changes
+      setWantlistFetched(false); // Force refetch with new sort
     }
   };
 
   const handleCollectionPageSizeChange = (newPageSize: number) => {
     setCollectionPageSize(newPageSize);
     setCollectionPage(1);
+    setCollectionFetched(false); // Force refetch with new page size
   };
 
   const handleWantlistPageSizeChange = (newPageSize: number) => {
     setWantlistPageSize(newPageSize);
     setWantlistPage(1);
+    setWantlistFetched(false); // Force refetch with new page size
   };
 
   const value: CollectionContextType = {
@@ -422,6 +477,8 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     wantlistSortValue,
     fetchCollection,
     fetchWantlist,
+    refreshCollection,
+    refreshWantlist,
     handleCollectionSortChange,
     handleWantlistSortChange,
     formatArtists,
