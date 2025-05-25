@@ -144,8 +144,8 @@ export default function CollectionPage() {
   return (
     <CollectionProvider>
       <CollectionLayout
-        title="My Record Collection"
-        description="Browse my Discogs collection of vinyl records and wantlist"
+        title="My Record Collection and Wantlist"
+        description="You can learn a lot about someone from what they listen to..."
       >
         <CollectionTabs />
       </CollectionLayout>

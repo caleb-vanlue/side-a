@@ -52,11 +52,7 @@ export default function Navigation() {
           : "bg-white/10 backdrop-blur-sm py-5"
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="text-xl font-medium text-gray-900">
-          Caleb Van Lue
-        </Link>
-
+      <div className="container mx-auto px-6 flex justify-center items-center">
         <div className="flex items-center space-x-8">
           {NAVIGATION_LINKS.map((link) => (
             <Link
