@@ -68,22 +68,6 @@ export default function PlayerControls({
             <rect x="6" y="6" width="8" height="8" rx="1" />
           </svg>
         </button>
-
-        <div className="hidden lg:block w-14 h-px bg-white/20 mx-auto" />
-        <div className="lg:hidden h-14 w-px bg-white/20 my-auto" />
-
-        <div className="flex items-center justify-center w-14 h-14 lg:h-8">
-          <div
-            className={`
-            w-2 h-2 rounded-full transition-all duration-300
-            ${
-              isPlaying
-                ? "bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400/50"
-                : "bg-gray-500"
-            }
-          `}
-          />
-        </div>
       </div>
     </div>
   );
