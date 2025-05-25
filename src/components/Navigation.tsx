@@ -14,7 +14,6 @@ export default function Navigation() {
   const pathname = usePathname();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  // Handle scroll event for navigation styling
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 10;
@@ -35,7 +34,6 @@ export default function Navigation() {
     setMenuOpen(false);
   };
 
-  // Mobile menu with hamburger button
   const mobileMenu = (
     <>
       <HamburgerButton isOpen={menuOpen} onClick={handleMenuToggle} />
@@ -43,7 +41,6 @@ export default function Navigation() {
     </>
   );
 
-  // Desktop navigation
   const desktopNav = (
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${

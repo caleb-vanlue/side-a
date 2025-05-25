@@ -29,7 +29,7 @@ export default function VinylRecord({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (recordRef.current) {
       startDrag(e.clientX, e.clientY, recordRef.current);
-      e.preventDefault(); // Prevent text selection
+      e.preventDefault();
     }
   };
 
@@ -43,20 +43,18 @@ export default function VinylRecord({
     }
   };
 
-  // Handle wheel events with native event listener to properly prevent scrolling
   useEffect(() => {
     const element = recordRef.current;
     if (!element) return;
 
     const handleWheelEvent = (e: WheelEvent) => {
-      e.preventDefault(); // Prevent page scroll
-      e.stopPropagation(); // Stop event bubbling
+      e.preventDefault();
+      e.stopPropagation();
       if (recordRef.current) {
         handleWheel(e.deltaY, e.clientX, recordRef.current);
       }
     };
 
-    // Use passive: false to allow preventDefault
     element.addEventListener("wheel", handleWheelEvent, { passive: false });
 
     return () => {
@@ -64,7 +62,6 @@ export default function VinylRecord({
     };
   }, [handleWheel]);
 
-  // Handle touch events to prevent scrolling on mobile
   useEffect(() => {
     const element = recordRef.current;
     if (!element) return;
@@ -75,7 +72,7 @@ export default function VinylRecord({
         if (recordRef.current) {
           startDrag(touch.clientX, touch.clientY, recordRef.current);
         }
-        e.preventDefault(); // Prevent scrolling
+        e.preventDefault();
       }
     };
 
@@ -85,17 +82,16 @@ export default function VinylRecord({
         if (recordRef.current) {
           updateDrag(touch.clientX, touch.clientY, recordRef.current);
         }
-        e.preventDefault(); // Prevent scrolling
-        e.stopPropagation(); // Stop event bubbling
+        e.preventDefault();
+        e.stopPropagation();
       }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       stopDrag();
-      e.preventDefault(); // Prevent ghost clicks
+      e.preventDefault();
     };
 
-    // Use passive: false to allow preventDefault
     element.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
@@ -135,7 +131,6 @@ export default function VinylRecord({
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
       onMouseMove={handleMouseMove}
-      // Remove onWheel from here since we handle it with native events
     >
       <VinylGrooves />
       <VinylReflection />
