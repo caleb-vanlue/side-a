@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HamburgerButton from "./HamburgerButton";
 import SideDrawer from "./SideDrawer";
-import useMediaQuery from "../app/hooks/useMediaQuery";
+import useMediaQuery from "../hooks/useMediaQuery";
 import { NAVIGATION_LINKS, EXTERNAL_LINKS } from "../lib/constants";
 
 export default function Navigation() {

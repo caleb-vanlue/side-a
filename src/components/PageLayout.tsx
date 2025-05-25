@@ -1,6 +1,6 @@
 "use client";
 
-import useMediaQuery from "../app/hooks/useMediaQuery";
+import useMediaQuery from "../hooks/useMediaQuery";
 import Navigation from "./Navigation";
 
 interface PageLayoutProps {

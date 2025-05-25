@@ -2,10 +2,8 @@
 
 import { useRef, useEffect } from "react";
 import VinylGrooves from "./VinylGrooves";
-import VinylReflection from "./VinylReflection";
-import VinylLabel from "./VinylLabel";
-import SpindleHole from "./SpindleHole";
-import useVinylRotation from "../app/hooks/useVinylRotation";
+import { VinylReflection, VinylLabel, SpindleHole } from ".";
+import useVinylRotation from "../hooks/useVinylRotation";
 
 interface VinylRecordProps {
   backgroundColor?: string;

@@ -1,13 +1,15 @@
 "use client";
 
-import AreasOfFocus from "../../components/AreasOfFocus";
-import ContactSection from "../../components/ContactSection";
-import FeaturedProjects from "../../components/FeaturedProjects";
-import Hero from "../../components/Hero";
-import PageLayout from "../../components/PageLayout";
-import SideProjects from "../../components/SideProjects";
-import TechnicalSkills from "../../components/TechnicalSkills";
-import WhatIDo from "../../components/WhatIDo";
+import { PageLayout } from "../../components/layout";
+import {
+  Hero,
+  WhatIDo,
+  TechnicalSkills,
+  FeaturedProjects,
+  AreasOfFocus,
+  SideProjects,
+  ContactSection,
+} from "../../components/portfolio";
 
 export default function PortfolioPage() {
   return (

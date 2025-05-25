@@ -5,9 +5,8 @@ import Granim from "granim";
 import PlayerControls from "../components/PlayerControls";
 import ProjectCard from "../components/ProjectCard";
 import Navigation from "../components/Navigation";
-import ToneArmContainer from "../components/ToneArmContainer";
-import VinylRecord from "../components/VinylRecord";
-import useMediaQuery from "./hooks/useMediaQuery";
+import useMediaQuery from "../hooks/useMediaQuery";
+import { VinylRecord, ToneArmContainer } from "../components/vinyl";
 
 export default function HomePage() {
   const [toneArmRotation, setToneArmRotation] = useState(0);

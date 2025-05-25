@@ -1,5 +1,4 @@
-import { Section } from "./shared/Section";
-import { SectionTitle } from "./shared/SectionTitle";
+import { Section, SectionTitle } from "./shared";
 
 export default function AreasOfFocus() {
   const focusAreas = [

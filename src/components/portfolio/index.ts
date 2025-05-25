@@ -1,0 +1,7 @@
+export { default as Hero } from "../Hero";
+export { default as WhatIDo } from "../WhatIDo";
+export { default as TechnicalSkills } from "../TechnicalSkills";
+export { default as FeaturedProjects } from "../FeaturedProjects";
+export { default as AreasOfFocus } from "../AreasOfFocus";
+export { default as SideProjects } from "../SideProjects";
+export { default as ContactSection } from "../ContactSection";
