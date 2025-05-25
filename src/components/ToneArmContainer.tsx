@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import ToneArm from "./ToneArm";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
@@ -23,7 +24,7 @@ export default function ToneArmContainer({
   const animationRef = useRef<number | null>(null);
   const lastRotationRef = useRef(0);
 
-  const resetContainerStyle = () => {
+  const resetContainerStyle = useCallback(() => {
     if (containerRef.current) {
       containerRef.current.style.transform = "translateZ(0.01px)";
       setTimeout(() => {
@@ -32,7 +33,43 @@ export default function ToneArmContainer({
         }
       }, 10);
     }
-  };
+  }, []);
+
+  const calculateRotation = useCallback((clientX: number, clientY: number) => {
+    if (!pivotRef.current) return 0;
+
+    const deltaX = clientX - pivotRef.current.x;
+    const deltaY = clientY - pivotRef.current.y;
+
+    const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
+    return Math.max(0, Math.min(VINYL_CONSTANTS.MAX_TONE_ARM_ROTATION, angle));
+  }, []);
+
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent) => {
+      const target = e.target as SVGElement;
+      if (target.closest("g.cursor-grab")) {
+        setIsDragging(true);
+        onDragStart?.();
+        e.preventDefault();
+      }
+    },
+    [onDragStart]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isDragging) {
+        const newRotation = calculateRotation(e.clientX, e.clientY);
+        setRotation(newRotation);
+      }
+    },
+    [isDragging, calculateRotation]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   useEffect(() => {
     const updatePivotPoint = () => {
@@ -47,38 +84,11 @@ export default function ToneArmContainer({
 
     updatePivotPoint();
     window.addEventListener("resize", updatePivotPoint);
-    return () => window.removeEventListener("resize", updatePivotPoint);
+
+    return () => {
+      window.removeEventListener("resize", updatePivotPoint);
+    };
   }, []);
-
-  const calculateRotation = (clientX: number, clientY: number) => {
-    if (!pivotRef.current) return 0;
-
-    const deltaX = clientX - pivotRef.current.x;
-    const deltaY = clientY - pivotRef.current.y;
-
-    const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    return Math.max(0, Math.min(45, angle));
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    const target = e.target as SVGElement;
-    if (target.closest("g.cursor-grab")) {
-      setIsDragging(true);
-      onDragStart?.();
-      e.preventDefault();
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
-      const newRotation = calculateRotation(e.clientX, e.clientY);
-      setRotation(newRotation);
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
 
   useEffect(() => {
     const element = containerRef.current;
@@ -99,7 +109,6 @@ export default function ToneArmContainer({
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
         setRotation(newRotation);
-        onRotationChange?.(newRotation);
       }
     };
 
@@ -118,7 +127,42 @@ export default function ToneArmContainer({
       element.removeEventListener("touchmove", handleTouchMove);
       element.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isDragging, onRotationChange]);
+  }, [isDragging, calculateRotation, onDragStart]);
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      const newRotation = calculateRotation(e.clientX, e.clientY);
+      setRotation(newRotation);
+    };
+
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const newRotation = calculateRotation(touch.clientX, touch.clientY);
+        setRotation(newRotation);
+      }
+    };
+
+    const handleGlobalEnd = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener("mousemove", handleGlobalMouseMove);
+    document.addEventListener("mouseup", handleGlobalEnd);
+    document.addEventListener("touchmove", handleGlobalTouchMove, {
+      passive: false,
+    });
+    document.addEventListener("touchend", handleGlobalEnd);
+
+    return () => {
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalEnd);
+      document.removeEventListener("touchmove", handleGlobalTouchMove);
+      document.removeEventListener("touchend", handleGlobalEnd);
+    };
+  }, [isDragging, calculateRotation]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -130,7 +174,7 @@ export default function ToneArmContainer({
 
   useEffect(() => {
     resetContainerStyle();
-  }, [isPlaying, targetRotation]);
+  }, [isPlaying, targetRotation, resetContainerStyle]);
 
   useEffect(() => {
     let currentRotation = rotation;
@@ -184,48 +228,7 @@ export default function ToneArmContainer({
         animationRef.current = null;
       }
     };
-  }, [targetRotation, isPlaying, isDragging, rotation]);
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (isDragging) {
-        const newRotation = calculateRotation(e.clientX, e.clientY);
-        setRotation(newRotation);
-      }
-    };
-
-    const handleGlobalTouchMove = (e: TouchEvent) => {
-      if (isDragging && e.touches.length > 0) {
-        const touch = e.touches[0];
-        const newRotation = calculateRotation(touch.clientX, touch.clientY);
-        setRotation(newRotation);
-      }
-    };
-
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    const handleGlobalTouchEnd = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      document.addEventListener("mousemove", handleGlobalMouseMove);
-      document.addEventListener("mouseup", handleGlobalMouseUp);
-      document.addEventListener("touchmove", handleGlobalTouchMove, {
-        passive: false,
-      });
-      document.addEventListener("touchend", handleGlobalTouchEnd);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleGlobalMouseMove);
-      document.removeEventListener("mouseup", handleGlobalMouseUp);
-      document.removeEventListener("touchmove", handleGlobalTouchMove);
-      document.removeEventListener("touchend", handleGlobalTouchEnd);
-    };
-  }, [isDragging, onRotationChange]);
+  }, [targetRotation, isPlaying, isDragging, rotation, resetContainerStyle]);
 
   return (
     <div
