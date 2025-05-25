@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import VinylGrooves from "./VinylGrooves";
 import VinylReflection from "./VinylReflection";
 import VinylLabel from "./VinylLabel";
@@ -29,6 +29,7 @@ export default function VinylRecord({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (recordRef.current) {
       startDrag(e.clientX, e.clientY, recordRef.current);
+      e.preventDefault();
     }
   };
 
@@ -44,16 +45,61 @@ export default function VinylRecord({
 
   const handleWheelEvent = (e: React.WheelEvent) => {
     if (recordRef.current) {
+      e.preventDefault();
+      e.stopPropagation();
       handleWheel(e.deltaY, e.clientX, recordRef.current);
     }
   };
+
+  useEffect(() => {
+    const element = recordRef.current;
+    if (!element) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        if (recordRef.current) {
+          startDrag(touch.clientX, touch.clientY, recordRef.current);
+        }
+        e.preventDefault();
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 1 && isDragging) {
+        const touch = e.touches[0];
+        if (recordRef.current) {
+          updateDrag(touch.clientX, touch.clientY, recordRef.current);
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      stopDrag();
+      e.preventDefault();
+    };
+
+    element.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    element.addEventListener("touchmove", handleTouchMove, { passive: false });
+    element.addEventListener("touchend", handleTouchEnd, { passive: false });
+
+    return () => {
+      element.removeEventListener("touchstart", handleTouchStart);
+      element.removeEventListener("touchmove", handleTouchMove);
+      element.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isDragging, startDrag, updateDrag, stopDrag]);
 
   return (
     <div
       ref={recordRef}
       className={`relative aspect-square w-full h-full rounded-full ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
-      } touch-none`}
+      } touch-none select-none`}
       style={{
         background: "#0f0f0f",
         transform: `rotate(${rotation}deg)`,

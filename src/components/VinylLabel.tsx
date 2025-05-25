@@ -1,4 +1,5 @@
 import React from "react";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 const VinylLabel = React.memo(() => {
   const currentYear = React.useMemo(() => {
@@ -8,9 +9,17 @@ const VinylLabel = React.memo(() => {
     );
   }, []);
 
+  const labelSize = `${VINYL_CONSTANTS.LABEL_SIZE_PERCENTAGE}%`;
+
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] rounded-full pointer-events-none overflow-hidden">
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none overflow-hidden"
+        style={{
+          width: labelSize,
+          height: labelSize,
+        }}
+      >
         <div
           className="w-full h-full"
           style={{
@@ -43,7 +52,13 @@ const VinylLabel = React.memo(() => {
           }}
         />
       </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35%] h-[35%] pointer-events-none">
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        style={{
+          width: labelSize,
+          height: labelSize,
+        }}
+      >
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 100 100"

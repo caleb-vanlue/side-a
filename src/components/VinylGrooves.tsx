@@ -1,8 +1,9 @@
 import React from "react";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 const VinylGrooves = React.memo(() => {
   const grooves = React.useMemo(() => {
-    return Array.from({ length: 65 }, (_, i) => {
+    return Array.from({ length: VINYL_CONSTANTS.GROOVE_COUNT }, (_, i) => {
       const radius = 35 + i * 1;
       const strokeWidth = i % 3 === 0 ? 0.8 : 0.4;
       const opacity = i % 3 === 0 ? 0.7 : 0.4;

@@ -4,7 +4,7 @@ interface ToneArmProps {
   rotation?: number;
 }
 
-const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
+const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
   return (
     <div className="relative w-full h-full overflow-visible">
       <svg
@@ -48,7 +48,6 @@ const ToneArm = React.memo(({ rotation = 0 }: ToneArmProps) => {
             strokeWidth="1"
           />
           <rect x="48" y="200" width="4" height="60" fill="#3a3a3a" rx="2" />
-
           <g className="cursor-grab active:cursor-grabbing">
             <path
               d="M 45 260 L 45 270 L 50 275 L 55 270 L 55 260 Z"
