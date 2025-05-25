@@ -283,8 +283,8 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
   // Cache control - use a cache key that includes pagination params
-  const [collectionCacheKey, setCollectionCacheKey] = useState("");
-  const [wantlistCacheKey, setWantlistCacheKey] = useState("");
+  const [, setCollectionCacheKey] = useState("");
+  const [, setWantlistCacheKey] = useState("");
   const [collectionCache, setCollectionCache] = useState<
     Map<string, Release[]>
   >(new Map());
