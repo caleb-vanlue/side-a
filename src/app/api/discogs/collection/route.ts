@@ -5,6 +5,83 @@ const DISCOGS_API_BASE =
 const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME || "Irrelativity";
 const API_KEY = process.env.DISCOGS_API_KEY;
 
+interface Release {
+  discogsId: number;
+  title: string;
+  year: number;
+  thumbUrl: string;
+  coverImageUrl: string;
+  artists: Array<{ name: string; anv: string }>;
+  labels: Array<{ name: string; catno: string }>;
+  formats: Array<{
+    name: string;
+    qty: string;
+    descriptions: string[];
+    text?: string;
+  }>;
+  genres: string[];
+  styles: string[];
+}
+
+interface UserCollectionItem {
+  id: number;
+  discogsInstanceId?: number;
+  rating: number;
+  notes?: string;
+  release: Release;
+}
+
+interface UserWantlistItem {
+  id: number;
+  notes?: string;
+  release: Release;
+}
+
+interface ApiResponse {
+  data: UserCollectionItem[] | UserWantlistItem[];
+  total: number;
+  limit: number;
+  offset: number;
+  hasMore: boolean;
+  sortBy: string;
+  sortOrder: string;
+}
+
+interface TransformedItem {
+  id: number;
+  instance_id?: number;
+  rating: number;
+  notes: string;
+  basic_information: {
+    id: number;
+    title: string;
+    year: number;
+    thumb: string;
+    cover_image: string;
+    artists: Array<{ name: string; anv: string }>;
+    labels: Array<{ name: string; catno: string }>;
+    formats: Array<{
+      name: string;
+      qty: string;
+      descriptions: string[];
+      text?: string;
+    }>;
+    genres: string[];
+    styles: string[];
+  };
+}
+
+interface TransformedResponse {
+  pagination: {
+    page: number;
+    pages: number;
+    per_page: number;
+    items: number;
+  };
+  releases?: TransformedItem[];
+  wants?: TransformedItem[];
+}
+
 export async function GET(request: NextRequest) {
   if (!API_KEY) {
     console.error("DISCOGS_API_KEY not configured in frontend environment");
@@ -25,7 +102,7 @@ export async function GET(request: NextRequest) {
   const perPage = searchParams.get("per_page") || "50";
 
   const pageNum = Math.max(1, parseInt(page));
-  const perPageNum = Math.min(100, Math.max(1, parseInt(perPage)));
+  const perPageNum = Math.min(200, Math.max(1, parseInt(perPage))); // Cap at 200 items per page
   const offset = (pageNum - 1) * perPageNum;
 
   try {
@@ -67,7 +144,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as ApiResponse;
 
     const transformedData = transformApiResponse(
       data,
@@ -106,31 +183,32 @@ function mapSortField(sort: string, type: string): string {
 }
 
 function transformApiResponse(
-  apiData: any,
+  apiData: ApiResponse,
   type: string,
   page: number,
   perPage: number
-) {
+): TransformedResponse {
   const { data: items, total } = apiData;
 
   const totalPages = Math.ceil(total / perPage);
-  const transformedItems = items.map((item: any) => {
-    const release = item.release || {};
+
+  const transformedItems: TransformedItem[] = items.map((item) => {
+    const collectionItem = item as UserCollectionItem;
+    const wantlistItem = item as UserWantlistItem;
+    const release = item.release || ({} as Release);
 
     return {
       id: item.id,
-      instance_id: item.discogsInstanceId,
-      rating: item.rating || 0,
-      notes: item.notes || "",
+      instance_id: collectionItem.discogsInstanceId,
+      rating: collectionItem.rating || 0,
+      notes: collectionItem.notes || wantlistItem.notes || "",
       basic_information: {
-        id: release.discogsId || release.id,
-        title: release.title || item.title || "Unknown Title",
-        year: release.year || item.year || 0,
+        id: release.discogsId || 0,
+        title: release.title || "Unknown Title",
+        year: release.year || 0,
         thumb: release.thumbUrl || "",
         cover_image: release.coverImageUrl || release.thumbUrl || "",
-        artists: release.artists || [
-          { name: item.primaryArtist || "Unknown Artist", anv: "" },
-        ],
+        artists: release.artists || [{ name: "Unknown Artist", anv: "" }],
         labels: release.labels || [],
         formats: release.formats || [],
         genres: release.genres || [],
