@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import ToneArm from "./ToneArm";
-import { VINYL_CONSTANTS } from "../lib/constants";
+import { VINYL_CONSTANTS, ANIMATION_DURATIONS } from "../lib/constants";
 
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
@@ -48,7 +48,7 @@ export default function ToneArmContainer({
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       const target = e.target as SVGElement;
-      if (target.closest("g.cursor-grab")) {
+      if (target.closest("svg") || target.tagName === "svg") {
         setIsDragging(true);
         onDragStart?.();
         e.preventDefault();
@@ -95,8 +95,7 @@ export default function ToneArmContainer({
     if (!element) return;
 
     const handleTouchStart = (e: TouchEvent) => {
-      const target = e.target as SVGElement;
-      if (target.closest("g.cursor-grab")) {
+      if (e.touches.length === 1) {
         setIsDragging(true);
         onDragStart?.();
         e.preventDefault();
@@ -233,7 +232,7 @@ export default function ToneArmContainer({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full overflow-visible"
+      className="w-full h-full overflow-visible cursor-grab active:cursor-grabbing"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

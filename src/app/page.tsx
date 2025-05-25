@@ -2,51 +2,62 @@
 
 import { useState, useEffect, useRef } from "react";
 import Granim from "granim";
-import PlayerControls from "../components/PlayerControls";
-import ProjectCard from "../components/ProjectCard";
-import Navigation from "../components/Navigation";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { VinylRecord, ToneArmContainer } from "../components/vinyl";
+import {
+  PlayerControls,
+  ProjectCard,
+  VinylRecord,
+  ToneArmContainer,
+} from "../components";
+import { Navigation } from "../components/layout";
+import { useResponsiveVinyl } from "../hooks/useResponsiveVinyl";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 export default function HomePage() {
   const [toneArmRotation, setToneArmRotation] = useState(0);
-  const [isControlledPlayback, setIsControlledPlayback] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const granimRef = useRef<Granim | null>(null);
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
-  const isNeedleOnRecord = toneArmRotation > 25;
-  const isPlaying = isNeedleOnRecord || isControlledPlayback;
+  const { isDesktop, playingPosition, sizing } = useResponsiveVinyl();
+
+  const isNeedleOnRecord =
+    toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
+  const isPlaying = isNeedleOnRecord || isAutoPlaying;
 
   const handleStart = () => {
-    if (toneArmRotation < 25) {
-      setTargetRotation(26);
-      setIsControlledPlayback(true);
+    if (!isAutoPlaying) {
+      setIsAutoPlaying(true);
+      setTargetRotation(playingPosition);
     }
   };
 
   const handleStop = () => {
+    setIsAutoPlaying(false);
     setTargetRotation(0);
-    setIsControlledPlayback(false);
   };
 
   const handleRotationChange = (rotation: number) => {
     setToneArmRotation(rotation);
-    // If user manually drags needle off the record while in controlled playback, stop it
-    if (rotation < 25 && isControlledPlayback) {
-      setIsControlledPlayback(false);
+
+    if (
+      rotation <= VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD &&
+      isAutoPlaying &&
+      targetRotation === null
+    ) {
+      setIsAutoPlaying(false);
     }
   };
 
   useEffect(() => {
     if (
       targetRotation !== null &&
-      Math.abs(toneArmRotation - targetRotation) < 0.5
+      Math.abs(toneArmRotation - targetRotation) < 1
     ) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setTargetRotation(null);
       }, 100);
+      return () => clearTimeout(timeoutId);
     }
   }, [toneArmRotation, targetRotation]);
 
@@ -101,12 +112,10 @@ export default function HomePage() {
     <main className="relative min-h-screen overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Fixed top navigation */}
       <div className="relative z-30">
         <Navigation />
       </div>
 
-      {/* Project card - positioned strategically based on screen size */}
       {isNeedleOnRecord && (
         <div
           className={`
@@ -119,26 +128,25 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Main content - with proper spacing from the navbar only on desktop */}
       <div
         className={`relative z-10 flex min-h-screen flex-col items-center justify-center p-4 ${
           isDesktop ? "pt-24" : "pt-16"
         }`}
       >
         <div
-          className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0"
+          className={`flex items-center justify-center ${sizing.gap} ${sizing.offset}`}
           style={{
             transformStyle: "preserve-3d",
             perspective: "1000px",
             transform: "translateZ(0)",
           }}
         >
-          <div className="w-[90vmin] h-[90vmin] sm:w-[65vmin] sm:h-[65vmin] md:w-[70vmin] md:h-[70vmin] relative">
+          <div className={`${sizing.record} relative flex-shrink-0`}>
             <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
           </div>
-          <div className="w-8 sm:hidden"></div>
+
           <div
-            className={`w-36 sm:w-28 md:w-[25vmin] h-[90vmin] sm:h-[65vmin] md:h-[70vmin] flex items-center relative z-10 overflow-visible mobile-tone-arm-fix`}
+            className={`${sizing.toneArm} flex items-center relative z-10 overflow-visible mobile-tone-arm-fix flex-shrink-0`}
             style={{
               isolation: "isolate",
               transformStyle: "preserve-3d",
@@ -151,13 +159,13 @@ export default function HomePage() {
               targetRotation={targetRotation}
             />
           </div>
-          <div className="w-4 sm:hidden"></div>
         </div>
 
         <PlayerControls
           onStart={handleStart}
           onStop={handleStop}
           isPlaying={isPlaying}
+          isAutoPlaying={isAutoPlaying}
         />
       </div>
     </main>

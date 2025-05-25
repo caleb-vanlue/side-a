@@ -1,65 +1,90 @@
-import Button from "./Button";
-
 interface PlayerControlsProps {
   onStart: () => void;
   onStop: () => void;
   isPlaying: boolean;
-  disabled?: boolean;
+  isAutoPlaying: boolean;
 }
 
 export default function PlayerControls({
   onStart,
   onStop,
   isPlaying,
-  disabled = false,
+  isAutoPlaying,
 }: PlayerControlsProps) {
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-6 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 z-50 flex flex-row lg:flex-col gap-6">
-      <Button
-        variant="icon"
-        size="lg"
-        onClick={onStart}
-        disabled={disabled || isPlaying}
-        className={
-          disabled || isPlaying
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:scale-110"
-        }
-        aria-label="Start playback"
-      >
-        <svg
-          className={`w-6 h-6 ${
-            disabled || isPlaying ? "text-gray-500" : "text-green-400"
-          }`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-6 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 z-50">
+      <div className="flex flex-row lg:flex-col gap-4 p-3 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
+        <button
+          onClick={onStart}
+          disabled={isAutoPlaying}
+          className={`
+            group relative w-14 h-14 rounded-full transition-all duration-300 ease-out
+            ${
+              isAutoPlaying
+                ? "bg-gray-600 cursor-not-allowed opacity-60"
+                : "bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95"
+            }
+          `}
+          aria-label={isAutoPlaying ? "Currently playing" : "Start playback"}
         >
-          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-        </svg>
-      </Button>
+          <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <svg
+            className={`w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              isAutoPlaying
+                ? "text-gray-400"
+                : "text-white group-hover:scale-110"
+            }`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+          </svg>
+          {isAutoPlaying && (
+            <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-pulse" />
+          )}
+        </button>
 
-      <Button
-        variant="icon"
-        size="lg"
-        onClick={onStop}
-        disabled={disabled || !isPlaying}
-        className={
-          disabled || !isPlaying
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:scale-110"
-        }
-        aria-label="Stop playback"
-      >
-        <svg
-          className={`w-6 h-6 ${
-            disabled || !isPlaying ? "text-gray-500" : "text-red-400"
-          }`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
+        <button
+          onClick={onStop}
+          disabled={!isPlaying}
+          className={`
+            group relative w-14 h-14 rounded-full transition-all duration-300 ease-out
+            ${
+              !isPlaying
+                ? "bg-gray-600 cursor-not-allowed opacity-60"
+                : "bg-gradient-to-br from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 hover:scale-110 hover:shadow-lg hover:shadow-red-500/25 active:scale-95"
+            }
+          `}
+          aria-label={!isPlaying ? "Nothing playing" : "Stop playback"}
         >
-          <rect x="6" y="6" width="8" height="8" />
-        </svg>
-      </Button>
+          <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <svg
+            className={`w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+              !isPlaying ? "text-gray-400" : "text-white group-hover:scale-110"
+            }`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <rect x="6" y="6" width="8" height="8" rx="1" />
+          </svg>
+        </button>
+
+        <div className="hidden lg:block w-14 h-px bg-white/20 mx-auto" />
+        <div className="lg:hidden h-14 w-px bg-white/20 my-auto" />
+
+        <div className="flex items-center justify-center w-14 h-14 lg:h-8">
+          <div
+            className={`
+            w-2 h-2 rounded-full transition-all duration-300
+            ${
+              isPlaying
+                ? "bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400/50"
+                : "bg-gray-500"
+            }
+          `}
+          />
+        </div>
+      </div>
     </div>
   );
 }
