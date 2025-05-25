@@ -4,6 +4,7 @@ import { PageLayout } from "../../components/layout";
 import {
   Hero,
   WhatIDo,
+  Experience,
   TechnicalSkills,
   FeaturedProjects,
   AreasOfFocus,
@@ -17,6 +18,7 @@ export default function PortfolioPage() {
       <div className="mt-16 sm:mt-8">
         <Hero />
         <WhatIDo />
+        <Experience />
         <TechnicalSkills />
         <FeaturedProjects />
         <AreasOfFocus />
