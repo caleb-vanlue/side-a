@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import GitHubBadge from "../components/GitHubBadge";
+import { ThemeProvider } from "../components/ThemeContext";
 
 const handwritingFont = localFont({
   src: "../../public/fonts/Myfont-Regular.otf",
@@ -11,7 +12,13 @@ const handwritingFont = localFont({
 
 export const metadata: Metadata = {
   title: "Caleb Van Lue",
-  description: "Yeah, I made this 🤷🏻‍♂️",
+  description: "Software Engineer & Music Enthusiast",
+  icons: {
+    icon: {
+      url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>",
+      type: "image/svg+xml",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -20,16 +27,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>"
-        />
-      </head>
+    <html lang="en" className="scroll-smooth">
       <body className={`${handwritingFont.variable} antialiased`}>
-        {children}
-        <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
+        <ThemeProvider>
+          {children}
+          <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
+        </ThemeProvider>
       </body>
     </html>
   );

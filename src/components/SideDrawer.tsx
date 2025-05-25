@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { NAVIGATION_LINKS, EXTERNAL_LINKS } from "../lib/constants";
 
 interface SideDrawerProps {
   isOpen: boolean;
@@ -74,47 +75,28 @@ export default function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
 
           <nav className="py-2">
             <div className="space-y-8">
-              <Link
-                href="/"
-                onClick={onClose}
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                Home
-              </Link>
+              {NAVIGATION_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={onClose}
+                  className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-              <Link
-                href="/portfolio"
-                onClick={onClose}
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                Portfolio
-              </Link>
-
-              <Link
-                href="/collection"
-                onClick={onClose}
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                My Records
-              </Link>
-
-              <a
-                href="https://www.linkedin.com/in/calebvanlue/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                LinkedIn
-              </a>
-
-              <a
-                href="https://github.com/caleb-vanlue"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
-              >
-                GitHub
-              </a>
+              {EXTERNAL_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center text-xl text-white hover:text-emerald-400 transition-colors duration-300"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </nav>
 

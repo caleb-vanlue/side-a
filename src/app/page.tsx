@@ -2,20 +2,20 @@
 
 import { useState, useEffect, useRef } from "react";
 import Granim from "granim";
-import VinylRecord from "../components/VinylRecord";
-import ToneArmContainer from "../components/ToneArmContainer";
 import PlayerControls from "../components/PlayerControls";
-import HamburgerButton from "../components/HamburgerButton";
-import SideDrawer from "../components/SideDrawer";
 import ProjectCard from "../components/ProjectCard";
+import Navigation from "../components/Navigation";
+import ToneArmContainer from "../components/ToneArmContainer";
+import VinylRecord from "../components/VinylRecord";
+import useMediaQuery from "./hooks/useMediaQuery";
 
-export default function Home() {
+export default function HomePage() {
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [isControlledPlayback, setIsControlledPlayback] = useState(false);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const granimRef = useRef<Granim | null>(null);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const isNeedleOnRecord = toneArmRotation > 25;
   const isPlaying = isNeedleOnRecord || isControlledPlayback;
@@ -102,13 +102,30 @@ export default function Home() {
     <main className="relative min-h-screen overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-      <HamburgerButton
-        isOpen={menuOpen}
-        onClick={() => setMenuOpen(!menuOpen)}
-      />
-      <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      {/* Fixed top navigation */}
+      <div className="relative z-30">
+        <Navigation />
+      </div>
 
-      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
+      {/* Project card - positioned strategically based on screen size */}
+      {isNeedleOnRecord && (
+        <div
+          className={`
+          fixed z-20 
+          ${isDesktop ? "top-24 right-10" : "top-6 right-4"}
+          transition-all duration-500 ease-in-out
+        `}
+        >
+          <ProjectCard isVisible={true} />
+        </div>
+      )}
+
+      {/* Main content - with proper spacing from the navbar only on desktop */}
+      <div
+        className={`relative z-10 flex min-h-screen flex-col items-center justify-center p-4 ${
+          isDesktop ? "pt-24" : "pt-16"
+        }`}
+      >
         <div
           className="flex items-center justify-center sm:gap-4 md:gap-8 relative -left-16 sm:left-0"
           style={{
@@ -117,12 +134,12 @@ export default function Home() {
             transform: "translateZ(0)",
           }}
         >
-          <div className="w-[100vmin] h-[100vmin] sm:w-[70vmin] sm:h-[70vmin] md:w-[80vmin] md:h-[80vmin] relative">
+          <div className="w-[90vmin] h-[90vmin] sm:w-[65vmin] sm:h-[65vmin] md:w-[70vmin] md:h-[70vmin] relative">
             <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
           </div>
           <div className="w-8 sm:hidden"></div>
           <div
-            className={`w-36 sm:w-28 md:w-[25vmin] h-[100vmin] sm:h-[70vmin] md:h-[80vmin] flex items-center relative z-10 overflow-visible mobile-tone-arm-fix`}
+            className={`w-36 sm:w-28 md:w-[25vmin] h-[90vmin] sm:h-[65vmin] md:h-[70vmin] flex items-center relative z-10 overflow-visible mobile-tone-arm-fix`}
             style={{
               isolation: "isolate",
               transformStyle: "preserve-3d",
@@ -143,8 +160,6 @@ export default function Home() {
           onStop={handleStop}
           isPlaying={isPlaying}
         />
-
-        <ProjectCard isVisible={isNeedleOnRecord} />
       </div>
     </main>
   );
