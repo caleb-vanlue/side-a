@@ -78,10 +78,17 @@ interface WantlistResponse {
   wants: Release[];
 }
 
-type SortOption = "artist" | "title" | "rating" | "added" | "year";
+type SortOption =
+  | "artist"
+  | "title"
+  | "rating"
+  | "added"
+  | "year"
+  | "genre"
+  | "format";
 type SortOrder = "asc" | "desc";
 
-const SORT_OPTIONS: {
+const COLLECTION_SORT_OPTIONS: {
   value: string;
   label: string;
   sort: SortOption;
@@ -132,9 +139,120 @@ const SORT_OPTIONS: {
     sort: "rating",
     order: "asc",
   },
+  {
+    value: "genre_asc",
+    label: "Genre (A-Z)",
+    sort: "genre",
+    order: "asc",
+  },
+  {
+    value: "genre_desc",
+    label: "Genre (Z-A)",
+    sort: "genre",
+    order: "desc",
+  },
+  {
+    value: "format_asc",
+    label: "Format (A-Z)",
+    sort: "format",
+    order: "asc",
+  },
+  {
+    value: "format_desc",
+    label: "Format (Z-A)",
+    sort: "format",
+    order: "desc",
+  },
 ];
 
-const PAGE_SIZE_OPTIONS = [25, 50, 100, 200];
+const WANTLIST_SORT_OPTIONS: {
+  value: string;
+  label: string;
+  sort: SortOption;
+  order: SortOrder;
+}[] = [
+  {
+    value: "added_desc",
+    label: "Date Added (Newest First)",
+    sort: "added",
+    order: "desc",
+  },
+  {
+    value: "added_asc",
+    label: "Date Added (Oldest First)",
+    sort: "added",
+    order: "asc",
+  },
+  { value: "artist_asc", label: "Artist (A-Z)", sort: "artist", order: "asc" },
+  {
+    value: "artist_desc",
+    label: "Artist (Z-A)",
+    sort: "artist",
+    order: "desc",
+  },
+  { value: "title_asc", label: "Title (A-Z)", sort: "title", order: "asc" },
+  { value: "title_desc", label: "Title (Z-A)", sort: "title", order: "desc" },
+  {
+    value: "year_desc",
+    label: "Year (Newest First)",
+    sort: "year",
+    order: "desc",
+  },
+  {
+    value: "year_asc",
+    label: "Year (Oldest First)",
+    sort: "year",
+    order: "asc",
+  },
+  {
+    value: "genre_asc",
+    label: "Genre (A-Z)",
+    sort: "genre",
+    order: "asc",
+  },
+  {
+    value: "genre_desc",
+    label: "Genre (Z-A)",
+    sort: "genre",
+    order: "desc",
+  },
+  {
+    value: "format_asc",
+    label: "Format (A-Z)",
+    sort: "format",
+    order: "asc",
+  },
+  {
+    value: "format_desc",
+    label: "Format (Z-A)",
+    sort: "format",
+    order: "desc",
+  },
+];
+
+const PAGE_SIZE_OPTIONS = [25, 50, 100];
+
+const fetchWithRetry = async (
+  url: string,
+  retries: number = 3
+): Promise<Response> => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        return response;
+      }
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    } catch (error) {
+      console.warn(`Attempt ${i + 1} failed:`, error);
+      if (i === retries - 1) throw error;
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.pow(2, i) * 1000)
+      );
+    }
+  }
+  throw new Error("Max retries exceeded");
+};
 
 export default function Collection() {
   const [activeTab, setActiveTab] = useState<"collection" | "wantlist">(
@@ -158,10 +276,13 @@ export default function Collection() {
   const [collectionPageSize, setCollectionPageSize] = useState(50);
   const [collectionTotalItems, setCollectionTotalItems] = useState(0);
 
-  // Wantlist pagination
+  // Wantlist pagination and sorting
   const [wantlistPage, setWantlistPage] = useState(1);
   const [wantlistTotalPages, setWantlistTotalPages] = useState(1);
-  const [wantlistPageSize] = useState(50);
+  const [wantlistSort, setWantlistSort] = useState<SortOption>("added");
+  const [wantlistSortOrder, setWantlistSortOrder] = useState<SortOrder>("desc");
+  const [wantlistSortValue, setWantlistSortValue] = useState("added_desc");
+  const [wantlistPageSize, setWantlistPageSize] = useState(50);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
   useEffect(() => {
@@ -169,35 +290,38 @@ export default function Collection() {
   }, [collectionPage, collectionSort, collectionSortOrder, collectionPageSize]);
 
   useEffect(() => {
-    if (activeTab === "wantlist" && wantlist.length === 0) {
-      fetchWantlist();
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
     if (activeTab === "wantlist") {
       fetchWantlist();
     }
-  }, [wantlistPage, wantlistPageSize]);
+  }, [
+    activeTab,
+    wantlistPage,
+    wantlistSort,
+    wantlistSortOrder,
+    wantlistPageSize,
+  ]);
 
   const fetchCollection = async () => {
     try {
       setLoadingCollection(true);
-      const response = await fetch(
-        `/api/discogs/collection?type=collection&folder=0&page=${collectionPage}&per_page=${collectionPageSize}&sort=${collectionSort}&sort_order=${collectionSortOrder}`
-      );
+      setCollectionError(null);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch collection");
-      }
+      const url = `/api/discogs/collection?type=collection&folder=0&page=${collectionPage}&per_page=${collectionPageSize}&sort=${collectionSort}&sort_order=${collectionSortOrder}`;
+      const response = await fetchWithRetry(url);
 
       const data: CollectionResponse = await response.json();
+
+      if (!data.releases || !Array.isArray(data.releases)) {
+        throw new Error("Invalid response format from API");
+      }
+
       setCollection(data.releases);
       setCollectionTotalPages(data.pagination.pages);
       setCollectionTotalItems(data.pagination.items);
     } catch (err) {
+      console.error("Collection fetch error:", err);
       setCollectionError(
-        err instanceof Error ? err.message : "An error occurred"
+        err instanceof Error ? err.message : "Failed to load collection"
       );
     } finally {
       setLoadingCollection(false);
@@ -207,21 +331,24 @@ export default function Collection() {
   const fetchWantlist = async () => {
     try {
       setLoadingWantlist(true);
-      const response = await fetch(
-        `/api/discogs/collection?type=wantlist&page=${wantlistPage}&per_page=${wantlistPageSize}`
-      );
+      setWantlistError(null);
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch wantlist");
-      }
+      const url = `/api/discogs/collection?type=wantlist&page=${wantlistPage}&per_page=${wantlistPageSize}&sort=${wantlistSort}&sort_order=${wantlistSortOrder}`;
+      const response = await fetchWithRetry(url);
 
       const data: WantlistResponse = await response.json();
+
+      if (!data.wants || !Array.isArray(data.wants)) {
+        throw new Error("Invalid response format from API");
+      }
+
       setWantlist(data.wants);
       setWantlistTotalPages(data.pagination.pages);
       setWantlistTotalItems(data.pagination.items);
     } catch (err) {
+      console.error("Wantlist fetch error:", err);
       setWantlistError(
-        err instanceof Error ? err.message : "An error occurred"
+        err instanceof Error ? err.message : "Failed to load wantlist"
       );
     } finally {
       setLoadingWantlist(false);
@@ -240,7 +367,6 @@ export default function Collection() {
     if (colorFormat?.text) {
       let color = colorFormat.text;
       color = color.replace(/,\s*$/, "").replace(/,\s+/g, ", ").trim();
-
       return color || null;
     }
 
@@ -265,7 +391,7 @@ export default function Collection() {
   };
 
   const handleCollectionSortChange = (sortValue: string) => {
-    const sortOption = SORT_OPTIONS.find(
+    const sortOption = COLLECTION_SORT_OPTIONS.find(
       (option) => option.value === sortValue
     );
     if (sortOption) {
@@ -276,9 +402,26 @@ export default function Collection() {
     }
   };
 
+  const handleWantlistSortChange = (sortValue: string) => {
+    const sortOption = WANTLIST_SORT_OPTIONS.find(
+      (option) => option.value === sortValue
+    );
+    if (sortOption) {
+      setWantlistSort(sortOption.sort);
+      setWantlistSortOrder(sortOption.order);
+      setWantlistSortValue(sortValue);
+      setWantlistPage(1); // Reset to first page when sorting changes
+    }
+  };
+
   const handleCollectionPageSizeChange = (newPageSize: number) => {
     setCollectionPageSize(newPageSize);
     setCollectionPage(1);
+  };
+
+  const handleWantlistPageSizeChange = (newPageSize: number) => {
+    setWantlistPageSize(newPageSize);
+    setWantlistPage(1);
   };
 
   const renderControls = (
@@ -286,6 +429,7 @@ export default function Collection() {
     sortValue: string,
     pageSize: number,
     totalItems: number,
+    sortOptions: typeof COLLECTION_SORT_OPTIONS,
     onSortChange: (sortValue: string) => void,
     onPageSizeChange: (size: number) => void
   ) => (
@@ -298,7 +442,7 @@ export default function Collection() {
             onChange={(e) => onSortChange(e.target.value)}
             className="px-3 py-1.5 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-w-[200px]"
           >
-            {SORT_OPTIONS.map((option) => (
+            {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -336,16 +480,15 @@ export default function Collection() {
     totalPages: number,
     pageSize: number,
     totalItems: number,
-    onPageChange: (page: number) => void
+    onPageChange: (page: number) => void,
+    showRating: boolean = true
   ) => {
     if (loading) {
       return (
         <div className="flex justify-center items-center py-12">
           <div className="flex items-center gap-3">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-            <p className="text-gray-500 text-sm sm:text-base">
-              Loading from Discogs...
-            </p>
+            <p className="text-gray-500 text-sm sm:text-base">Loading...</p>
           </div>
         </div>
       );
@@ -353,9 +496,23 @@ export default function Collection() {
 
     if (error) {
       return (
-        <p className="text-red-500 text-sm sm:text-base text-center py-12">
-          Error: {error}
-        </p>
+        <div className="text-center py-12">
+          <p className="text-red-500 text-sm sm:text-base mb-4">
+            Error: {error}
+          </p>
+          <button
+            onClick={() => {
+              if (activeTab === "collection") {
+                fetchCollection();
+              } else {
+                fetchWantlist();
+              }
+            }}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       );
     }
 
@@ -430,7 +587,15 @@ export default function Collection() {
                       {vinylColor}
                     </div>
                   )}
-                  {release.rating > 0 && (
+                  {release.notes && (
+                    <div className="text-xs text-gray-600 font-medium mt-1 bg-green-50 px-2 py-1 rounded">
+                      {" "}
+                      {typeof release.notes === "string"
+                        ? release.notes
+                        : "Custom notes"}
+                    </div>
+                  )}
+                  {showRating && release.rating > 0 && (
                     <div className="flex justify-center sm:justify-start mt-1">
                       {[...Array(5)].map((_, i) => (
                         <span
@@ -458,7 +623,7 @@ export default function Collection() {
               Showing {startItem.toLocaleString()}-{endItem.toLocaleString()} of{" "}
               {totalItems.toLocaleString()} items
             </div>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2 flex-wrap">
               <button
                 onClick={() => onPageChange(1)}
                 disabled={currentPage === 1}
@@ -553,6 +718,7 @@ export default function Collection() {
                 collectionSortValue,
                 collectionPageSize,
                 collectionTotalItems,
+                COLLECTION_SORT_OPTIONS,
                 handleCollectionSortChange,
                 handleCollectionPageSizeChange
               )}
@@ -564,11 +730,21 @@ export default function Collection() {
                 collectionTotalPages,
                 collectionPageSize,
                 collectionTotalItems,
-                setCollectionPage
+                setCollectionPage,
+                true
               )}
             </div>
           ) : (
             <div>
+              {renderControls(
+                "wantlist",
+                wantlistSortValue,
+                wantlistPageSize,
+                wantlistTotalItems,
+                WANTLIST_SORT_OPTIONS,
+                handleWantlistSortChange,
+                handleWantlistPageSizeChange
+              )}
               {renderReleases(
                 wantlist,
                 loadingWantlist,
@@ -577,7 +753,8 @@ export default function Collection() {
                 wantlistTotalPages,
                 wantlistPageSize,
                 wantlistTotalItems,
-                setWantlistPage
+                setWantlistPage,
+                false
               )}
             </div>
           )}
