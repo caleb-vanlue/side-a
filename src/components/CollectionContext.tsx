@@ -282,13 +282,31 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [wantlistPageSize, setWantlistPageSize] = useState(50);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
-  // Cache control
-  const [collectionFetched, setCollectionFetched] = useState(false);
-  const [wantlistFetched, setWantlistFetched] = useState(false);
+  // Cache control - use a cache key that includes pagination params
+  const [collectionCacheKey, setCollectionCacheKey] = useState("");
+  const [wantlistCacheKey, setWantlistCacheKey] = useState("");
+  const [collectionCache, setCollectionCache] = useState<
+    Map<string, Release[]>
+  >(new Map());
+  const [wantlistCache, setWantlistCache] = useState<Map<string, Release[]>>(
+    new Map()
+  );
+
+  const getCollectionCacheKey = useCallback(() => {
+    return `${collectionPage}-${collectionPageSize}-${collectionSort}-${collectionSortOrder}`;
+  }, [collectionPage, collectionPageSize, collectionSort, collectionSortOrder]);
+
+  const getWantlistCacheKey = useCallback(() => {
+    return `${wantlistPage}-${wantlistPageSize}-${wantlistSort}-${wantlistSortOrder}`;
+  }, [wantlistPage, wantlistPageSize, wantlistSort, wantlistSortOrder]);
 
   const fetchCollection = useCallback(async () => {
-    // Only fetch if not already fetched (caching behavior)
-    if (collectionFetched && collection.length > 0) {
+    const cacheKey = getCollectionCacheKey();
+
+    // Check cache first
+    if (collectionCache.has(cacheKey)) {
+      setCollection(collectionCache.get(cacheKey)!);
+      setLoadingCollection(false);
       return;
     }
 
@@ -308,7 +326,10 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollection(data.releases);
       setCollectionTotalPages(data.pagination.pages);
       setCollectionTotalItems(data.pagination.items);
-      setCollectionFetched(true);
+
+      // Cache the result
+      setCollectionCache((prev) => new Map(prev).set(cacheKey, data.releases));
+      setCollectionCacheKey(cacheKey);
     } catch (err) {
       console.error("Collection fetch error:", err);
       setCollectionError(
@@ -322,13 +343,17 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     collectionPageSize,
     collectionSort,
     collectionSortOrder,
-    collectionFetched,
-    collection.length,
+    getCollectionCacheKey,
+    collectionCache,
   ]);
 
   const fetchWantlist = useCallback(async () => {
-    // Only fetch if not already fetched (caching behavior)
-    if (wantlistFetched && wantlist.length > 0) {
+    const cacheKey = getWantlistCacheKey();
+
+    // Check cache first
+    if (wantlistCache.has(cacheKey)) {
+      setWantlist(wantlistCache.get(cacheKey)!);
+      setLoadingWantlist(false);
       return;
     }
 
@@ -348,7 +373,10 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlist(data.wants);
       setWantlistTotalPages(data.pagination.pages);
       setWantlistTotalItems(data.pagination.items);
-      setWantlistFetched(true);
+
+      // Cache the result
+      setWantlistCache((prev) => new Map(prev).set(cacheKey, data.wants));
+      setWantlistCacheKey(cacheKey);
     } catch (err) {
       console.error("Wantlist fetch error:", err);
       setWantlistError(
@@ -362,18 +390,18 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     wantlistPageSize,
     wantlistSort,
     wantlistSortOrder,
-    wantlistFetched,
-    wantlist.length,
+    getWantlistCacheKey,
+    wantlistCache,
   ]);
 
-  // Force refresh functions (ignore cache)
+  // Force refresh functions (clear cache)
   const refreshCollection = useCallback(async () => {
-    setCollectionFetched(false);
+    setCollectionCache(new Map());
     await fetchCollection();
   }, [fetchCollection]);
 
   const refreshWantlist = useCallback(async () => {
-    setWantlistFetched(false);
+    setWantlistCache(new Map());
     await fetchWantlist();
   }, [fetchWantlist]);
 
@@ -421,7 +449,6 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollectionSortOrder(sortOption.order);
       setCollectionSortValue(sortValue);
       setCollectionPage(1); // Reset to first page when sorting changes
-      setCollectionFetched(false); // Force refetch with new sort
     }
   };
 
@@ -434,20 +461,25 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlistSortOrder(sortOption.order);
       setWantlistSortValue(sortValue);
       setWantlistPage(1); // Reset to first page when sorting changes
-      setWantlistFetched(false); // Force refetch with new sort
     }
+  };
+
+  const handleCollectionPageChange = (newPage: number) => {
+    setCollectionPage(newPage);
+  };
+
+  const handleWantlistPageChange = (newPage: number) => {
+    setWantlistPage(newPage);
   };
 
   const handleCollectionPageSizeChange = (newPageSize: number) => {
     setCollectionPageSize(newPageSize);
     setCollectionPage(1);
-    setCollectionFetched(false); // Force refetch with new page size
   };
 
   const handleWantlistPageSizeChange = (newPageSize: number) => {
     setWantlistPageSize(newPageSize);
     setWantlistPage(1);
-    setWantlistFetched(false); // Force refetch with new page size
   };
 
   const value: CollectionContextType = {
@@ -461,13 +493,13 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     collectionTotalPages,
     collectionPageSize,
     collectionTotalItems,
-    setCollectionPage,
+    setCollectionPage: handleCollectionPageChange,
     setCollectionPageSize: handleCollectionPageSizeChange,
     wantlistPage,
     wantlistTotalPages,
     wantlistPageSize,
     wantlistTotalItems,
-    setWantlistPage,
+    setWantlistPage: handleWantlistPageChange,
     setWantlistPageSize: handleWantlistPageSizeChange,
     collectionSort,
     collectionSortOrder,
