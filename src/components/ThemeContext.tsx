@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 type ThemeColors = {
   primary: string;
@@ -42,14 +42,15 @@ export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [colors, setColors] = useState(defaultTheme);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
   return (
-    <ThemeContext.Provider value={{ colors, isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider
+      value={{ colors: defaultTheme, isDarkMode, toggleDarkMode }}
+    >
       {children}
     </ThemeContext.Provider>
   );

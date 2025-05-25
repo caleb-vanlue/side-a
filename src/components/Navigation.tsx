@@ -63,7 +63,7 @@ export default function Navigation() {
               key={link.href}
               href={link.href}
               onClick={handleLinkClick}
-              className={`text-sm font-medium transition-colors duration-200 ${
+              className={`text-base text-xl transition-colors duration-200 ${
                 pathname === link.href
                   ? "text-gray-900 border-b-2 border-emerald-600"
                   : "text-gray-800 hover:text-gray-900"
@@ -79,7 +79,7 @@ export default function Navigation() {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-gray-800 hover:text-gray-900 transition-colors duration-200"
+              className="text-base text-xl text-gray-800 hover:text-gray-900 transition-colors duration-200"
             >
               {link.label}
             </a>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Card from "./Card";
 import Button from "./Button";
@@ -38,7 +37,7 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
             </div>
 
             <p className="text-zinc-300 mb-4 text-sm">
-              Come check out what I'm watching or listening to right now!
+              Come check out what I&apos;m watching or listening to right now!
             </p>
 
             <Button
