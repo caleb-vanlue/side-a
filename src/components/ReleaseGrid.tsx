@@ -155,6 +155,9 @@ export default function ReleaseGrid({
 
       {totalPages > 1 && (
         <div className="mt-8 space-y-4">
+          <div className="flex justify-center text-xs text-gray-600">
+            Updated daily
+          </div>
           <div className="flex justify-center text-sm text-gray-600">
             Showing {startItem.toLocaleString()}-{endItem.toLocaleString()} of{" "}
             {totalItems.toLocaleString()} items
