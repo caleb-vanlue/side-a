@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import ToneArm from "./ToneArm";
-import { VINYL_CONSTANTS, ANIMATION_DURATIONS } from "../lib/constants";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
