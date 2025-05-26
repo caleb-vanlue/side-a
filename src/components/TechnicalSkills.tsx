@@ -7,9 +7,9 @@ import {
   SiTypescript,
   SiPostgresql,
   SiGooglecloud,
-  SiGithubactions,
   SiRailway,
   SiDocker,
+  SiTailwindcss,
 } from "react-icons/si";
 
 export default function TechnicalSkills() {
@@ -18,6 +18,11 @@ export default function TechnicalSkills() {
       name: "Next.js",
       icon: SiNextdotjs,
       url: "https://nextjs.org",
+    },
+    {
+      name: "Tailwind CSS",
+      icon: SiTailwindcss,
+      url: "https://tailwindcss.com/",
     },
     {
       name: "NestJS",
@@ -38,11 +43,6 @@ export default function TechnicalSkills() {
       name: "Google Cloud",
       icon: SiGooglecloud,
       url: "https://cloud.google.com",
-    },
-    {
-      name: "GitHub Actions",
-      icon: SiGithubactions,
-      url: "https://github.com/features/actions",
     },
     {
       name: "Railway",
