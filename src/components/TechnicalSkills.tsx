@@ -1,29 +1,59 @@
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { TechBadge } from "./shared/TextBadge";
+import { TechBadge } from "./shared/TechBadge";
+import {
+  SiNextdotjs,
+  SiNestjs,
+  SiTypescript,
+  SiPostgresql,
+  SiGooglecloud,
+  SiGithubactions,
+  SiRailway,
+  SiDocker,
+} from "react-icons/si";
 
 export default function TechnicalSkills() {
   const primaryTech = [
-    { name: "Next.js", icon: "nextjs", url: "https://nextjs.org" },
-    { name: "NestJS", icon: "nestjs", url: "https://nestjs.com" },
+    {
+      name: "Next.js",
+      icon: SiNextdotjs,
+      url: "https://nextjs.org",
+    },
+    {
+      name: "NestJS",
+      icon: SiNestjs,
+      url: "https://nestjs.com",
+    },
     {
       name: "TypeScript",
-      icon: "typescript",
+      icon: SiTypescript,
       url: "https://www.typescriptlang.org",
     },
     {
       name: "PostgreSQL",
-      icon: "postgresql",
+      icon: SiPostgresql,
       url: "https://www.postgresql.org",
     },
-    { name: "Google Cloud", icon: "gcp", url: "https://cloud.google.com" },
+    {
+      name: "Google Cloud",
+      icon: SiGooglecloud,
+      url: "https://cloud.google.com",
+    },
     {
       name: "GitHub Actions",
-      icon: "github",
+      icon: SiGithubactions,
       url: "https://github.com/features/actions",
     },
-    { name: "Railway", icon: "railway", url: "https://railway.app" },
-    { name: "Docker", icon: "docker", url: "https://www.docker.com" },
+    {
+      name: "Railway",
+      icon: SiRailway,
+      url: "https://railway.app",
+    },
+    {
+      name: "Docker",
+      icon: SiDocker,
+      url: "https://www.docker.com",
+    },
   ];
 
   return (
