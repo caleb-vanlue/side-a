@@ -165,14 +165,14 @@ export default function ReleaseGrid({
                       ))}
                     </div>
                   )}
-                </div>
-
-                <div className="mt-2 space-y-1">
                   {vinylColor && (
-                    <div className="text-xs text-emerald-600 font-medium">
+                    <div className="text-xs text-emerald-600 font-medium mt-1">
                       {vinylColor}
                     </div>
                   )}
+                </div>
+
+                <div className="mt-2 space-y-1">
                   {release.notes && (
                     <div className="text-xs text-gray-700 font-medium bg-green-50 px-2 py-1 rounded border border-green-200">
                       {typeof release.notes === "string"
