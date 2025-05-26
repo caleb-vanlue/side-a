@@ -15,6 +15,33 @@ interface ReleaseGridProps {
   showRating?: boolean;
 }
 
+const GridKey = () => (
+  <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 className="text-sm font-medium text-gray-800 mb-3">Legend:</h3>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+      <div className="flex items-center gap-2">
+        <div className="w-3 h-3 bg-emerald-600 rounded"></div>
+        <span className="text-gray-600">Vinyl color/variant</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-3 h-3 bg-green-50 border border-green-200 rounded"></div>
+        <span className="text-gray-600">Personal notes</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex">
+          <span className="text-yellow-400">★</span>
+          <span className="text-gray-300">★</span>
+        </div>
+        <span className="text-gray-600">My rating</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-3 h-3 bg-gray-600 rounded"></div>
+        <span className="text-gray-600">Format info (# of LPs)</span>
+      </div>
+    </div>
+  </div>
+);
+
 export default function ReleaseGrid({
   releases,
   loading,
@@ -64,6 +91,8 @@ export default function ReleaseGrid({
 
   return (
     <>
+      <GridKey />
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {releases.map((release) => {
           const vinylColor = getVinylColor(release.basic_information.formats);
@@ -73,7 +102,7 @@ export default function ReleaseGrid({
             <Card
               key={release.id}
               onClick={() => handleReleaseClick(release)}
-              className="group p-0"
+              className="group p-0 h-full flex flex-col"
               padding="none"
             >
               <div className="aspect-square relative overflow-hidden rounded-t-lg">
@@ -106,47 +135,52 @@ export default function ReleaseGrid({
                 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-200 rounded-t-lg" />
               </div>
 
-              <div className="mt-2 p-3 text-center sm:text-left">
-                <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
-                  {release.basic_information.title}
-                </p>
-                <p className="text-xs text-gray-600 truncate">
-                  {formatArtists(release.basic_information.artists)}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {release.basic_information.year}
-                </p>
-                {formatInfo && (
-                  <p className="text-xs text-gray-600 mt-1">{formatInfo}</p>
-                )}
-                {vinylColor && (
-                  <div className="text-xs text-emerald-600 font-medium mt-1">
-                    {vinylColor}
-                  </div>
-                )}
-                {release.notes && (
-                  <div className="text-xs text-gray-600 font-medium mt-1 bg-green-50 px-2 py-1 rounded">
-                    {typeof release.notes === "string"
-                      ? release.notes
-                      : "Custom notes"}
-                  </div>
-                )}
-                {showRating && release.rating > 0 && (
-                  <div className="flex justify-center sm:justify-start mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={`text-xs ${
-                          i < release.rating
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-                )}
+              <div className="flex-1 flex flex-col mt-2 p-3 text-center sm:text-left">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
+                    {release.basic_information.title}
+                  </p>
+                  <p className="text-xs text-gray-600 truncate">
+                    {formatArtists(release.basic_information.artists)}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {release.basic_information.year}
+                  </p>
+                  {formatInfo && (
+                    <p className="text-xs text-gray-600 mt-1">{formatInfo}</p>
+                  )}
+                  {showRating && release.rating > 0 && (
+                    <div className="flex justify-center sm:justify-start mt-1">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`text-xs ${
+                            i < release.rating
+                              ? "text-yellow-400"
+                              : "text-gray-300"
+                          }`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-2 space-y-1">
+                  {vinylColor && (
+                    <div className="text-xs text-emerald-600 font-medium">
+                      {vinylColor}
+                    </div>
+                  )}
+                  {release.notes && (
+                    <div className="text-xs text-gray-700 font-medium bg-green-50 px-2 py-1 rounded border border-green-200">
+                      {typeof release.notes === "string"
+                        ? release.notes
+                        : "Custom notes"}
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
           );
