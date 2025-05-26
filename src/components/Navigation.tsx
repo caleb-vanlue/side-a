@@ -11,8 +11,13 @@ import { NAVIGATION_LINKS, EXTERNAL_LINKS } from "../lib/constants";
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +39,19 @@ export default function Navigation() {
     setMenuOpen(false);
   };
 
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-40 bg-white/10 backdrop-blur-sm py-5">
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <Link href="/" className="text-xl font-medium text-gray-900">
+            Caleb Van Lue
+          </Link>
+          <div className="h-6" />
+        </div>
+      </nav>
+    );
+  }
+
   const mobileMenu = (
     <>
       <HamburgerButton isOpen={menuOpen} onClick={handleMenuToggle} />
@@ -49,14 +67,18 @@ export default function Navigation() {
           : "bg-white/10 backdrop-blur-sm py-5"
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-center items-center">
+      <div className="container mx-auto px-6 flex justify-between items-center">
+        <Link href="/" className="text-xl font-medium text-gray-900">
+          Caleb Van Lue
+        </Link>
+
         <div className="flex items-center space-x-8">
           {NAVIGATION_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={handleLinkClick}
-              className={`text-base text-xl transition-colors duration-200 ${
+              className={`text-base font-medium transition-colors duration-200 ${
                 pathname === link.href
                   ? "text-gray-900 border-b-2 border-emerald-600"
                   : "text-gray-800 hover:text-gray-900"
@@ -72,7 +94,7 @@ export default function Navigation() {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-base text-xl text-gray-800 hover:text-gray-900 transition-colors duration-200"
+              className="text-base font-medium text-gray-800 hover:text-gray-900 transition-colors duration-200"
             >
               {link.label}
             </a>

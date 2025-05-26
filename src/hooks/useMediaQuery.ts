@@ -9,18 +9,23 @@ export default function useMediaQuery(query: string): boolean {
   useEffect(() => {
     setIsClient(true);
 
-    const mediaQuery = window.matchMedia(query);
-    setMatches(mediaQuery.matches);
+    if (typeof window !== "undefined") {
+      const isDesktopQuery = query.includes("min-width: 1024px");
+      const initialValue = isDesktopQuery ? window.innerWidth >= 1024 : false;
 
-    const handler = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
-    };
+      const mediaQuery = window.matchMedia(query);
+      setMatches(initialValue || mediaQuery.matches);
 
-    mediaQuery.addEventListener("change", handler);
+      const handler = (event: MediaQueryListEvent) => {
+        setMatches(event.matches);
+      };
 
-    return () => {
-      mediaQuery.removeEventListener("change", handler);
-    };
+      mediaQuery.addEventListener("change", handler);
+
+      return () => {
+        mediaQuery.removeEventListener("change", handler);
+      };
+    }
   }, [query]);
 
   return isClient ? matches : false;

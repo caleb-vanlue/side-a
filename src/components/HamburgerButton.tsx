@@ -10,7 +10,7 @@ export default function HamburgerButton({
   return (
     <button
       onClick={onClick}
-      className="fixed top-6 left-6 z-50 w-12 h-12 flex flex-col justify-center items-center bg-zinc-900 bg-opacity-90 rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none cursor-pointer hover:scale-105"
+      className="fixed top-6 left-6 z-50 w-12 h-12 flex flex-col justify-center items-center bg-zinc-900 bg-opacity-90 rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none cursor-pointer hover:scale-105 lg:hidden"
       aria-label={isOpen ? "Close menu" : "Open menu"}
       style={{
         backdropFilter: "blur(10px)",
