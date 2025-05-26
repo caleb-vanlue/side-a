@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
 
@@ -12,6 +15,8 @@ interface ExperienceItem {
 }
 
 export default function Experience() {
+  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
+
   const experiences: ExperienceItem[] = [
     {
       company: "Ferguson",
@@ -63,6 +68,18 @@ export default function Experience() {
     },
   ];
 
+  const toggleExpanded = (index: number) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
   const formatDuration = (duration: string) => {
     return duration;
   };
@@ -70,74 +87,109 @@ export default function Experience() {
   return (
     <Section>
       <SectionTitle>Experience</SectionTitle>
-      <div className="space-y-8">
-        {experiences.map((experience, index) => (
-          <div
-            key={`${experience.company}-${index}`}
-            className="border-l-2 border-emerald-600 pl-6 relative"
-          >
-            <div className="absolute -left-2 top-0 w-4 h-4 bg-emerald-600 rounded-full"></div>
+      <div className="space-y-6">
+        {experiences.map((experience, index) => {
+          const isExpanded = expandedItems.has(index);
 
-            <div className="space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div>
-                  <h3 className="text-xl font-medium text-gray-800">
-                    {experience.position}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    {experience.companyUrl ? (
-                      <a
-                        href={experience.companyUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
-                      >
-                        {experience.company}
-                      </a>
-                    ) : (
-                      <span className="text-emerald-600 font-medium">
-                        {experience.company}
+          return (
+            <div
+              key={`${experience.company}-${index}`}
+              className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-shadow duration-200"
+            >
+              <div className="p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-gray-800 mb-1">
+                      {experience.position}
+                    </h3>
+                    <div className="flex items-center gap-2 mb-2">
+                      {experience.companyUrl ? (
+                        <a
+                          href={experience.companyUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
+                        >
+                          {experience.company}
+                        </a>
+                      ) : (
+                        <span className="text-emerald-600 font-medium">
+                          {experience.company}
+                        </span>
+                      )}
+                      <span className="text-gray-400">•</span>
+                      <span className="text-gray-600 text-sm">
+                        {experience.location}
                       </span>
-                    )}
-                    <span className="text-gray-400">•</span>
-                    <span className="text-gray-600 text-sm">
-                      {experience.location}
-                    </span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-500 font-medium">
+                    {formatDuration(experience.duration)}
                   </div>
                 </div>
-                <div className="text-sm text-gray-500 font-medium">
-                  {formatDuration(experience.duration)}
-                </div>
+
+                {experience.technologies &&
+                  experience.technologies.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {experience.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                <button
+                  onClick={() => toggleExpanded(index)}
+                  className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors duration-200 text-sm font-medium"
+                >
+                  <span>{isExpanded ? "Show less" : "Show details"}</span>
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isExpanded ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
               </div>
 
-              <ul className="space-y-2">
-                {experience.description.map((item, itemIndex) => (
-                  <li
-                    key={itemIndex}
-                    className="text-gray-600 leading-relaxed flex items-start gap-2"
-                  >
-                    <span className="text-emerald-600 mt-2 text-xs">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {experience.technologies &&
-                experience.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {experience.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full"
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="px-6 pb-6 border-t border-gray-100 pt-4">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    Key Responsibilities & Achievements
+                  </h4>
+                  <ul className="space-y-2">
+                    {experience.description.map((item, itemIndex) => (
+                      <li
+                        key={itemIndex}
+                        className="text-gray-600 leading-relaxed flex items-start gap-2"
                       >
-                        {tech}
-                      </span>
+                        <span className="text-emerald-600 mt-2 text-xs">•</span>
+                        <span className="text-sm">{item}</span>
+                      </li>
                     ))}
-                  </div>
-                )}
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Section>
   );
