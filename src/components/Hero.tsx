@@ -4,6 +4,14 @@ export default function Hero() {
 
   return (
     <div className="text-center mb-12">
+      <div className="mb-8">
+        <img
+          src="/images/avatar.jpeg"
+          alt="Caleb Van Lue"
+          className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mx-auto border-4 border-emerald-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
+        />
+      </div>
+
       <h1 className="text-4xl sm:text-5xl font-light text-gray-900 mb-4">
         Caleb Van Lue
       </h1>
