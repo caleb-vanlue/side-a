@@ -137,7 +137,7 @@ export default function ReleaseGrid({
 
               <div className="flex-1 flex flex-col mt-2 p-3 text-center sm:text-left">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600 transition-colors duration-200">
+                  <p className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
                     {release.basic_information.title}
                   </p>
                   <p className="text-xs text-gray-600 truncate">
