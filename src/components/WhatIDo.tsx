@@ -6,12 +6,12 @@ export default function WhatIDo() {
     {
       title: "Backend Development",
       description:
-        "I specialize in building robust web services and APIs. My work focuses on creating scalable backend systems that handle real-world business requirements efficiently.",
+        "I work on building web services and APIs. I enjoy tackling the behind-the-scenes work that makes applications function well and handle the day-to-day demands of users.",
     },
     {
       title: "Database Design",
       description:
-        "I design and implement database architectures and data pipelines that ensure efficient data flow and storage. Performance and reliability are always top priorities.",
+        "I design database systems and work with data pipelines. My approach focuses on keeping things organized and making sure data flows where it needs to go without unnecessary complexity.",
     },
   ];
 
