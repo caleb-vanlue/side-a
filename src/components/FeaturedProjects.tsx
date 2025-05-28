@@ -1,7 +1,7 @@
 import { ExternalLink } from "./shared/ExternalLink";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { getTechColor } from "./shared/techColors"; // Import the color mapping
+import { getTechColor } from "./shared/techColors";
 
 export default function FeaturedProjects() {
   const projects = [
