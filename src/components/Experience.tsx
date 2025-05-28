@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
+import { getTechColor } from "./shared/techColors"; // Import the color mapping
 
 interface ExperienceItem {
   company: string;
@@ -134,7 +135,9 @@ export default function Experience() {
                       {experience.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-full"
+                          className={`px-2 py-1 text-xs rounded-full ${getTechColor(
+                            tech
+                          )}`}
                         >
                           {tech}
                         </span>
