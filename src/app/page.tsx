@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Granim from "granim";
 import {
   PlayerControls,
   ProjectCard,
@@ -11,19 +10,24 @@ import {
 import { Navigation } from "../components/layout";
 import { useResponsiveVinyl } from "../hooks/useResponsiveVinyl";
 import { VINYL_CONSTANTS } from "../lib/constants";
+import { useRecordPlayer } from "../components/RecordPlayerContext";
 
 export default function HomePage() {
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const granimRef = useRef<Granim | null>(null);
 
+  const { setIsPlaying } = useRecordPlayer();
   const { isDesktop, playingPosition, sizing } = useResponsiveVinyl();
 
   const isNeedleOnRecord =
     toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
   const isPlaying = isNeedleOnRecord || isAutoPlaying;
+
+  // Update the global playing state
+  useEffect(() => {
+    setIsPlaying(isPlaying);
+  }, [isPlaying, setIsPlaying]);
 
   const handleStart = () => {
     if (!isAutoPlaying) {
@@ -61,57 +65,8 @@ export default function HomePage() {
     }
   }, [toneArmRotation, targetRotation]);
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      granimRef.current = new Granim({
-        element: canvasRef.current,
-        direction: "radial",
-        isPausedWhenNotInView: true,
-        states: {
-          "default-state": {
-            gradients: [
-              ["#FFFFFF", "#FFFFFF"],
-              ["#FFFFFF", "#FFFFFF"],
-            ],
-            transitionSpeed: 500,
-            loop: false,
-          },
-          "playing-state": {
-            gradients: [
-              ["#2E5E3E", "#4A7C59"],
-              ["#4A7C59", "#87CEEB"],
-              ["#87CEEB", "#F5E6A3"],
-              ["#F5E6A3", "#6FA86F"],
-              ["#6FA86F", "#2E5E3E"],
-            ],
-            transitionSpeed: 4000,
-            loop: true,
-          },
-        },
-      });
-    }
-
-    return () => {
-      if (granimRef.current) {
-        granimRef.current.destroy();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (granimRef.current) {
-      if (isPlaying) {
-        granimRef.current.changeState("playing-state");
-      } else {
-        granimRef.current.changeState("default-state");
-      }
-    }
-  }, [isPlaying]);
-
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
       <div className="relative z-30">
         <Navigation />
       </div>
