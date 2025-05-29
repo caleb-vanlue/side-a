@@ -1,7 +1,5 @@
-// Update components/WhatIDo.tsx
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { ContentSection } from "./shared/ContentSection";
 
 export default function WhatIDo() {
   const services = [

@@ -24,7 +24,6 @@ export default function HomePage() {
     toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
   const isPlaying = isNeedleOnRecord || isAutoPlaying;
 
-  // Update the global playing state
   useEffect(() => {
     setIsPlaying(isPlaying);
   }, [isPlaying, setIsPlaying]);

@@ -31,7 +31,6 @@ export function RecordPlayerProvider({
   const granimRef = useRef<Granim | null>(null);
 
   useEffect(() => {
-    // Create canvas element
     const canvas = document.createElement("canvas");
     canvas.className = "fixed inset-0 w-full h-full";
     canvas.style.position = "fixed";
@@ -39,16 +38,15 @@ export function RecordPlayerProvider({
     canvas.style.left = "0";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
-    canvas.style.zIndex = "-10"; // Make sure it's behind everything
+    canvas.style.zIndex = "-10";
     canvas.style.pointerEvents = "none";
     document.body.appendChild(canvas);
     canvasRef.current = canvas;
 
-    // Initialize Granim
     granimRef.current = new Granim({
       element: canvas,
       direction: "radial",
-      isPausedWhenNotInView: false, // Make sure it plays even when not in view
+      isPausedWhenNotInView: false,
       states: {
         "default-state": {
           gradients: [
@@ -74,7 +72,6 @@ export function RecordPlayerProvider({
       },
     });
 
-    // Clean up function
     return () => {
       if (granimRef.current) {
         granimRef.current.destroy();
@@ -85,7 +82,6 @@ export function RecordPlayerProvider({
     };
   }, []);
 
-  // Update Granim state when isPlaying changes
   useEffect(() => {
     if (granimRef.current) {
       if (isPlaying) {

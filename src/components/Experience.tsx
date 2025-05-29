@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { getTechColor } from "./shared/techColors"; // Import the color mapping
+import { getTechColor } from "./shared/techColors";
 
 interface ExperienceItem {
   company: string;
