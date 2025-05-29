@@ -25,7 +25,7 @@ export default function Card({
   return (
     <div
       className={`
-        border border-gray-200/40 
+        border border-white/40 
         rounded-lg 
         bg-white/70 backdrop-blur-sm
         ${paddingClasses[padding]} 
@@ -33,6 +33,9 @@ export default function Card({
         ${onClick ? "cursor-pointer" : ""}
         ${className}
       `}
+      style={{
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+      }}
       onClick={onClick}
     >
       {children}

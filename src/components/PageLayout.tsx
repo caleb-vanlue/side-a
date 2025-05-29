@@ -2,7 +2,6 @@
 
 import useMediaQuery from "../hooks/useMediaQuery";
 import Navigation from "./Navigation";
-import { useRecordPlayer } from "./RecordPlayerContext";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -18,7 +17,6 @@ export default function PageLayout({
   withoutPadding = false,
 }: PageLayoutProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const { isPlaying } = useRecordPlayer();
 
   return (
     <main className={`min-h-screen ${className}`}>

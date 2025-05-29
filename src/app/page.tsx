@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   PlayerControls,
   ProjectCard,
@@ -13,20 +13,29 @@ import { VINYL_CONSTANTS } from "../lib/constants";
 import { useRecordPlayer } from "../components/RecordPlayerContext";
 
 export default function HomePage() {
-  const [toneArmRotation, setToneArmRotation] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(false);
-  const [targetRotation, setTargetRotation] = useState<number | null>(null);
+  const {
+    isPlaying,
+    setIsPlaying,
+    isAutoPlaying,
+    setIsAutoPlaying,
+    toneArmRotation,
+    setToneArmRotation,
+    targetRotation,
+    setTargetRotation,
+  } = useRecordPlayer();
 
-  const { setIsPlaying } = useRecordPlayer();
   const { isDesktop, playingPosition, sizing } = useResponsiveVinyl();
 
   const isNeedleOnRecord =
     toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
-  const isPlaying = isNeedleOnRecord || isAutoPlaying;
 
   useEffect(() => {
-    setIsPlaying(isPlaying);
-  }, [isPlaying, setIsPlaying]);
+    if (isNeedleOnRecord || isAutoPlaying) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [isNeedleOnRecord, isAutoPlaying, setIsPlaying]);
 
   const handleStart = () => {
     if (!isAutoPlaying) {
@@ -62,7 +71,7 @@ export default function HomePage() {
       }, 100);
       return () => clearTimeout(timeoutId);
     }
-  }, [toneArmRotation, targetRotation]);
+  }, [toneArmRotation, targetRotation, setTargetRotation]);
 
   return (
     <main className="relative min-h-screen overflow-hidden">
