@@ -16,21 +16,21 @@ export default function PlayerControls({
       <div className="flex flex-row lg:flex-col gap-4 p-3 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
         <button
           onClick={onStart}
-          disabled={isAutoPlaying}
+          disabled={isPlaying || isAutoPlaying}
           className={`
             group relative w-14 h-14 rounded-full transition-all duration-300 ease-out
             ${
-              isAutoPlaying
+              isPlaying || isAutoPlaying
                 ? "bg-gray-600 cursor-not-allowed opacity-60"
                 : "bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95"
             }
           `}
-          aria-label={isAutoPlaying ? "Currently playing" : "Start playback"}
+          aria-label={isPlaying ? "Currently playing" : "Start playback"}
         >
           <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <svg
             className={`w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-              isAutoPlaying
+              isPlaying || isAutoPlaying
                 ? "text-gray-400"
                 : "text-white group-hover:scale-110"
             }`}
@@ -46,11 +46,11 @@ export default function PlayerControls({
 
         <button
           onClick={onStop}
-          disabled={!isPlaying}
+          disabled={!isPlaying && !isAutoPlaying}
           className={`
             group relative w-14 h-14 rounded-full transition-all duration-300 ease-out
             ${
-              !isPlaying
+              !isPlaying && !isAutoPlaying
                 ? "bg-gray-600 cursor-not-allowed opacity-60"
                 : "bg-gradient-to-br from-red-500 to-red-600 hover:from-red-400 hover:to-red-500 hover:scale-110 hover:shadow-lg hover:shadow-red-500/25 active:scale-95"
             }
@@ -60,7 +60,9 @@ export default function PlayerControls({
           <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <svg
             className={`w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-              !isPlaying ? "text-gray-400" : "text-white group-hover:scale-110"
+              !isPlaying && !isAutoPlaying
+                ? "text-gray-400"
+                : "text-white group-hover:scale-110"
             }`}
             fill="currentColor"
             viewBox="0 0 20 20"
