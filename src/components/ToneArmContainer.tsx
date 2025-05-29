@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import ToneArm from "./ToneArm";
 import { VINYL_CONSTANTS } from "../lib/constants";
+import { useRecordPlayer } from "./RecordPlayerContext";
 
 interface ToneArmContainerProps {
   onRotationChange?: (rotation: number) => void;
@@ -17,12 +18,14 @@ export default function ToneArmContainer({
   targetRotation = null,
   onDragStart,
 }: ToneArmContainerProps) {
-  const [rotation, setRotation] = useState(0);
+  const { toneArmRotation: contextRotation } = useRecordPlayer();
+
+  const [rotation, setRotation] = useState(contextRotation);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
   const animationRef = useRef<number | null>(null);
-  const lastRotationRef = useRef(0);
+  const lastRotationRef = useRef(contextRotation);
 
   const resetContainerStyle = useCallback(() => {
     if (containerRef.current) {

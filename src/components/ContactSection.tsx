@@ -1,12 +1,18 @@
+import { ContentSection } from "./shared";
 import { Button } from "./ui";
 
 export default function ContactSection() {
   return (
-    <section className="text-center">
-      <h2 className="text-2xl font-light text-gray-900 mb-4">
+    <ContentSection className="text-center bg-white/50">
+      <h2
+        className="text-2xl font-light text-gray-900 mb-4"
+        style={{
+          textShadow: "0 1px 2px rgba(255, 255, 255, 0.8)",
+        }}
+      >
         Let&apos;s Build Something Cool
       </h2>
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-700 mb-6">
         Have an interesting project idea or want to collaborate on something
         fun?
       </p>
@@ -14,7 +20,7 @@ export default function ContactSection() {
         <Button
           variant="primary"
           size="lg"
-          className="inline-flex items-center gap-2"
+          className="inline-flex items-center gap-2 shadow-lg"
         >
           <svg
             className="w-5 h-5"
@@ -32,6 +38,6 @@ export default function ContactSection() {
           Let&apos;s Chat
         </Button>
       </a>
-    </section>
+    </ContentSection>
   );
 }

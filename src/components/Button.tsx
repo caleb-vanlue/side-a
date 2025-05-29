@@ -27,7 +27,8 @@ export default function Button({
     primary: "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95",
     secondary:
       "bg-zinc-800 bg-opacity-90 text-zinc-200 hover:bg-zinc-700 active:scale-95",
-    tertiary: "bg-gray-100 text-gray-700 hover:bg-gray-200 active:scale-95",
+    tertiary:
+      "bg-white/70 backdrop-blur-sm text-gray-700 hover:bg-white/90 active:scale-95 border border-white/40",
     icon: "rounded-full bg-zinc-900 bg-opacity-90 text-zinc-200 hover:bg-zinc-800 active:scale-95",
   };
 

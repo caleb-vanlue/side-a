@@ -16,7 +16,10 @@ function DiscogsBanner({ className = "" }: { className?: string }) {
       href="https://www.discogs.com"
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex items-center justify-center gap-3 py-3 px-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 hover:shadow-md transition-all duration-200 cursor-pointer ${className}`}
+      className={`flex items-center justify-center gap-3 py-3 px-6 bg-white/70 backdrop-blur-sm border border-white/40 rounded-lg shadow-sm hover:bg-white/80 transition-all duration-300 ${className}`}
+      style={{
+        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.05)",
+      }}
     >
       <span className="text-gray-600 text-sm font-medium">Powered by</span>
       <div className="flex items-center gap-2">
@@ -44,9 +47,21 @@ export default function CollectionLayout({
       </div>
 
       {title && (
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-light text-gray-900 mb-2">{title}</h1>
-          {description && <p className="text-gray-600">{description}</p>}
+        <div
+          className="text-center mb-8 bg-white/60 backdrop-blur-[2px] p-5 rounded-lg border border-white/40 max-w-3xl mx-auto"
+          style={{
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.07)",
+          }}
+        >
+          <h1
+            className="text-3xl font-light text-gray-900 mb-2"
+            style={{
+              textShadow: "0 1px 2px rgba(255, 255, 255, 0.6)",
+            }}
+          >
+            {title}
+          </h1>
+          {description && <p className="text-gray-700">{description}</p>}
         </div>
       )}
 

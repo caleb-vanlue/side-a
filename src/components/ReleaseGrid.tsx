@@ -16,27 +16,27 @@ interface ReleaseGridProps {
 }
 
 const GridKey = () => (
-  <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+  <div className="mb-6 p-4 bg-white/60 backdrop-blur-sm rounded-lg border border-white/40 shadow-sm">
     <h3 className="text-sm font-medium text-gray-800 mb-3">Legend:</h3>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 bg-emerald-600 rounded"></div>
-        <span className="text-gray-600">Vinyl color/variant</span>
+        <span className="text-gray-700">Vinyl color/variant</span>
       </div>
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 bg-green-50 border border-green-200 rounded"></div>
-        <span className="text-gray-600">Personal notes</span>
+        <span className="text-gray-700">Personal notes</span>
       </div>
       <div className="flex items-center gap-2">
         <div className="flex">
           <span className="text-yellow-400">★</span>
           <span className="text-gray-300">★</span>
         </div>
-        <span className="text-gray-600">My rating</span>
+        <span className="text-gray-700">My rating</span>
       </div>
       <div className="flex items-center gap-2">
         <div className="w-3 h-3 bg-gray-600 rounded"></div>
-        <span className="text-gray-600">Format info (# of LPs)</span>
+        <span className="text-gray-700">Format info (# of LPs)</span>
       </div>
     </div>
   </div>
@@ -102,7 +102,7 @@ export default function ReleaseGrid({
             <Card
               key={release.id}
               onClick={() => handleReleaseClick(release)}
-              className="group p-0 h-full flex flex-col"
+              className="group p-0 h-full flex flex-col bg-white/80 hover:bg-white/90 border-white/40 shadow-sm hover:shadow-md transition-all duration-300"
               padding="none"
             >
               <div className="aspect-square relative overflow-hidden rounded-t-lg">
@@ -188,11 +188,11 @@ export default function ReleaseGrid({
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-8 space-y-4">
+        <div className="mt-8 space-y-4 bg-white/50 backdrop-blur-[2px] p-4 rounded-lg border border-white/40 shadow-sm">
           <div className="flex justify-center text-xs text-gray-600">
             Updated daily
           </div>
-          <div className="flex justify-center text-sm text-gray-600">
+          <div className="flex justify-center text-sm text-gray-700 font-medium">
             Showing {startItem.toLocaleString()}-{endItem.toLocaleString()} of{" "}
             {totalItems.toLocaleString()} items
           </div>
@@ -203,7 +203,9 @@ export default function ReleaseGrid({
               onClick={() => onPageChange(1)}
               disabled={currentPage === 1}
               className={
-                currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                currentPage === 1
+                  ? "opacity-50 cursor-not-allowed bg-white/80"
+                  : "bg-white/80 hover:bg-white/90"
               }
             >
               First
@@ -213,13 +215,15 @@ export default function ReleaseGrid({
               onClick={() => onPageChange(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
               className={
-                currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                currentPage === 1
+                  ? "opacity-50 cursor-not-allowed bg-white/80"
+                  : "bg-white/80 hover:bg-white/90"
               }
             >
               Previous
             </Button>
 
-            <span className="px-4 py-2 text-sm text-gray-600">
+            <span className="px-4 py-2 text-sm text-gray-700 bg-white/70 rounded-md">
               Page {currentPage} of {totalPages}
             </span>
 
@@ -231,8 +235,8 @@ export default function ReleaseGrid({
               disabled={currentPage === totalPages}
               className={
                 currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                  ? "opacity-50 cursor-not-allowed bg-white/80"
+                  : "bg-white/80 hover:bg-white/90"
               }
             >
               Next
@@ -244,8 +248,8 @@ export default function ReleaseGrid({
               disabled={currentPage === totalPages}
               className={
                 currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                  ? "opacity-50 cursor-not-allowed bg-white/80"
+                  : "bg-white/80 hover:bg-white/90"
               }
             >
               Last

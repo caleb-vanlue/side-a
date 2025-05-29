@@ -19,7 +19,7 @@ export default function PageLayout({
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   return (
-    <main className={`min-h-screen bg-white ${className}`}>
+    <main className={`min-h-screen ${className}`}>
       <Navigation />
 
       <div

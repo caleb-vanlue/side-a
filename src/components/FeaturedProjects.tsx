@@ -48,7 +48,10 @@ export default function FeaturedProjects() {
         {projects.map((project) => (
           <div
             key={project.title}
-            className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200"
+            className="border border-white/40 rounded-lg p-6 hover:shadow-md transition-all duration-300 bg-white/60 backdrop-blur-[2px]"
+            style={{
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+            }}
           >
             <div className="flex items-start justify-between mb-4">
               <h3 className="text-xl font-medium text-gray-800">

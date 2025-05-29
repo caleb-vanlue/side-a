@@ -59,7 +59,12 @@ export default function TechnicalSkills() {
   return (
     <Section>
       <SectionTitle>Technical Skills</SectionTitle>
-      <div className="space-y-6">
+      <div
+        className="space-y-6 bg-white/50 backdrop-blur-[2px] p-6 rounded-lg border border-white/30"
+        style={{
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.05)",
+        }}
+      >
         <div>
           <h3 className="text-lg font-medium text-gray-800 mb-4">
             Current Stack

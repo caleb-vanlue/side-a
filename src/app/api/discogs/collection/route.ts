@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
   const perPage = searchParams.get("per_page") || "50";
 
   const pageNum = Math.max(1, parseInt(page));
-  const perPageNum = Math.min(200, Math.max(1, parseInt(perPage))); // Cap at 200 items per page
+  const perPageNum = Math.min(100, Math.max(1, parseInt(perPage)));
   const offset = (pageNum - 1) * perPageNum;
 
   try {
@@ -174,7 +174,7 @@ function mapSortField(sort: string, type: string): string {
     artist: "primaryArtist",
     title: "title",
     year: "year",
-    rating: type === "collection" ? "rating" : "dateAdded", // rating only available for collection
+    rating: type === "collection" ? "rating" : "dateAdded",
     genre: "primaryGenre",
     format: "primaryFormat",
   };
