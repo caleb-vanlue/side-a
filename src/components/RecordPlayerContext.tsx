@@ -8,7 +8,6 @@ import React, {
   useRef,
 } from "react";
 import Granim from "granim";
-import { VINYL_CONSTANTS } from "../lib/constants";
 
 interface RecordPlayerContextType {
   isPlaying: boolean;

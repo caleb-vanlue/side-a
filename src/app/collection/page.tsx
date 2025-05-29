@@ -46,13 +46,24 @@ function CollectionTabs() {
 
   useEffect(() => {
     fetchCollection();
-  }, [collectionPage, collectionSortValue, collectionPageSize]);
+  }, [
+    collectionPage,
+    collectionSortValue,
+    collectionPageSize,
+    fetchCollection,
+  ]);
 
   useEffect(() => {
     if (activeTab === "wantlist") {
       fetchWantlist();
     }
-  }, [activeTab, wantlistPage, wantlistSortValue, wantlistPageSize]);
+  }, [
+    activeTab,
+    wantlistPage,
+    wantlistSortValue,
+    wantlistPageSize,
+    fetchWantlist,
+  ]);
 
   return (
     <>

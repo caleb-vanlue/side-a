@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Hero() {
   const yearsExperience =
     new Date().getFullYear() - new Date("2022-05-09").getFullYear();
@@ -6,9 +8,11 @@ export default function Hero() {
     <div className="text-center mb-12">
       <div className="mb-8 inline-block">
         <div className="relative p-1 rounded-full bg-gradient-to-r from-emerald-200/50 to-blue-200/50 backdrop-blur-sm">
-          <img
+          <Image
             src="/images/avatar.jpeg"
             alt="Caleb Van Lue"
+            width={160}
+            height={160}
             className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300"
           />
         </div>
