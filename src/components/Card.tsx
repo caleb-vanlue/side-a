@@ -25,10 +25,11 @@ export default function Card({
   return (
     <div
       className={`
-        border border-gray-200 
+        border border-gray-200/40 
         rounded-lg 
+        bg-white/70 backdrop-blur-sm
         ${paddingClasses[padding]} 
-        ${hover ? "hover:shadow-md transition-shadow duration-200" : ""} 
+        ${hover ? "hover:shadow-md transition-all duration-300" : ""} 
         ${onClick ? "cursor-pointer" : ""}
         ${className}
       `}

@@ -57,30 +57,30 @@ function CollectionTabs() {
   return (
     <>
       <div className="flex justify-center mb-8">
-        <div className="inline-flex rounded-lg bg-gray-100 p-1">
+        <div className="inline-flex rounded-lg backdrop-blur-md p-1 bg-white/50 border border-white/40 shadow-sm">
           <button
             onClick={() => setActiveTab("collection")}
             className={`
-              px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-200 text-sm sm:text-base
-              ${
-                activeTab === "collection"
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }
-            `}
+        px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
+        ${
+          activeTab === "collection"
+            ? "bg-white/80 text-gray-900 shadow-sm"
+            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
+        }
+      `}
           >
             Collection
           </button>
           <button
             onClick={() => setActiveTab("wantlist")}
             className={`
-              px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-200 text-sm sm:text-base
-              ${
-                activeTab === "wantlist"
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }
-            `}
+        px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
+        ${
+          activeTab === "wantlist"
+            ? "bg-white/80 text-gray-900 shadow-sm"
+            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
+        }
+      `}
           >
             Wantlist
           </button>

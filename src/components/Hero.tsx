@@ -4,30 +4,44 @@ export default function Hero() {
 
   return (
     <div className="text-center mb-12">
-      <div className="mb-8">
-        <img
-          src="/images/avatar.jpeg"
-          alt="Caleb Van Lue"
-          className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover mx-auto border-4 border-emerald-100 shadow-lg hover:shadow-xl transition-shadow duration-300"
-        />
+      <div className="mb-8 inline-block">
+        <div className="relative p-1 rounded-full bg-gradient-to-r from-emerald-200/50 to-blue-200/50 backdrop-blur-sm">
+          <img
+            src="/images/avatar.jpeg"
+            alt="Caleb Van Lue"
+            className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300"
+          />
+        </div>
       </div>
 
-      <h1 className="text-4xl sm:text-5xl font-light text-gray-900 mb-4">
-        Caleb Van Lue
-      </h1>
-      <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-        Software Engineer at{" "}
-        <a
-          href="https://theferg.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50"
+      <div
+        className="bg-white/50 backdrop-blur-[2px] p-6 rounded-lg inline-block border border-white/30"
+        style={{
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <h1
+          className="text-4xl sm:text-5xl font-light text-gray-900 mb-4"
+          style={{
+            textShadow: "0 1px 3px rgba(255, 255, 255, 0.8)",
+          }}
         >
-          Ferguson
-        </a>{" "}
-        with {yearsExperience} years of experience building web services,
-        databases, and user interfaces. Based in Fort Wayne, Indiana.
-      </p>
+          Caleb Van Lue
+        </h1>
+        <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+          Software Engineer at{" "}
+          <a
+            href="https://theferg.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
+          >
+            Ferguson
+          </a>{" "}
+          with {yearsExperience} years of experience building web services,
+          databases, and user interfaces. Based in Fort Wayne, Indiana.
+        </p>
+      </div>
     </div>
   );
 }

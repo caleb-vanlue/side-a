@@ -63,9 +63,13 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 shadow-md backdrop-blur-md py-3"
-          : "bg-white/10 backdrop-blur-sm py-5"
+          ? "bg-white/80 shadow-md backdrop-blur-md py-3"
+          : "bg-white/25 backdrop-blur-sm py-5"
       }`}
+      style={{
+        boxShadow: scrolled ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
+        borderBottom: !scrolled ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+      }}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
         <Link href="/" className="text-xl font-medium text-gray-900">

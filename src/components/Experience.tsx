@@ -95,7 +95,10 @@ export default function Experience() {
           return (
             <div
               key={`${experience.company}-${index}`}
-              className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-shadow duration-200"
+              className="border border-white/40 rounded-lg overflow-hidden hover:shadow-sm transition-all duration-300 bg-white/60 backdrop-blur-[2px]"
+              style={{
+                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+              }}
             >
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">

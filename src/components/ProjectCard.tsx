@@ -17,7 +17,7 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="max-w-[280px]"
         >
-          <Card className="bg-zinc-900 bg-opacity-80 backdrop-blur-md text-white border-zinc-800 shadow-lg overflow-hidden">
+          <Card className="bg-zinc-900/90 backdrop-blur-md text-white border-zinc-800 shadow-lg overflow-hidden">
             <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-green-600 -mt-6 mb-3"></div>
 
             <div className="flex items-center mb-3">

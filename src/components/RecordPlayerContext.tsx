@@ -60,13 +60,15 @@ export function RecordPlayerProvider({
         },
         "playing-state": {
           gradients: [
-            ["#2E5E3E", "#4A7C59"],
-            ["#4A7C59", "#87CEEB"],
-            ["#87CEEB", "#F5E6A3"],
-            ["#F5E6A3", "#6FA86F"],
-            ["#6FA86F", "#2E5E3E"],
+            ["#E0F2F1", "#B2DFDB"], // Light teal/mint
+            ["#B2DFDB", "#BBDEFB"], // Mint to light blue
+            ["#BBDEFB", "#D1C4E9"], // Light blue to lavender
+            ["#D1C4E9", "#F8BBD0"], // Lavender to light pink
+            ["#F8BBD0", "#FFECB3"], // Light pink to soft yellow
+            ["#FFECB3", "#C8E6C9"], // Soft yellow to light green
+            ["#C8E6C9", "#E0F2F1"], // Light green back to light teal
           ],
-          transitionSpeed: 4000,
+          transitionSpeed: 5000,
           loop: true,
         },
       },
