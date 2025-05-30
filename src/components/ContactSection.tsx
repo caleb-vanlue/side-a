@@ -20,7 +20,7 @@ export default function ContactSection() {
         <Button
           variant="primary"
           size="lg"
-          className="inline-flex items-center gap-2 shadow-lg"
+          className="inline-flex items-center gap-2 shadow-lg cursor-pointer"
         >
           <svg
             className="w-5 h-5"

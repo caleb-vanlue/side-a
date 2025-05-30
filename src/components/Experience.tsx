@@ -150,7 +150,7 @@ export default function Experience() {
 
                 <button
                   onClick={() => toggleExpanded(index)}
-                  className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors duration-200 text-sm font-medium"
+                  className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors duration-200 text-sm font-medium cursor-pointer"
                 >
                   <span>{isExpanded ? "Show less" : "Show details"}</span>
                   <svg
