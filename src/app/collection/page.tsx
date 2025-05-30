@@ -72,12 +72,12 @@ function CollectionTabs() {
           <button
             onClick={() => setActiveTab("collection")}
             className={`
-        px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
-        ${
-          activeTab === "collection"
-            ? "bg-white/80 text-gray-900 shadow-sm"
-            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
-        }
+      px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
+      ${
+        activeTab === "collection"
+          ? "bg-white/80 text-gray-900 shadow-sm"
+          : "text-gray-600 hover:text-gray-800 hover:bg-white/30 cursor-pointer"
+      }
       `}
           >
             Collection
@@ -85,12 +85,12 @@ function CollectionTabs() {
           <button
             onClick={() => setActiveTab("wantlist")}
             className={`
-        px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
-        ${
-          activeTab === "wantlist"
-            ? "bg-white/80 text-gray-900 shadow-sm"
-            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
-        }
+      px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-300 text-sm sm:text-base
+      ${
+        activeTab === "wantlist"
+          ? "bg-white/80 text-gray-900 shadow-sm"
+          : "text-gray-600 hover:text-gray-800 hover:bg-white/30 cursor-pointer"
+      }
       `}
           >
             Wantlist
