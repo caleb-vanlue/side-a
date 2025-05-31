@@ -1,7 +1,7 @@
 import { ExternalLink } from "./shared/ExternalLink";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { getTechColor } from "./shared/techColors";
+import { TechTag } from "./shared/TechTag";
 
 export default function FeaturedProjects() {
   const projects = [
@@ -94,14 +94,7 @@ export default function FeaturedProjects() {
             </p>
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className={`px-2 py-1 text-xs rounded-full ${getTechColor(
-                    tag
-                  )}`}
-                >
-                  {tag}
-                </span>
+                <TechTag key={tag} technology={tag} />
               ))}
             </div>
           </div>

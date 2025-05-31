@@ -29,12 +29,53 @@ export const TECH_COLORS = {
   Railway: "bg-slate-100 text-slate-700",
   Vercel: "bg-zinc-100 text-zinc-700",
   "Google Cloud": "bg-yellow-100 text-yellow-700",
+  Docker: "bg-blue-100 text-blue-700",
 
   // CMS & Tools
   WordPress: "bg-blue-100 text-blue-700",
   "Apache Kafka": "bg-orange-100 text-orange-700",
   TypeORM: "bg-green-100 text-green-700",
   "Plex Media Server": "bg-purple-100 text-purple-700",
+} as const;
+
+export const TECH_URLS = {
+  // Frontend Frameworks & Libraries
+  "Next.js": "https://nextjs.org",
+  "Vue.js": "https://vuejs.org",
+  React: "https://reactjs.org",
+  SwiftUI: "https://developer.apple.com/xcode/swiftui/",
+  "Jetpack Compose": "https://developer.android.com/jetpack/compose",
+
+  // Styling
+  "Tailwind CSS": "https://tailwindcss.com",
+
+  // Backend Frameworks
+  NestJS: "https://nestjs.com",
+  "ASP.NET": "https://dotnet.microsoft.com/apps/aspnet",
+
+  // Languages
+  TypeScript: "https://www.typescriptlang.org",
+  "C#": "https://docs.microsoft.com/en-us/dotnet/csharp/",
+
+  // Databases
+  PostgreSQL: "https://www.postgresql.org",
+
+  // APIs & Services
+  GraphQL: "https://graphql.org",
+  OpenAPI: "https://www.openapis.org",
+  "Spotify Web API": "https://developer.spotify.com/documentation/web-api/",
+
+  // Infrastructure & Deployment
+  Railway: "https://railway.app",
+  Vercel: "https://vercel.com",
+  "Google Cloud": "https://cloud.google.com",
+  Docker: "https://www.docker.com",
+
+  // CMS & Tools
+  WordPress: "https://wordpress.org",
+  "Apache Kafka": "https://kafka.apache.org",
+  TypeORM: "https://typeorm.io",
+  "Plex Media Server": "https://www.plex.tv",
 } as const;
 
 const FALLBACK_COLORS = [
@@ -60,4 +101,8 @@ export function getTechColor(technology: string): string {
 
   const colorIndex = Math.abs(hash) % FALLBACK_COLORS.length;
   return FALLBACK_COLORS[colorIndex];
+}
+
+export function getTechUrl(technology: string): string | undefined {
+  return TECH_URLS[technology as keyof typeof TECH_URLS];
 }
