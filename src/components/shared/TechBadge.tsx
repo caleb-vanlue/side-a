@@ -1,4 +1,5 @@
 import { IconType } from "react-icons";
+import { getTechColor } from "./techColors";
 
 export const TechBadge = ({
   name,
@@ -14,10 +15,12 @@ export const TechBadge = ({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 bg-zinc-800 text-zinc-200 px-3 py-2 rounded-lg hover:bg-zinc-700 transition-colors duration-200 cursor-pointer"
+      className={`flex items-center gap-2 px-3 py-2 rounded-lg hover:opacity-80 transition-opacity duration-200 cursor-pointer ${getTechColor(
+        name
+      )}`}
     >
-      <span className="inline-flex items-center justify-center w-8 h-8 text-lg">
-        <Icon className="w-5 h-5" />
+      <span className="inline-flex items-center justify-center w-5 h-5">
+        <Icon className="w-4 h-4" />
       </span>
       <span className="text-sm font-medium">{name}</span>
     </a>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
-import { getTechColor } from "./shared/techColors";
+import { TechTag } from "./shared/TechTag";
 
 interface ExperienceItem {
   company: string;
@@ -136,14 +136,7 @@ export default function Experience() {
                   experience.technologies.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-4">
                       {experience.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className={`px-2 py-1 text-xs rounded-full ${getTechColor(
-                            tech
-                          )}`}
-                        >
-                          {tech}
-                        </span>
+                        <TechTag key={tech} technology={tech} />
                       ))}
                     </div>
                   )}
