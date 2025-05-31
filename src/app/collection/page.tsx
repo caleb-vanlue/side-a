@@ -76,7 +76,7 @@ function CollectionTabs() {
         ${
           activeTab === "collection"
             ? "bg-white/80 text-gray-900 shadow-sm"
-            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
+            : "text-gray-600 hover:text-gray-800 hover:bg-white/30 cursor-pointer"
         }
       `}
           >
@@ -89,7 +89,7 @@ function CollectionTabs() {
         ${
           activeTab === "wantlist"
             ? "bg-white/80 text-gray-900 shadow-sm"
-            : "text-gray-600 hover:text-gray-800 hover:bg-white/30"
+            : "text-gray-600 hover:text-gray-800 hover:bg-white/30 cursor-pointer"
         }
       `}
           >
