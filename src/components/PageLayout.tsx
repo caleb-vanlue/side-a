@@ -26,7 +26,7 @@ export default function PageLayout({
         className={`
           container mx-auto 
           ${withoutPadding ? "" : "px-4 py-8"} 
-          ${isDesktop ? "pt-20" : ""} 
+          ${isDesktop ? "pt-20" : "pt-17"} 
           ${containerClassName}
         `}
       >

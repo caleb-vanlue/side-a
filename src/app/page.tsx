@@ -82,10 +82,10 @@ export default function HomePage() {
       {isNeedleOnRecord && (
         <div
           className={`
-          fixed z-20 
-          ${isDesktop ? "top-24 right-10" : "top-6 right-4"}
-          transition-all duration-500 ease-in-out
-        `}
+            fixed z-20 
+            ${isDesktop ? "top-24 right-10" : "top-20 right-4"}
+            transition-all duration-500 ease-in-out
+          `}
         >
           <ProjectCard isVisible={true} />
         </div>
@@ -93,7 +93,7 @@ export default function HomePage() {
 
       <div
         className={`relative z-10 flex min-h-screen flex-col items-center justify-center p-4 ${
-          isDesktop ? "pt-24" : "pt-16"
+          isDesktop ? "pt-24" : "pt-28"
         }`}
       >
         <div
