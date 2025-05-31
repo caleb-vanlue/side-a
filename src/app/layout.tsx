@@ -4,6 +4,7 @@ import "./globals.css";
 import GitHubBadge from "../components/GitHubBadge";
 import { ThemeProvider } from "../components/ThemeContext";
 import { RecordPlayerProvider } from "../components/RecordPlayerContext";
+import Footer from "../components/Footer";
 
 const handwritingFont = localFont({
   src: "../../public/fonts/Myfont-Regular.otf",
@@ -36,6 +37,7 @@ export default function RootLayout({
             <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
           </RecordPlayerProvider>
         </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
