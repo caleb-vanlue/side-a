@@ -32,7 +32,7 @@ export default function CollectionControls({
           <select
             value={sortValue}
             onChange={(e) => onSortChange(e.target.value)}
-            className="px-3 py-1.5 text-sm border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-w-[200px] shadow-sm cursor-pointer"
+            className="px-3 py-1.5 text-sm border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 min-w-[200px] shadow-sm"
           >
             {sortOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -47,7 +47,7 @@ export default function CollectionControls({
           <select
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
-            className="px-3 py-1.5 text-sm border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm cursor-pointer"
+            className="px-3 py-1.5 text-sm border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm"
           >
             {pageSizeOptions.map((size) => (
               <option key={size} value={size}>

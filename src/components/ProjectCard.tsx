@@ -1,3 +1,4 @@
+// src/components/ProjectCard.tsx
 import { motion, AnimatePresence } from "framer-motion";
 import Card from "./Card";
 import Button from "./Button";

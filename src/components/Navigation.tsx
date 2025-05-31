@@ -1,19 +1,19 @@
+// src/components/Navigation.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import HamburgerButton from "./HamburgerButton";
-import SideDrawer from "./SideDrawer";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { NAVIGATION_LINKS, EXTERNAL_LINKS } from "../lib/constants";
 
 export default function Navigation() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -31,32 +31,113 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [scrolled]);
 
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
-  };
+  useEffect(() => {
+    // Close menu when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
 
-  const handleLinkClick = () => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Close menu when path changes
+  useEffect(() => {
     setMenuOpen(false);
-  };
+  }, [pathname]);
 
   if (!mounted) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-40 bg-white/10 backdrop-blur-sm py-5">
-        <div className="container mx-auto px-6 flex justify-between items-center">
+        <div className="container mx-auto px-6 flex justify-center items-center">
           <Link href="/" className="text-xl font-medium text-gray-900">
             Caleb Van Lue
           </Link>
-          <div className="h-6" />
         </div>
       </nav>
     );
   }
 
-  const mobileMenu = (
-    <>
-      <HamburgerButton isOpen={menuOpen} onClick={handleMenuToggle} />
-      <SideDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-    </>
+  const mobileNav = (
+    <div ref={navRef} className="fixed top-0 left-0 right-0 z-50">
+      <nav
+        onClick={() => setMenuOpen(!menuOpen)}
+        className={`transition-all duration-300 cursor-pointer ${
+          scrolled
+            ? "bg-white/80 shadow-md backdrop-blur-md py-3"
+            : "bg-white/40 backdrop-blur-sm py-4"
+        }`}
+        style={{
+          boxShadow: scrolled ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
+          borderBottom: !scrolled
+            ? "1px solid rgba(255, 255, 255, 0.2)"
+            : "none",
+        }}
+      >
+        <div className="container mx-auto px-4 flex justify-center items-center relative">
+          <span className="text-xl font-medium text-gray-900">
+            Caleb Van Lue
+          </span>
+          <svg
+            className={`w-4 h-4 text-gray-800 absolute right-4 top-1/2 transform -translate-y-1/2 transition-transform duration-200 ${
+              menuOpen ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </nav>
+
+      <div
+        className={`bg-white/90 backdrop-blur-md shadow-lg border-b border-white/40 overflow-hidden transition-all duration-300 ease-in-out ${
+          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="container mx-auto px-4 py-2">
+          {NAVIGATION_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`block py-3 text-center text-base ${
+                pathname === link.href
+                  ? "text-emerald-600 font-medium border-b-2 border-emerald-600 mx-8"
+                  : "text-gray-800 hover:text-emerald-600 border-b border-gray-100"
+              } transition-colors duration-200`}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {EXTERNAL_LINKS.map((link, index) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`block py-3 text-center text-base text-gray-800 hover:text-emerald-600 transition-colors duration-200 ${
+                index < EXTERNAL_LINKS.length - 1
+                  ? "border-b border-gray-100"
+                  : ""
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 
   const desktopNav = (
@@ -64,7 +145,7 @@ export default function Navigation() {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled
           ? "bg-white/80 shadow-md backdrop-blur-md py-3"
-          : "bg-white/25 backdrop-blur-sm py-5"
+          : "bg-white/25 backdrop-blur-sm py-4"
       }`}
       style={{
         boxShadow: scrolled ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
@@ -81,7 +162,6 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
-              onClick={handleLinkClick}
               className={`text-base font-medium transition-colors duration-200 ${
                 pathname === link.href
                   ? "text-gray-900 border-b-2 border-emerald-600"
@@ -108,5 +188,5 @@ export default function Navigation() {
     </nav>
   );
 
-  return <>{isDesktop ? desktopNav : mobileMenu}</>;
+  return isDesktop ? desktopNav : mobileNav;
 }
