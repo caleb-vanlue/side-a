@@ -7,7 +7,7 @@ import {
   VinylRecord,
   ToneArmContainer,
 } from "../components";
-import { Navigation } from "../components/layout";
+import { GitHubBadge, Navigation } from "../components/layout";
 import { useResponsiveVinyl } from "../hooks/useResponsiveVinyl";
 import { VINYL_CONSTANTS } from "../lib/constants";
 import { useRecordPlayer } from "../components/RecordPlayerContext";
@@ -131,6 +131,7 @@ export default function HomePage() {
           isAutoPlaying={isAutoPlaying}
         />
       </div>
+      <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
     </main>
   );
 }

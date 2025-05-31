@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import GitHubBadge from "../components/GitHubBadge";
 import { ThemeProvider } from "../components/ThemeContext";
 import { RecordPlayerProvider } from "../components/RecordPlayerContext";
+import Footer from "../components/Footer";
 
 const handwritingFont = localFont({
   src: "../../public/fonts/Myfont-Regular.otf",
@@ -31,11 +31,9 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${handwritingFont.variable} antialiased`}>
         <ThemeProvider>
-          <RecordPlayerProvider>
-            {children}
-            <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
-          </RecordPlayerProvider>
+          <RecordPlayerProvider>{children}</RecordPlayerProvider>
         </ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
