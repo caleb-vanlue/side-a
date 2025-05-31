@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import GitHubBadge from "../components/GitHubBadge";
 import { ThemeProvider } from "../components/ThemeContext";
 import { RecordPlayerProvider } from "../components/RecordPlayerContext";
 import Footer from "../components/Footer";
