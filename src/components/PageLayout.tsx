@@ -25,7 +25,7 @@ export default function PageLayout({
       <div
         className={`
           container mx-auto 
-          ${withoutPadding ? "" : "px-4 py-8"} 
+          ${withoutPadding ? "" : "px-4"} 
           ${isDesktop ? "pt-20" : "pt-17"} 
           ${containerClassName}
         `}

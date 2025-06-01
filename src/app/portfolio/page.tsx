@@ -15,7 +15,7 @@ import {
 export default function PortfolioPage() {
   return (
     <PageLayout containerClassName="max-w-4xl">
-      <div className="mt-16 sm:mt-8 mb-16">
+      <div className="mt-16 sm:mt-8">
         <Hero />
         <WhatIDo />
         <TechnicalSkills />

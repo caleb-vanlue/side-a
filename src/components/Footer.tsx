@@ -12,7 +12,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="mt-4">
+    <footer>
       <div className="max-w-2xl mx-auto px-6 py-6">
         <p className="text-center text-gray-600">
           © {currentYear} Caleb Van Lue. Thanks for visiting!
