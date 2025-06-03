@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ExternalLink } from "./shared/ExternalLink";
 import { Section } from "./shared/Section";
 import { SectionTitle } from "./shared/SectionTitle";
@@ -26,12 +27,12 @@ export default function FeaturedProjects() {
           An intermediary web API to serve information from the official Discogs
           API from a cached source to avoid rate limiting. Currently powering
           the{" "}
-          <a
+          <Link
             href="/collection"
             className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50"
           >
             My Records
-          </a>{" "}
+          </Link>{" "}
           page of this site! Authentication key required for API calls.
         </>
       ),
