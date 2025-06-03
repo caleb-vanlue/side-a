@@ -20,6 +20,22 @@ export const metadata: Metadata = {
       type: "image/svg+xml",
     },
   },
+  openGraph: {
+    title: "Caleb Van Lue",
+    description: "Software Engineer & Music Enthusiast",
+    url: "https://calebvanlue.com",
+    siteName: "Caleb Van Lue",
+    images: [
+      {
+        url: "/record.png",
+        width: 1200,
+        height: 630,
+        alt: "Vinyl record player showcasing Caleb Van Lue's portfolio",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
