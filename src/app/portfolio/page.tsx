@@ -5,6 +5,7 @@ import {
   Hero,
   WhatIDo,
   Experience,
+  Education,
   TechnicalSkills,
   FeaturedProjects,
   AreasOfFocus,
@@ -20,6 +21,7 @@ export default function PortfolioPage() {
         <WhatIDo />
         <TechnicalSkills />
         <Experience />
+        <Education />
         <FeaturedProjects />
         <AreasOfFocus />
         <SideProjects />
