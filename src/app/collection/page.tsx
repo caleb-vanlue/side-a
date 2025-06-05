@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import CollectionLayout from "../../components/CollectionLayout";
 import ReleaseGrid from "../../components/ReleaseGrid";
 import CollectionControls from "../../components/CollectionControls";
+import SuggestionsTab from "../../components/SuggestionsTab";
 import {
   COLLECTION_SORT_OPTIONS,
   CollectionProvider,
@@ -13,9 +14,9 @@ import {
 } from "../../components/CollectionContext";
 
 function CollectionTabs() {
-  const [activeTab, setActiveTab] = useState<"collection" | "wantlist">(
-    "collection"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "collection" | "wantlist" | "suggestions"
+  >("collection");
 
   const {
     collection,
@@ -95,6 +96,19 @@ function CollectionTabs() {
           >
             Wantlist
           </button>
+          <button
+            onClick={() => setActiveTab("suggestions")}
+            className={`
+        px-4 sm:px-6 py-2 rounded-md font-medium transition-all duration-200 text-sm sm:text-base
+        ${
+          activeTab === "suggestions"
+            ? "bg-white/80 text-gray-900 shadow-sm"
+            : "text-gray-600 hover:text-gray-800 hover:bg-white/30 cursor-pointer"
+        }
+      `}
+          >
+            Suggestions
+          </button>
         </div>
       </div>
 
@@ -122,7 +136,7 @@ function CollectionTabs() {
               showRating={true}
             />
           </div>
-        ) : (
+        ) : activeTab === "wantlist" ? (
           <div>
             <CollectionControls
               sortValue={wantlistSortValue}
@@ -145,6 +159,8 @@ function CollectionTabs() {
               showRating={false}
             />
           </div>
+        ) : (
+          <SuggestionsTab />
         )}
       </div>
     </>
@@ -155,7 +171,7 @@ export default function CollectionPage() {
   return (
     <CollectionProvider>
       <CollectionLayout
-        title="My Record Collection and Wantlist"
+        title="My Records"
         description="You can learn a lot about someone from what they listen to..."
       >
         <CollectionTabs />

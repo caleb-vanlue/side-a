@@ -12,6 +12,7 @@ const handwritingFont = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://calebvanlue.com'),
   title: "Caleb Van Lue",
   description: "Software Engineer & Music Enthusiast",
   icons: {
