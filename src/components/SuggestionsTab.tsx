@@ -76,7 +76,10 @@ export default function SuggestionsTab() {
       const offset = (page - 1) * pageSize;
       const sortOption = COLLECTION_SORT_OPTIONS.find(opt => opt.value === sortValue);
       const sortBy = mapSortField(sortValue);
-      const sortOrder = sortOption?.order || "desc";
+      // Flip sort order for year sorting to match expected behavior
+      const sortOrder = sortOption?.sort === "year" 
+        ? (sortOption.order === "desc" ? "asc" : "desc")
+        : sortOption?.order || "desc";
       
       const response = await fetch(
         `/api/discogs/suggestions?limit=${pageSize}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrder}`
