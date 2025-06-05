@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const sortOrderUpper = sortOrder.toUpperCase();
-    const url = `${DISCOGS_API_BASE}/collection/${DISCOGS_USERNAME}/suggestions?limit=${limitNum}&offset=${offsetNum}&sort_by=${sort}&sort_order=${sortOrderUpper}`;
+    const url = `${DISCOGS_API_BASE}/discogs/suggestions/${DISCOGS_USERNAME}?limit=${limitNum}&offset=${offsetNum}&sort_by=${sort}&sort_order=${sortOrderUpper}`;
 
     console.log(`Fetching suggestions from API: ${url}`);
 

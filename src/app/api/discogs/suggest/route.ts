@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const DISCOGS_API_BASE =
   process.env.DISCOGS_API_BASE_URL || "https://discogs-api.calebvanlue.com";
 const API_KEY = process.env.DISCOGS_API_KEY;
+const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME || "Irrelativity";
 
 export async function POST(request: NextRequest) {
   if (!API_KEY) {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const url = `${DISCOGS_API_BASE}/discogs/suggest`;
+    const url = `${DISCOGS_API_BASE}/discogs/suggestions/${DISCOGS_USERNAME}`;
 
     console.log(`Adding suggestion via API: ${url}`);
 
