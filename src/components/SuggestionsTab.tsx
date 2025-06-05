@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import ReleaseGrid from "./ReleaseGrid";
 import CollectionControls from "./CollectionControls";
 import { COLLECTION_SORT_OPTIONS, PAGE_SIZE_OPTIONS } from "./CollectionContext";
@@ -138,6 +139,9 @@ export default function SuggestionsTab() {
       // Refresh suggestions list
       await fetchSuggestions();
       
+      // Show success toast
+      toast.success("Album suggested! Thanks for the recommendation! :)");
+      
       // Close search and clear results
       setShowSearch(false);
       setSearchQuery("");
@@ -200,7 +204,7 @@ export default function SuggestionsTab() {
   }
 
   return (
-    <div>
+    <div className="relative">
       <div className="mb-6">
         <CollectionControls
           sortValue={sortValue}
