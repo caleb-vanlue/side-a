@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/ThemeContext";
 import { RecordPlayerProvider } from "../components/RecordPlayerContext";
 import Footer from "../components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const handwritingFont = localFont({
   src: "../../public/fonts/Myfont-Regular.otf",
@@ -12,6 +13,7 @@ const handwritingFont = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://calebvanlue.com'),
   title: "Caleb Van Lue",
   description: "Software Engineer & Music Enthusiast",
   icons: {
@@ -50,6 +52,17 @@ export default function RootLayout({
           <RecordPlayerProvider>{children}</RecordPlayerProvider>
         </ThemeProvider>
         <Footer />
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#059669',
+              color: '#ffffff',
+              fontWeight: '500',
+            },
+          }}
+        />
       </body>
     </html>
   );
