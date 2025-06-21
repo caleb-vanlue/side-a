@@ -5,3 +5,4 @@ export { ProjectTag } from "./ProjectTag";
 export { TechBadge } from "./TechBadge";
 export { getTechColor } from "./techColors";
 export * from "./ContentSection";
+export { default as PageLoading } from "./PageLoading";
