@@ -7,3 +7,4 @@ export { default as SideProjects } from "../SideProjects";
 export { default as ContactSection } from "../ContactSection";
 export { default as Experience } from "../Experience";
 export { default as Education } from "../Education";
+export { default as PortfolioPageContent } from "./PortfolioPageContent";

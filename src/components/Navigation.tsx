@@ -110,6 +110,7 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
+              prefetch={true}
               className={`block py-3 text-center text-base ${
                 pathname === link.href
                   ? "text-emerald-600 font-medium border-b-2 border-emerald-600 mx-8"
@@ -162,6 +163,7 @@ export default function Navigation() {
             <Link
               key={link.href}
               href={link.href}
+              prefetch={true}
               className={`text-base font-medium transition-colors duration-200 ${
                 pathname === link.href
                   ? "text-gray-900 border-b-2 border-emerald-600"
