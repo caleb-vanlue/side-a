@@ -2,6 +2,7 @@ import Image from "next/image";
 import Button from "./Button";
 import Card from "./Card";
 import { Release, useCollection } from "./CollectionContext";
+import ReleaseGridSkeleton from "./ReleaseGridSkeleton";
 
 interface ReleaseGridProps {
   releases: Release[];
@@ -57,14 +58,7 @@ export default function ReleaseGrid({
     useCollection();
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="flex items-center gap-3">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-          <p className="text-gray-500 text-sm sm:text-base">Loading...</p>
-        </div>
-      </div>
-    );
+    return <ReleaseGridSkeleton pageSize={pageSize} />;
   }
 
   if (error) {
