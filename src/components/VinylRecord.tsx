@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import VinylGrooves from "./VinylGrooves";
 import VinylReflection from "./VinylReflection";
 import VinylLabel from "./VinylLabel";
@@ -13,11 +13,11 @@ interface VinylRecordProps {
   rotationSpeed?: number;
 }
 
-export default function VinylRecord({
+const VinylRecord = React.memo<VinylRecordProps>(({
   backgroundColor = "white",
   isSpinning = false,
   rotationSpeed = 1,
-}: VinylRecordProps) {
+}) => {
   const recordRef = useRef<HTMLDivElement>(null);
 
   const { rotation, isDragging, startDrag, stopDrag, updateDrag, handleWheel } =
@@ -26,22 +26,22 @@ export default function VinylRecord({
       rotationSpeed,
     });
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (recordRef.current) {
       startDrag(e.clientX, e.clientY, recordRef.current);
       e.preventDefault();
     }
-  };
+  }, [startDrag]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     stopDrag();
-  };
+  }, [stopDrag]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (recordRef.current) {
       updateDrag(e.clientX, e.clientY, recordRef.current);
     }
-  };
+  }, [updateDrag]);
 
   useEffect(() => {
     const element = recordRef.current;
@@ -138,4 +138,8 @@ export default function VinylRecord({
       <SpindleHole backgroundColor={backgroundColor} isPlaying={isSpinning} />
     </div>
   );
-}
+});
+
+VinylRecord.displayName = "VinylRecord";
+
+export default VinylRecord;

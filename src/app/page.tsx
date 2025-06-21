@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import {
   PlayerControls,
   ProjectCard,
@@ -37,19 +37,19 @@ export default function HomePage() {
     }
   }, [isNeedleOnRecord, isAutoPlaying, setIsPlaying]);
 
-  const handleStart = () => {
+  const handleStart = useCallback(() => {
     if (!isAutoPlaying) {
       setIsAutoPlaying(true);
       setTargetRotation(playingPosition);
     }
-  };
+  }, [isAutoPlaying, setIsAutoPlaying, setTargetRotation, playingPosition]);
 
-  const handleStop = () => {
+  const handleStop = useCallback(() => {
     setIsAutoPlaying(false);
     setTargetRotation(0);
-  };
+  }, [setIsAutoPlaying, setTargetRotation]);
 
-  const handleRotationChange = (rotation: number) => {
+  const handleRotationChange = useCallback((rotation: number) => {
     setToneArmRotation(rotation);
 
     if (
@@ -59,7 +59,7 @@ export default function HomePage() {
     ) {
       setIsAutoPlaying(false);
     }
-  };
+  }, [setToneArmRotation, isAutoPlaying, targetRotation, setIsAutoPlaying]);
 
   useEffect(() => {
     if (

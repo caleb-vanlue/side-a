@@ -5,6 +5,16 @@ interface ToneArmProps {
 }
 
 const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
+  const rotationStyle = React.useMemo(() => ({
+    transform: `rotate(${rotation}deg)`,
+    transformOrigin: "50px 20px",
+    willChange: "transform",
+    backfaceVisibility: "hidden" as const,
+    position: "relative" as const,
+    zIndex: 999,
+    transformStyle: "preserve-3d" as const,
+  }), [rotation]);
+
   return (
     <div className="relative w-full h-full overflow-visible">
       <svg
@@ -28,17 +38,7 @@ const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
         <circle cx="50" cy="20" r="8" fill="#3a3a3a" />
         <circle cx="50" cy="20" r="4" fill="#1a1a1a" />
 
-        <g
-          style={{
-            transform: `rotate(${rotation}deg)`,
-            transformOrigin: "50px 20px",
-            willChange: "transform",
-            backfaceVisibility: "hidden",
-            position: "relative",
-            zIndex: 999,
-            transformStyle: "preserve-3d",
-          }}
-        >
+        <g style={rotationStyle}>
           <rect
             x="35"
             y="15"
