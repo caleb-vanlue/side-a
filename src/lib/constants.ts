@@ -10,18 +10,6 @@ export const NAVIGATION_LINKS: NavigationLink[] = [
   { href: "/collection", label: "My Records" },
 ];
 
-export const EXTERNAL_LINKS: NavigationLink[] = [
-  {
-    href: "https://www.linkedin.com/in/calebvanlue/",
-    label: "LinkedIn",
-    external: true,
-  },
-  {
-    href: "https://github.com/caleb-vanlue",
-    label: "GitHub",
-    external: true,
-  },
-];
 
 export const VINYL_CONSTANTS = {
   MAX_TONE_ARM_ROTATION: 45,

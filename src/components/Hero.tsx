@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { FaLinkedin, FaGithub, FaFileDownload } from "react-icons/fa";
+import { Button } from "./ui";
 
 export default function Hero() {
   const yearsExperience =
@@ -16,6 +18,43 @@ export default function Hero() {
             className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300"
           />
         </div>
+      </div>
+
+      <div className="flex justify-center items-center gap-4 mb-8">
+        <a 
+          href="/doc/Caleb Van Lue.pdf" 
+          download
+          className="inline-block"
+        >
+          <Button
+            variant="primary"
+            size="md"
+            className="inline-flex items-center gap-2 shadow-lg"
+          >
+            <FaFileDownload className="w-4 h-4" />
+            Resume
+          </Button>
+        </a>
+        
+        <a
+          href="https://www.linkedin.com/in/calebvanlue/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          aria-label="LinkedIn Profile"
+        >
+          <FaLinkedin className="w-5 h-5" />
+        </a>
+        
+        <a
+          href="https://github.com/caleb-vanlue"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          aria-label="GitHub Profile"
+        >
+          <FaGithub className="w-5 h-5" />
+        </a>
       </div>
 
       <div
