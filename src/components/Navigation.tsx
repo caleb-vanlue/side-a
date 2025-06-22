@@ -1,11 +1,10 @@
-// src/components/Navigation.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useMediaQuery from "../hooks/useMediaQuery";
-import { NAVIGATION_LINKS, EXTERNAL_LINKS } from "../lib/constants";
+import { NAVIGATION_LINKS } from "../lib/constants";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -120,22 +119,6 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
-
-          {EXTERNAL_LINKS.map((link, index) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block py-3 text-center text-base text-gray-800 hover:text-emerald-600 transition-colors duration-200 ${
-                index < EXTERNAL_LINKS.length - 1
-                  ? "border-b border-gray-100"
-                  : ""
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
         </div>
       </div>
     </div>
@@ -172,18 +155,6 @@ export default function Navigation() {
             >
               {link.label}
             </Link>
-          ))}
-
-          {EXTERNAL_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-medium text-gray-800 hover:text-gray-900 transition-colors duration-200"
-            >
-              {link.label}
-            </a>
           ))}
         </div>
       </div>
