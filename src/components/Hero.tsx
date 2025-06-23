@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaLinkedin, FaGithub, FaFileDownload } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaFileDownload, FaEnvelope } from "react-icons/fa";
 import { Button } from "./ui";
 
 export default function Hero() {
@@ -34,6 +34,14 @@ export default function Hero() {
             <FaFileDownload className="w-4 h-4" />
             Resume
           </Button>
+        </a>
+        
+        <a
+          href="mailto:vanluecaleb@outlook.com"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          aria-label="Email Contact"
+        >
+          <FaEnvelope className="w-5 h-5" />
         </a>
         
         <a
