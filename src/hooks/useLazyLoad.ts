@@ -7,7 +7,7 @@ interface UseLazyLoadOptions {
 
 export function useLazyLoad<T extends HTMLElement>(
   options: UseLazyLoadOptions = {}
-): [React.RefObject<T>, boolean] {
+): [React.RefObject<T | null>, boolean] {
   const ref = useRef<T>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
 
