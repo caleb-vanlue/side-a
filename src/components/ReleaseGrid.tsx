@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Button from "./Button";
 import Card from "./Card";
 import { Release, useCollection } from "./CollectionContext";
 import ReleaseGridSkeleton from "./ReleaseGridSkeleton";
+import LazyImage from "./LazyImage";
 
 interface ReleaseGridProps {
   releases: Release[];
@@ -102,10 +102,9 @@ export default function ReleaseGrid({
               <div className="aspect-square relative overflow-hidden rounded-t-lg">
                 {release.basic_information.cover_image &&
                 release.basic_information.cover_image !== "" ? (
-                  <Image
+                  <LazyImage
                     src={release.basic_information.cover_image}
                     alt={`${release.basic_information.title} cover`}
-                    fill
                     className="object-cover"
                     sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                   />
