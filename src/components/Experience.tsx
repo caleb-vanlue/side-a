@@ -23,7 +23,7 @@ export default function Experience() {
       company: "Ferguson",
       companyUrl: "https://theferg.com",
       position: "Software Engineer",
-      duration: "2025 - Present",
+      duration: "2025",
       location: "Fort Wayne, Indiana",
       description: [
         "Collaborate with cross-functional teams to develop public-facing websites, data administration tools, and dynamic APIs serving Ferguson's diverse client base",
