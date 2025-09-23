@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { FaLinkedin, FaGithub, FaFileDownload, FaEnvelope } from "react-icons/fa";
+import {
+  FaLinkedin,
+  FaGithub,
+  FaFileDownload,
+  FaEnvelope,
+} from "react-icons/fa";
 import { Button } from "./ui";
 
 export default function Hero() {
@@ -21,11 +26,7 @@ export default function Hero() {
       </div>
 
       <div className="flex justify-center items-center gap-4 mb-8">
-        <a 
-          href="/doc/Caleb Van Lue.pdf" 
-          download
-          className="inline-block"
-        >
+        <a href="/doc/Caleb Van Lue.pdf" download className="inline-block">
           <Button
             variant="primary"
             size="md"
@@ -35,7 +36,7 @@ export default function Hero() {
             Resume
           </Button>
         </a>
-        
+
         <a
           href="mailto:vanluecaleb@outlook.com"
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
@@ -43,7 +44,7 @@ export default function Hero() {
         >
           <FaEnvelope className="w-5 h-5" />
         </a>
-        
+
         <a
           href="https://www.linkedin.com/in/calebvanlue/"
           target="_blank"
@@ -53,7 +54,7 @@ export default function Hero() {
         >
           <FaLinkedin className="w-5 h-5" />
         </a>
-        
+
         <a
           href="https://github.com/caleb-vanlue"
           target="_blank"
@@ -80,17 +81,9 @@ export default function Hero() {
           Caleb Van Lue
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-          Software Engineer at{" "}
-          <a
-            href="https://theferg.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
-          >
-            Ferguson
-          </a>{" "}
-          with {yearsExperience} years of experience building web services,
-          databases, and user interfaces. Based in Fort Wayne, Indiana.
+          Software Engineer with {yearsExperience} years of experience building
+          web services, databases, and user interfaces. Based in Fort Wayne,
+          Indiana.
         </p>
       </div>
     </div>
