@@ -8,8 +8,18 @@ import {
 import { Button } from "./ui";
 
 export default function Hero() {
-  const yearsExperience =
-    new Date().getFullYear() - new Date("2022-05-09").getFullYear();
+  const yearsExperience = (() => {
+    const start = new Date("2022-05-09");
+    const now = new Date();
+    let diff = now.getFullYear() - start.getFullYear();
+    if (
+      now.getMonth() < start.getMonth() ||
+      (now.getMonth() === start.getMonth() && now.getDate() < start.getDate())
+    ) {
+      diff--;
+    }
+    return diff;
+  })();
 
   return (
     <div className="text-center mb-12">
