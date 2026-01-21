@@ -92,8 +92,7 @@ export default function Hero() {
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto">
           Software Engineer with {yearsExperience} years of experience building
-          web services, databases, and user interfaces. Based in Fort Wayne,
-          Indiana.
+          web services, databases, and user interfaces.
         </p>
       </div>
     </div>
