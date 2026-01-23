@@ -201,30 +201,6 @@ export const COLLECTION_SORT_OPTIONS: SortConfig[] = [
     sort: "rating",
     order: "asc",
   },
-  {
-    value: "genre_asc",
-    label: "Genre (A-Z)",
-    sort: "genre",
-    order: "asc",
-  },
-  {
-    value: "genre_desc",
-    label: "Genre (Z-A)",
-    sort: "genre",
-    order: "desc",
-  },
-  {
-    value: "format_asc",
-    label: "Format (A-Z)",
-    sort: "format",
-    order: "asc",
-  },
-  {
-    value: "format_desc",
-    label: "Format (Z-A)",
-    sort: "format",
-    order: "desc",
-  },
 ];
 
 export const WANTLIST_SORT_OPTIONS: SortConfig[] =
@@ -234,7 +210,7 @@ export const PAGE_SIZE_OPTIONS = [25, 50, 100];
 
 const fetchWithRetry = async (
   url: string,
-  retries: number = 3
+  retries: number = 3,
 ): Promise<Response> => {
   for (let i = 0; i < retries; i++) {
     try {
@@ -247,7 +223,7 @@ const fetchWithRetry = async (
       console.warn(`Attempt ${i + 1} failed:`, error);
       if (i === retries - 1) throw error;
       await new Promise((resolve) =>
-        setTimeout(resolve, Math.pow(2, i) * 1000)
+        setTimeout(resolve, Math.pow(2, i) * 1000),
       );
     }
   }
@@ -289,7 +265,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     Map<string, Release[]>
   >(new Map());
   const [wantlistCache, setWantlistCache] = useState<Map<string, Release[]>>(
-    new Map()
+    new Map(),
   );
 
   const getCollectionCacheKey = useCallback(() => {
@@ -333,7 +309,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.error("Collection fetch error:", err);
       setCollectionError(
-        err instanceof Error ? err.message : "Failed to load collection"
+        err instanceof Error ? err.message : "Failed to load collection",
       );
     } finally {
       setLoadingCollection(false);
@@ -380,7 +356,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.error("Wantlist fetch error:", err);
       setWantlistError(
-        err instanceof Error ? err.message : "Failed to load wantlist"
+        err instanceof Error ? err.message : "Failed to load wantlist",
       );
     } finally {
       setLoadingWantlist(false);
@@ -411,7 +387,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const getVinylColor = (formats: BasicInformation["formats"]) => {
     const colorFormat = formats.find(
-      (format) => format.text && format.text.trim() !== ""
+      (format) => format.text && format.text.trim() !== "",
     );
 
     if (colorFormat?.text) {
@@ -442,7 +418,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const handleCollectionSortChange = (sortValue: string) => {
     const sortOption = COLLECTION_SORT_OPTIONS.find(
-      (option) => option.value === sortValue
+      (option) => option.value === sortValue,
     );
     if (sortOption) {
       setCollectionSort(sortOption.sort);
@@ -454,7 +430,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const handleWantlistSortChange = (sortValue: string) => {
     const sortOption = WANTLIST_SORT_OPTIONS.find(
-      (option) => option.value === sortValue
+      (option) => option.value === sortValue,
     );
     if (sortOption) {
       setWantlistSort(sortOption.sort);
