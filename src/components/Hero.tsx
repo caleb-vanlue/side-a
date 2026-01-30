@@ -62,7 +62,7 @@ export default function Hero() {
         >
           <button
             onClick={goPrev}
-            className="p-1.5 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
+            className="p-1.5 rounded-full bg-black/30 text-white opacity-70 sm:opacity-0 sm:group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
             aria-label="Previous photo"
           >
             <FaChevronLeft className="w-3 h-3" />
@@ -87,7 +87,7 @@ export default function Hero() {
 
           <button
             onClick={goNext}
-            className="p-1.5 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
+            className="p-1.5 rounded-full bg-black/30 text-white opacity-70 sm:opacity-0 sm:group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
             aria-label="Next photo"
           >
             <FaChevronRight className="w-3 h-3" />
