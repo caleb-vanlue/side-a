@@ -1,13 +1,30 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   FaLinkedin,
   FaGithub,
   FaFileDownload,
   FaEnvelope,
+  FaChevronLeft,
+  FaChevronRight,
 } from "react-icons/fa";
 import { Button } from "./ui";
 
+const PHOTOS = [
+  "/images/avatar.jpeg",
+  "/images/avatar-2.png",
+  "/images/avatar-3.png",
+  "/images/avatar-4.png",
+];
+
+const AUTO_ADVANCE_MS = 10000;
+
 export default function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
   const yearsExperience = (() => {
     const start = new Date("2022-05-09");
     const now = new Date();
@@ -21,17 +38,75 @@ export default function Hero() {
     return diff;
   })();
 
+  const goNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % PHOTOS.length);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + PHOTOS.length) % PHOTOS.length);
+  }, []);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(goNext, AUTO_ADVANCE_MS);
+    return () => clearInterval(interval);
+  }, [isHovered, goNext]);
+
   return (
     <div className="text-center mb-12">
       <div className="mb-8 inline-block">
-        <div className="relative p-1 rounded-full bg-gradient-to-r from-emerald-200/50 to-blue-200/50 backdrop-blur-sm">
-          <Image
-            src="/images/avatar.jpeg"
-            alt="Caleb Van Lue"
-            width={160}
-            height={160}
-            className="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300"
-          />
+        <div
+          className="relative flex items-center gap-2 group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <button
+            onClick={goPrev}
+            className="p-1.5 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
+            aria-label="Previous photo"
+          >
+            <FaChevronLeft className="w-3 h-3" />
+          </button>
+
+          <div className="p-1 rounded-full bg-gradient-to-r from-emerald-200/50 to-blue-200/50 backdrop-blur-sm">
+            <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300">
+              {PHOTOS.map((src, i) => (
+                <Image
+                  key={src}
+                  src={src}
+                  alt="Caleb Van Lue"
+                  fill
+                  className={`object-cover transition-opacity duration-500 ${
+                    i === currentIndex ? "opacity-100" : "opacity-0"
+                  }`}
+                  priority={i === 0}
+                />
+              ))}
+            </div>
+          </div>
+
+          <button
+            onClick={goNext}
+            className="p-1.5 rounded-full bg-black/30 text-white opacity-0 group-hover:opacity-70 hover:!opacity-100 transition-opacity duration-200 cursor-pointer"
+            aria-label="Next photo"
+          >
+            <FaChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+
+        <div className="flex justify-center gap-1.5 mt-3">
+          {PHOTOS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                i === currentIndex
+                  ? "bg-gray-600 scale-125"
+                  : "bg-gray-300 hover:bg-gray-400"
+              }`}
+              aria-label={`Go to photo ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
 
