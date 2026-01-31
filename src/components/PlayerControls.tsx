@@ -1,3 +1,5 @@
+import { FaPlay, FaStop } from "react-icons/fa";
+
 interface PlayerControlsProps {
   onStart: () => void;
   onStop: () => void;
@@ -28,17 +30,13 @@ export default function PlayerControls({
           aria-label={isPlaying ? "Currently playing" : "Start playback"}
         >
           <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <svg
-            className={`w-6 h-6 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+          <FaPlay
+            className={`w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-[45%] -translate-y-1/2 transition-all duration-300 ${
               isPlaying || isAutoPlaying
                 ? "text-gray-400"
                 : "text-white group-hover:scale-110"
             }`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-          </svg>
+          />
           {isAutoPlaying && (
             <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-pulse" />
           )}
@@ -58,17 +56,13 @@ export default function PlayerControls({
           aria-label={!isPlaying ? "Nothing playing" : "Stop playback"}
         >
           <div className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <svg
+          <FaStop
             className={`w-5 h-5 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
               !isPlaying && !isAutoPlaying
                 ? "text-gray-400"
                 : "text-white group-hover:scale-110"
             }`}
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <rect x="6" y="6" width="8" height="8" rx="1" />
-          </svg>
+          />
         </button>
       </div>
     </div>
