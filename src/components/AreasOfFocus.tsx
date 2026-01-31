@@ -28,7 +28,8 @@ export default function AreasOfFocus() {
         {focusAreas.map((area) => (
           <div
             key={area.title}
-            className="text-center p-6 bg-gray-50 rounded-lg"
+            className="text-center p-6 bg-white/50 backdrop-blur-[2px] rounded-lg border border-white/30"
+            style={{ boxShadow: "0 4px 30px rgba(0, 0, 0, 0.05)" }}
           >
             <div className="text-3xl mb-3">{area.icon}</div>
             <h3 className="font-medium text-gray-800 mb-2">{area.title}</h3>
