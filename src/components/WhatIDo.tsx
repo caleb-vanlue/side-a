@@ -4,21 +4,41 @@ import { SectionTitle } from "./shared/SectionTitle";
 export default function WhatIDo() {
   const services = [
     {
-      title: "Backend Development",
+      title: "Web Development",
       description:
-        "I work on building web services and APIs. I enjoy tackling the behind-the-scenes work that makes applications function well and handle the day-to-day demands of users.",
+        "I build public-facing websites and internal tools using modern frameworks like Next.js, React, and Vue. I focus on creating interfaces that are clean, responsive, and easy to maintain.",
+    },
+    {
+      title: "API Design",
+      description:
+        "I design and maintain scalable REST APIs and GraphQL services. I've worked on microservice architectures that replace monolithic systems, improving reliability and reducing complexity.",
+    },
+    {
+      title: "Mobile Development",
+      description:
+        "I develop native mobile applications for both iOS and Android using SwiftUI and Jetpack Compose. I've built logistics tools that measurably improved user efficiency in the field.",
+    },
+    {
+      title: "Cloud & Infrastructure",
+      description:
+        "I work with cloud platforms and CI/CD pipelines to deploy and manage services at scale. I have experience with Kubernetes, GCP, Railway, and migrating between CI/CD providers.",
+    },
+    {
+      title: "Data Engineering",
+      description:
+        "I build realtime data pipelines using tools like Apache Kafka to process and route information where it needs to go. I've worked on inventory allocation streams that reduced data delay significantly.",
     },
     {
       title: "Database Design",
       description:
-        "I design database systems and work with data pipelines. My approach focuses on keeping things organized and making sure data flows where it needs to go without unnecessary complexity.",
+        "I design and optimize database schemas across cloud and on-prem storage. I focus on reducing query execution times and eliminating deadlocks without introducing unnecessary complexity.",
     },
   ];
 
   return (
     <Section>
       <SectionTitle>What I Do</SectionTitle>
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => (
           <div
             key={service.title}
