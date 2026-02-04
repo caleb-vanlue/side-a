@@ -16,7 +16,7 @@ export default function ContactSection() {
         Have an interesting project idea or want to collaborate on something
         fun?
       </p>
-      <a href="mailto:vanluecaleb@outlook.com">
+      <a href="mailto:vanluecaleb@icloud.com">
         <Button
           variant="primary"
           size="lg"

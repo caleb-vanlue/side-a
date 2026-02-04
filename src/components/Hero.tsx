@@ -123,7 +123,7 @@ export default function Hero() {
         </a>
 
         <a
-          href="mailto:vanluecaleb@outlook.com"
+          href="mailto:vanluecaleb@icloud.com"
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="Email Contact"
         >
