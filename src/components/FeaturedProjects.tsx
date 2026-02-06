@@ -17,7 +17,7 @@ export default function FeaturedProjects() {
         "Tailwind CSS",
         "Spotify Web API",
         "Plex Media Server",
-        "Vercel",
+        "Railway",
       ],
     },
     {
