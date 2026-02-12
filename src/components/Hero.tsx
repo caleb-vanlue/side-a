@@ -149,6 +149,16 @@ export default function Hero() {
         >
           <FaGithub className="w-5 h-5" />
         </a>
+
+        <a
+          href="https://www.thetrevorproject.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          aria-label="The Trevor Project"
+        >
+          🏳️‍🌈
+        </a>
       </div>
 
       <div
