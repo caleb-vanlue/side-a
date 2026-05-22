@@ -21,7 +21,7 @@ export default function WhatIDo() {
     {
       title: "Cloud & Infrastructure",
       description:
-        "I work with cloud platforms and CI/CD pipelines to deploy and manage services at scale. I have experience with Kubernetes, GCP, Railway, and migrating between CI/CD providers.",
+        "I work with cloud platforms, self-hosted infrastructure, and CI/CD pipelines to deploy and manage services. I have hands-on experience with Docker containerization, Linux server administration, reverse proxies, and managing 24/7 production systems.",
     },
     {
       title: "Data Engineering",
@@ -29,9 +29,9 @@ export default function WhatIDo() {
         "I build realtime data pipelines using tools like Apache Kafka to process and route information where it needs to go. I've worked on inventory allocation streams that reduced data delay significantly.",
     },
     {
-      title: "Database Design",
+      title: "Database Design & Optimization",
       description:
-        "I design and optimize database schemas across cloud and on-prem storage. I focus on reducing query execution times and eliminating deadlocks without introducing unnecessary complexity.",
+        "I design and optimize database schemas across cloud and on-prem storage, reducing query execution times by up to 90%. I implement backup strategies, replication workflows, and performance tuning without introducing unnecessary complexity.",
     },
   ];
 

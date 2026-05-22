@@ -10,24 +10,30 @@ import {
   SiRailway,
   SiDocker,
   SiTailwindcss,
+  SiLinux,
+  SiNginx,
+  SiApachekafka,
+  SiReact,
+  SiVuedotjs,
+  SiGraphql,
 } from "react-icons/si";
 
 export default function TechnicalSkills() {
-  const primaryTech = [
+  const developmentTech = [
     {
       name: "Next.js",
       icon: SiNextdotjs,
       url: "https://nextjs.org",
     },
     {
-      name: "Tailwind CSS",
-      icon: SiTailwindcss,
-      url: "https://tailwindcss.com/",
+      name: "React",
+      icon: SiReact,
+      url: "https://reactjs.org",
     },
     {
-      name: "NestJS",
-      icon: SiNestjs,
-      url: "https://nestjs.com",
+      name: "Vue.js",
+      icon: SiVuedotjs,
+      url: "https://vuejs.org",
     },
     {
       name: "TypeScript",
@@ -35,9 +41,50 @@ export default function TechnicalSkills() {
       url: "https://www.typescriptlang.org",
     },
     {
+      name: "Tailwind CSS",
+      icon: SiTailwindcss,
+      url: "https://tailwindcss.com/",
+    },
+  ];
+
+  const backendTech = [
+    {
+      name: "NestJS",
+      icon: SiNestjs,
+      url: "https://nestjs.com",
+    },
+    {
       name: "PostgreSQL",
       icon: SiPostgresql,
       url: "https://www.postgresql.org",
+    },
+    {
+      name: "GraphQL",
+      icon: SiGraphql,
+      url: "https://graphql.org",
+    },
+    {
+      name: "Apache Kafka",
+      icon: SiApachekafka,
+      url: "https://kafka.apache.org",
+    },
+  ];
+
+  const infrastructureTech = [
+    {
+      name: "Docker",
+      icon: SiDocker,
+      url: "https://www.docker.com",
+    },
+    {
+      name: "Linux",
+      icon: SiLinux,
+      url: "https://www.linux.org",
+    },
+    {
+      name: "Nginx",
+      icon: SiNginx,
+      url: "https://nginxproxymanager.com",
     },
     {
       name: "Google Cloud",
@@ -48,11 +95,6 @@ export default function TechnicalSkills() {
       name: "Railway",
       icon: SiRailway,
       url: "https://railway.app",
-    },
-    {
-      name: "Docker",
-      icon: SiDocker,
-      url: "https://www.docker.com",
     },
   ];
 
@@ -67,10 +109,42 @@ export default function TechnicalSkills() {
       >
         <div>
           <h3 className="text-lg font-medium text-gray-800 mb-4">
-            Current Stack
+            Development
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {developmentTech.map((tech) => (
+              <TechBadge
+                key={tech.name}
+                name={tech.name}
+                icon={tech.icon}
+                url={tech.url}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-medium text-gray-800 mb-4">
+            Backend & Data
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {primaryTech.map((tech) => (
+            {backendTech.map((tech) => (
+              <TechBadge
+                key={tech.name}
+                name={tech.name}
+                icon={tech.icon}
+                url={tech.url}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-medium text-gray-800 mb-4">
+            Infrastructure & DevOps
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {infrastructureTech.map((tech) => (
               <TechBadge
                 key={tech.name}
                 name={tech.name}

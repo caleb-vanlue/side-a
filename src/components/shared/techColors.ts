@@ -16,6 +16,7 @@ export const TECH_COLORS = {
   // Languages
   TypeScript: "bg-indigo-100 text-indigo-700",
   "C#": "bg-violet-100 text-violet-700",
+  Kotlin: "bg-purple-100 text-purple-700",
 
   // Databases
   PostgreSQL: "bg-sky-100 text-sky-700",
@@ -30,12 +31,18 @@ export const TECH_COLORS = {
   Vercel: "bg-zinc-100 text-zinc-700",
   "Google Cloud": "bg-yellow-100 text-yellow-700",
   Docker: "bg-blue-100 text-blue-700",
+  TrueNAS: "bg-cyan-100 text-cyan-700",
+  Linux: "bg-amber-100 text-amber-700",
 
   // CMS & Tools
   WordPress: "bg-blue-100 text-blue-700",
   "Apache Kafka": "bg-orange-100 text-orange-700",
   TypeORM: "bg-green-100 text-green-700",
   "Plex Media Server": "bg-purple-100 text-purple-700",
+  "Nginx Proxy Manager": "bg-green-100 text-green-700",
+  Immich: "bg-blue-100 text-blue-700",
+  Frigate: "bg-teal-100 text-teal-700",
+  "Pi-hole": "bg-red-100 text-red-700",
 } as const;
 
 export const TECH_URLS = {
@@ -56,6 +63,7 @@ export const TECH_URLS = {
   // Languages
   TypeScript: "https://www.typescriptlang.org",
   "C#": "https://docs.microsoft.com/en-us/dotnet/csharp/",
+  Kotlin: "https://kotlinlang.org",
 
   // Databases
   PostgreSQL: "https://www.postgresql.org",
@@ -70,12 +78,18 @@ export const TECH_URLS = {
   Vercel: "https://vercel.com",
   "Google Cloud": "https://cloud.google.com",
   Docker: "https://www.docker.com",
+  TrueNAS: "https://www.truenas.com",
+  Linux: "https://www.linux.org",
 
   // CMS & Tools
   WordPress: "https://wordpress.org",
   "Apache Kafka": "https://kafka.apache.org",
   TypeORM: "https://typeorm.io",
   "Plex Media Server": "https://www.plex.tv",
+  "Nginx Proxy Manager": "https://nginxproxymanager.com",
+  Immich: "https://immich.app",
+  Frigate: "https://frigate.video",
+  "Pi-hole": "https://pi-hole.net",
 } as const;
 
 const FALLBACK_COLORS = [

@@ -6,7 +6,7 @@ export default function AreasOfFocus() {
       icon: "⚡",
       title: "Backend Systems",
       description:
-        "My strongest area - building reliable, scalable web services",
+        "Building reliable, scalable web services and APIs with a focus on performance and maintainability",
     },
     {
       icon: "🎯",
@@ -16,8 +16,8 @@ export default function AreasOfFocus() {
     },
     {
       icon: "🔧",
-      title: "DevOps Learning",
-      description: "Growing knowledge in deployment and infrastructure",
+      title: "Infrastructure & Systems",
+      description: "Self-hosting, containerization, server administration, and infrastructure automation",
     },
   ];
 
