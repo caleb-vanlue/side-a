@@ -36,6 +36,7 @@ export default function Experience() {
         "Linux",
         "Nginx Proxy Manager",
         "Plex Media Server",
+        "Jellyfin",
         "Immich",
         "Frigate",
         "Pi-hole",
