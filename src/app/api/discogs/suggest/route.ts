@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const DISCOGS_API_BASE =
-  process.env.DISCOGS_API_BASE_URL || "https://discogs-api.calebvanlue.com";
+const DISCOGS_API_BASE = process.env.DISCOGS_API_BASE_URL;
+const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME;
 const API_KEY = process.env.DISCOGS_API_KEY;
-const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME || "Irrelativity";
 
 export async function POST(request: NextRequest) {
-  if (!API_KEY) {
-    console.error("DISCOGS_API_KEY not configured in frontend environment");
+  if (!API_KEY || !DISCOGS_API_BASE || !DISCOGS_USERNAME) {
+    console.error("Missing required environment variables: DISCOGS_API_KEY, DISCOGS_API_BASE_URL, DISCOGS_USERNAME");
     return NextResponse.json(
-      {
-        error: "API configuration error",
-        details: "API key not configured",
-      },
+      { error: "API configuration error", details: "Server misconfiguration" },
       { status: 500 }
     );
   }
