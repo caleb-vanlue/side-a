@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "../components/ThemeContext";
 import { RecordPlayerProvider } from "../components/RecordPlayerContext";
 import Footer from "../components/Footer";
 import { Toaster } from "react-hot-toast";
@@ -48,9 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${handwritingFont.variable} antialiased`}>
-        <ThemeProvider>
-          <RecordPlayerProvider>{children}</RecordPlayerProvider>
-        </ThemeProvider>
+        <RecordPlayerProvider>{children}</RecordPlayerProvider>
         <Footer />
         <Toaster 
           position="top-right"
