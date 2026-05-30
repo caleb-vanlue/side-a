@@ -45,26 +45,3 @@ export const animateValue = (
     }
   };
 };
-
-export const smoothRotateTo = (
-  currentRotation: number,
-  targetRotation: number,
-  duration: number = 300,
-  onUpdate: (value: number) => void,
-  onComplete?: () => void
-) => {
-  let diff = targetRotation - currentRotation;
-  if (diff > 180) diff -= 360;
-  if (diff < -180) diff += 360;
-
-  const endRotation = currentRotation + diff;
-
-  return animateValue(
-    currentRotation,
-    endRotation,
-    duration,
-    easings.easeOutQuad,
-    onUpdate,
-    onComplete
-  );
-};

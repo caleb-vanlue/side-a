@@ -120,10 +120,6 @@ export default function Experience() {
     });
   };
 
-  const formatDuration = (duration: string) => {
-    return duration;
-  };
-
   return (
     <Section>
       <SectionTitle>Experience</SectionTitle>
@@ -167,7 +163,7 @@ export default function Experience() {
                     </div>
                   </div>
                   <div className="text-sm text-gray-500 font-medium">
-                    {formatDuration(experience.duration)}
+                    {experience.duration}
                   </div>
                 </div>
 
