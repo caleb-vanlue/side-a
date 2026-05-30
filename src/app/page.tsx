@@ -9,7 +9,7 @@ import {
 } from "../components";
 import { GitHubBadge, Navigation } from "../components/layout";
 import { useResponsiveVinyl } from "../hooks/useResponsiveVinyl";
-import { VINYL_CONSTANTS } from "../lib/constants";
+import { VINYL_CONSTANTS, CONTACT } from "../lib/constants";
 import { useRecordPlayer } from "../components/RecordPlayerContext";
 
 export default function HomePage() {
@@ -131,7 +131,7 @@ export default function HomePage() {
           isAutoPlaying={isAutoPlaying}
         />
       </div>
-      <GitHubBadge repoUrl="https://github.com/caleb-vanlue/side-a" />
+      <GitHubBadge repoUrl={CONTACT.REPO} />
     </main>
   );
 }

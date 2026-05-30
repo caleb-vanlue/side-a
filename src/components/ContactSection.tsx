@@ -1,5 +1,6 @@
 import { ContentSection } from "./shared";
 import { Button } from "./ui";
+import { CONTACT } from "../lib/constants";
 
 export default function ContactSection() {
   return (
@@ -16,7 +17,7 @@ export default function ContactSection() {
         Have an interesting project idea or want to collaborate on something
         fun?
       </p>
-      <a href="mailto:vanluecaleb@icloud.com">
+      <a href={`mailto:${CONTACT.EMAIL}`}>
         <Button
           variant="primary"
           size="lg"

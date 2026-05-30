@@ -46,6 +46,13 @@ export const ANIMATION_DURATIONS = {
   TONE_ARM_ANIMATION: 300,
 } as const;
 
+export const CONTACT = {
+  EMAIL: "vanluecaleb@icloud.com",
+  LINKEDIN: "https://www.linkedin.com/in/calebvanlue/",
+  GITHUB: "https://github.com/caleb-vanlue",
+  REPO: "https://github.com/caleb-vanlue/side-a",
+} as const;
+
 export const BREAKPOINTS = {
   sm: 640,
   md: 768,

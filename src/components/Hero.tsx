@@ -11,6 +11,7 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import { Button } from "./ui";
+import { CONTACT } from "../lib/constants";
 
 const PHOTOS = [
   "/images/avatar.jpeg",
@@ -123,7 +124,7 @@ export default function Hero() {
         </a>
 
         <a
-          href="mailto:vanluecaleb@icloud.com"
+          href={`mailto:${CONTACT.EMAIL}`}
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="Email Contact"
         >
@@ -131,7 +132,7 @@ export default function Hero() {
         </a>
 
         <a
-          href="https://www.linkedin.com/in/calebvanlue/"
+          href={CONTACT.LINKEDIN}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
@@ -141,7 +142,7 @@ export default function Hero() {
         </a>
 
         <a
-          href="https://github.com/caleb-vanlue"
+          href={CONTACT.GITHUB}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
