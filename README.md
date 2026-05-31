@@ -2,7 +2,7 @@
 
 My portfolio site, built around a vinyl record player. Drag the tone arm onto the record to start it spinning and surface a project card.
 
-![Side A](screenshots/preview.png)
+![Side A](screenshots/preview2.png)
 
 ## Pages
 
