@@ -1,3 +1,9 @@
+import {
+  TbChevronLeft,
+  TbChevronRight,
+  TbChevronsLeft,
+  TbChevronsRight,
+} from "react-icons/tb";
 import Button from "./Button";
 import Card from "./Card";
 import { Release, useCollection } from "./CollectionContext";
@@ -181,73 +187,53 @@ export default function ReleaseGrid({
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-8 space-y-4 bg-white/50 backdrop-blur-[2px] p-4 rounded-lg border border-white/40 shadow-sm">
-          <div className="flex justify-center text-xs text-gray-600">
-            Updated daily
-          </div>
-          <div className="flex justify-center text-sm text-gray-700 font-medium">
-            Showing {startItem.toLocaleString()}-{endItem.toLocaleString()} of{" "}
-            {totalItems.toLocaleString()} items
-          </div>
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <Button
-              variant="tertiary"
-              size="sm"
+        <div className="mt-8 flex flex-col items-center gap-3 bg-white/50 backdrop-blur-[2px] px-4 py-3 rounded-lg border border-white/40 shadow-sm">
+          <p className="text-sm text-gray-700 font-medium">
+            {startItem.toLocaleString()}–{endItem.toLocaleString()} of{" "}
+            {totalItems.toLocaleString()}
+          </p>
+          <div className="flex items-center gap-1">
+            <button
               onClick={() => onPageChange(1)}
               disabled={currentPage === 1}
-              className={
-                currentPage === 1
-                  ? "opacity-50 cursor-not-allowed bg-white/80"
-                  : "bg-white/80 hover:bg-white/90"
-              }
+              aria-label="First page"
+              className="flex items-center justify-center w-9 h-9 rounded-md border border-white/40 bg-white/80 text-gray-600 hover:bg-white/95 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer"
             >
-              First
-            </Button>
-            <Button
-              variant="tertiary"
+              <TbChevronsLeft size={18} />
+            </button>
+            <button
               onClick={() => onPageChange(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className={
-                currentPage === 1
-                  ? "opacity-50 cursor-not-allowed bg-white/80"
-                  : "bg-white/80 hover:bg-white/90"
-              }
+              aria-label="Previous page"
+              className="flex items-center justify-center w-9 h-9 rounded-md border border-white/40 bg-white/80 text-gray-600 hover:bg-white/95 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer"
             >
-              Previous
-            </Button>
+              <TbChevronLeft size={18} />
+            </button>
 
-            <span className="px-4 py-2 text-sm text-gray-700 bg-white/70 rounded-md">
-              Page {currentPage} of {totalPages}
+            <span className="px-4 py-2 text-sm text-gray-700 tabular-nums">
+              {currentPage} / {totalPages}
             </span>
 
-            <Button
-              variant="tertiary"
+            <button
               onClick={() =>
                 onPageChange(Math.min(totalPages, currentPage + 1))
               }
               disabled={currentPage === totalPages}
-              className={
-                currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed bg-white/80"
-                  : "bg-white/80 hover:bg-white/90"
-              }
+              aria-label="Next page"
+              className="flex items-center justify-center w-9 h-9 rounded-md border border-white/40 bg-white/80 text-gray-600 hover:bg-white/95 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer"
             >
-              Next
-            </Button>
-            <Button
-              variant="tertiary"
-              size="sm"
+              <TbChevronRight size={18} />
+            </button>
+            <button
               onClick={() => onPageChange(totalPages)}
               disabled={currentPage === totalPages}
-              className={
-                currentPage === totalPages
-                  ? "opacity-50 cursor-not-allowed bg-white/80"
-                  : "bg-white/80 hover:bg-white/90"
-              }
+              aria-label="Last page"
+              className="flex items-center justify-center w-9 h-9 rounded-md border border-white/40 bg-white/80 text-gray-600 hover:bg-white/95 hover:text-gray-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 cursor-pointer"
             >
-              Last
-            </Button>
+              <TbChevronsRight size={18} />
+            </button>
           </div>
+          <p className="text-xs text-gray-500">Updated daily</p>
         </div>
       )}
     </>
