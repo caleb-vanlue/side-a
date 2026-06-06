@@ -21,7 +21,7 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "rounded-lg transition-all duration-200 font-medium focus:outline-none";
+    "rounded-lg transition-all duration-200 font-medium focus:outline-none cursor-pointer";
 
   const variantStyles = {
     primary: "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95",
