@@ -39,17 +39,6 @@ export default function ToneArmContainer({
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
 
-  const resetContainerStyle = useCallback(() => {
-    if (containerRef.current) {
-      containerRef.current.style.transform = "translateZ(0.01px)";
-      setTimeout(() => {
-        if (containerRef.current) {
-          containerRef.current.style.transform = "translateZ(0)";
-        }
-      }, 10);
-    }
-  }, []);
-
   const calculateRotation = useCallback((clientX: number, clientY: number) => {
     if (!pivotRef.current) return 0;
     const deltaX = clientX - pivotRef.current.x;
@@ -165,10 +154,6 @@ export default function ToneArmContainer({
     }, 16);
     return () => clearTimeout(timeoutId);
   }, [rotation, onRotationChange]);
-
-  useEffect(() => {
-    resetContainerStyle();
-  }, [isPlaying, targetRotation, resetContainerStyle]);
 
   useEffect(() => {
     const animate = () => {
