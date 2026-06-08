@@ -25,7 +25,19 @@ export default function ToneArmContainer({
   const containerRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
   const animationRef = useRef<number | null>(null);
-  const lastRotationRef = useRef(contextRotation);
+
+  const rotationRef = useRef(contextRotation);
+  const isDraggingRef = useRef(false);
+  const targetRotationRef = useRef<number | null>(null);
+  const isPlayingRef = useRef(isPlaying);
+
+  useEffect(() => {
+    targetRotationRef.current = targetRotation;
+  }, [targetRotation]);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
 
   const resetContainerStyle = useCallback(() => {
     if (containerRef.current) {
@@ -40,10 +52,8 @@ export default function ToneArmContainer({
 
   const calculateRotation = useCallback((clientX: number, clientY: number) => {
     if (!pivotRef.current) return 0;
-
     const deltaX = clientX - pivotRef.current.x;
     const deltaY = clientY - pivotRef.current.y;
-
     const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
     return Math.max(0, Math.min(VINYL_CONSTANTS.MAX_TONE_ARM_ROTATION, angle));
   }, []);
@@ -52,6 +62,7 @@ export default function ToneArmContainer({
     (e: React.MouseEvent) => {
       const target = e.target as SVGElement;
       if (target.closest("svg") || target.tagName === "svg") {
+        isDraggingRef.current = true;
         setIsDragging(true);
         onDragStart?.();
         e.preventDefault();
@@ -62,15 +73,17 @@ export default function ToneArmContainer({
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
-      if (isDragging) {
+      if (isDraggingRef.current) {
         const newRotation = calculateRotation(e.clientX, e.clientY);
+        rotationRef.current = newRotation;
         setRotation(newRotation);
       }
     },
-    [isDragging, calculateRotation]
+    [calculateRotation]
   );
 
   const handleMouseUp = useCallback(() => {
+    isDraggingRef.current = false;
     setIsDragging(false);
   }, []);
 
@@ -87,10 +100,7 @@ export default function ToneArmContainer({
 
     updatePivotPoint();
     window.addEventListener("resize", updatePivotPoint);
-
-    return () => {
-      window.removeEventListener("resize", updatePivotPoint);
-    };
+    return () => window.removeEventListener("resize", updatePivotPoint);
   }, []);
 
   useEffect(() => {
@@ -99,6 +109,7 @@ export default function ToneArmContainer({
 
     const handleTouchStart = (e: TouchEvent) => {
       if (e.touches.length === 1) {
+        isDraggingRef.current = true;
         setIsDragging(true);
         onDragStart?.();
         e.preventDefault();
@@ -106,21 +117,21 @@ export default function ToneArmContainer({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (isDragging && e.touches.length > 0) {
+      if (isDraggingRef.current && e.touches.length > 0) {
         e.preventDefault();
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
+        rotationRef.current = newRotation;
         setRotation(newRotation);
       }
     };
 
     const handleTouchEnd = () => {
+      isDraggingRef.current = false;
       setIsDragging(false);
     };
 
-    element.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
+    element.addEventListener("touchstart", handleTouchStart, { passive: false });
     element.addEventListener("touchmove", handleTouchMove, { passive: false });
     element.addEventListener("touchend", handleTouchEnd);
 
@@ -129,13 +140,14 @@ export default function ToneArmContainer({
       element.removeEventListener("touchmove", handleTouchMove);
       element.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isDragging, calculateRotation, onDragStart]);
+  }, [calculateRotation, onDragStart]);
 
   useEffect(() => {
     if (!isDragging) return;
 
     const handleGlobalMouseMove = (e: MouseEvent) => {
       const newRotation = calculateRotation(e.clientX, e.clientY);
+      rotationRef.current = newRotation;
       setRotation(newRotation);
     };
 
@@ -143,11 +155,13 @@ export default function ToneArmContainer({
       if (e.touches.length > 0) {
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
+        rotationRef.current = newRotation;
         setRotation(newRotation);
       }
     };
 
     const handleGlobalEnd = () => {
+      isDraggingRef.current = false;
       setIsDragging(false);
     };
 
@@ -170,7 +184,6 @@ export default function ToneArmContainer({
     const timeoutId = setTimeout(() => {
       onRotationChange?.(rotation);
     }, 16);
-
     return () => clearTimeout(timeoutId);
   }, [rotation, onRotationChange]);
 
@@ -179,62 +192,47 @@ export default function ToneArmContainer({
   }, [isPlaying, targetRotation, resetContainerStyle]);
 
   useEffect(() => {
-    let currentRotation = rotation;
-
     const animate = () => {
-      let needsUpdate = false;
-      let newRotation = currentRotation;
+      const target = targetRotationRef.current;
+      const dragging = isDraggingRef.current;
+      const playing = isPlayingRef.current;
+      const current = rotationRef.current;
 
-      if (targetRotation !== null && !isDragging) {
-        const diff = targetRotation - currentRotation;
+      let newRotation = current;
+
+      if (target !== null && !dragging) {
+        const diff = target - current;
         if (Math.abs(diff) >= 0.5) {
-          newRotation = currentRotation + diff * 0.02;
-          needsUpdate = true;
-
-          if (Math.abs(diff) > 3) {
-            resetContainerStyle();
-          }
+          newRotation = current + diff * 0.02;
         }
       } else if (
-        isPlaying &&
-        targetRotation === null &&
-        currentRotation < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION &&
-        !isDragging
+        playing &&
+        target === null &&
+        current < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION &&
+        !dragging
       ) {
         newRotation = Math.min(
-          currentRotation + VINYL_CONSTANTS.TONE_ARM_AUTO_SPEED,
+          current + VINYL_CONSTANTS.TONE_ARM_AUTO_SPEED,
           VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION
         );
-        needsUpdate = true;
       }
 
-      if (needsUpdate) {
-        currentRotation = newRotation;
-        if (Math.abs(newRotation - lastRotationRef.current) > 0.01) {
-          setRotation(newRotation);
-          lastRotationRef.current = newRotation;
-        }
-        animationRef.current = requestAnimationFrame(animate);
-      } else {
-        animationRef.current = null;
+      if (newRotation !== current) {
+        rotationRef.current = newRotation;
+        setRotation(newRotation);
       }
+
+      animationRef.current = requestAnimationFrame(animate);
     };
 
-    if (
-      (targetRotation !== null ||
-        (isPlaying && rotation < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION)) &&
-      !isDragging
-    ) {
-      animationRef.current = requestAnimationFrame(animate);
-    }
-
+    animationRef.current = requestAnimationFrame(animate);
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
       }
     };
-  }, [targetRotation, isPlaying, isDragging, rotation, resetContainerStyle]);
+  }, []);
 
   return (
     <div
