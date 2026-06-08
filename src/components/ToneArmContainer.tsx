@@ -116,31 +116,9 @@ export default function ToneArmContainer({
       }
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (isDraggingRef.current && e.touches.length > 0) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const newRotation = calculateRotation(touch.clientX, touch.clientY);
-        rotationRef.current = newRotation;
-        setRotation(newRotation);
-      }
-    };
-
-    const handleTouchEnd = () => {
-      isDraggingRef.current = false;
-      setIsDragging(false);
-    };
-
     element.addEventListener("touchstart", handleTouchStart, { passive: false });
-    element.addEventListener("touchmove", handleTouchMove, { passive: false });
-    element.addEventListener("touchend", handleTouchEnd);
-
-    return () => {
-      element.removeEventListener("touchstart", handleTouchStart);
-      element.removeEventListener("touchmove", handleTouchMove);
-      element.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [calculateRotation, onDragStart]);
+    return () => element.removeEventListener("touchstart", handleTouchStart);
+  }, [onDragStart]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -153,6 +131,7 @@ export default function ToneArmContainer({
 
     const handleGlobalTouchMove = (e: TouchEvent) => {
       if (e.touches.length > 0) {
+        e.preventDefault();
         const touch = e.touches[0];
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
         rotationRef.current = newRotation;
