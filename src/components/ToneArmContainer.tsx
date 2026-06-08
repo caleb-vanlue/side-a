@@ -30,6 +30,7 @@ export default function ToneArmContainer({
   const isDraggingRef = useRef(false);
   const targetRotationRef = useRef<number | null>(null);
   const isPlayingRef = useRef(isPlaying);
+  const onRotationChangeRef = useRef(onRotationChange);
 
   useEffect(() => {
     targetRotationRef.current = targetRotation;
@@ -38,6 +39,10 @@ export default function ToneArmContainer({
   useEffect(() => {
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
+
+  useEffect(() => {
+    onRotationChangeRef.current = onRotationChange;
+  }, [onRotationChange]);
 
   const calculateRotation = useCallback((clientX: number, clientY: number) => {
     if (!pivotRef.current) return 0;
@@ -66,6 +71,7 @@ export default function ToneArmContainer({
         const newRotation = calculateRotation(e.clientX, e.clientY);
         rotationRef.current = newRotation;
         setRotation(newRotation);
+        onRotationChangeRef.current?.(newRotation);
       }
     },
     [calculateRotation]
@@ -116,6 +122,7 @@ export default function ToneArmContainer({
       const newRotation = calculateRotation(e.clientX, e.clientY);
       rotationRef.current = newRotation;
       setRotation(newRotation);
+      onRotationChangeRef.current?.(newRotation);
     };
 
     const handleGlobalTouchMove = (e: TouchEvent) => {
@@ -125,6 +132,7 @@ export default function ToneArmContainer({
         const newRotation = calculateRotation(touch.clientX, touch.clientY);
         rotationRef.current = newRotation;
         setRotation(newRotation);
+        onRotationChangeRef.current?.(newRotation);
       }
     };
 
@@ -147,13 +155,6 @@ export default function ToneArmContainer({
       document.removeEventListener("touchend", handleGlobalEnd);
     };
   }, [isDragging, calculateRotation]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      onRotationChange?.(rotation);
-    }, 16);
-    return () => clearTimeout(timeoutId);
-  }, [rotation, onRotationChange]);
 
   useEffect(() => {
     const animate = () => {
@@ -184,6 +185,7 @@ export default function ToneArmContainer({
       if (newRotation !== current) {
         rotationRef.current = newRotation;
         setRotation(newRotation);
+        onRotationChangeRef.current?.(newRotation);
       }
 
       animationRef.current = requestAnimationFrame(animate);
