@@ -39,24 +39,14 @@ export function RecordPlayerProvider({
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const granimRef = useRef<Granim | null>(null);
 
   useEffect(() => {
-    const canvas = document.createElement("canvas");
-    canvas.className = "fixed inset-0 w-full h-full";
-    canvas.style.position = "fixed";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    canvas.style.zIndex = "-10";
-    canvas.style.pointerEvents = "none";
-    document.body.appendChild(canvas);
-    canvasRef.current = canvas;
+    if (!canvasRef.current) return;
 
     granimRef.current = new Granim({
-      element: canvas,
+      element: canvasRef.current,
       direction: "radial",
       isPausedWhenNotInView: false,
       states: {
@@ -85,12 +75,7 @@ export function RecordPlayerProvider({
     });
 
     return () => {
-      if (granimRef.current) {
-        granimRef.current.destroy();
-      }
-      if (canvasRef.current && document.body.contains(canvasRef.current)) {
-        document.body.removeChild(canvasRef.current);
-      }
+      granimRef.current?.destroy();
     };
   }, []);
 
@@ -116,6 +101,11 @@ export function RecordPlayerProvider({
         setTargetRotation,
       }}
     >
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: -10 }}
+      />
       {children}
     </RecordPlayerContext.Provider>
   );
