@@ -14,8 +14,6 @@ import { useRecordPlayer } from "../components/RecordPlayerContext";
 
 export default function HomePage() {
   const {
-    isPlaying,
-    setIsPlaying,
     isAutoPlaying,
     setIsAutoPlaying,
     toneArmRotation,
@@ -28,14 +26,7 @@ export default function HomePage() {
 
   const isNeedleOnRecord =
     toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
-
-  useEffect(() => {
-    if (isNeedleOnRecord || isAutoPlaying) {
-      setIsPlaying(true);
-    } else {
-      setIsPlaying(false);
-    }
-  }, [isNeedleOnRecord, isAutoPlaying, setIsPlaying]);
+  const isPlaying = isNeedleOnRecord || isAutoPlaying;
 
   const handleStart = useCallback(() => {
     if (!isAutoPlaying) {

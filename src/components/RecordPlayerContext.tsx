@@ -8,10 +8,9 @@ import React, {
   useRef,
 } from "react";
 import Granim from "granim";
+import { VINYL_CONSTANTS } from "../lib/constants";
 
 interface RecordPlayerContextType {
-  isPlaying: boolean;
-  setIsPlaying: (isPlaying: boolean) => void;
   isAutoPlaying: boolean;
   setIsAutoPlaying: (isAutoPlaying: boolean) => void;
   toneArmRotation: number;
@@ -21,8 +20,6 @@ interface RecordPlayerContextType {
 }
 
 const RecordPlayerContext = createContext<RecordPlayerContextType>({
-  isPlaying: false,
-  setIsPlaying: () => {},
   isAutoPlaying: false,
   setIsAutoPlaying: () => {},
   toneArmRotation: 0,
@@ -38,7 +35,6 @@ export function RecordPlayerProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
@@ -100,19 +96,18 @@ export function RecordPlayerProvider({
 
   useEffect(() => {
     if (granimRef.current) {
-      if (isPlaying) {
-        granimRef.current.changeState("playing-state");
-      } else {
-        granimRef.current.changeState("default-state");
-      }
+      const isPlaying =
+        toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD ||
+        isAutoPlaying;
+      granimRef.current.changeState(
+        isPlaying ? "playing-state" : "default-state"
+      );
     }
-  }, [isPlaying]);
+  }, [toneArmRotation, isAutoPlaying]);
 
   return (
     <RecordPlayerContext.Provider
       value={{
-        isPlaying,
-        setIsPlaying,
         isAutoPlaying,
         setIsAutoPlaying,
         toneArmRotation,
