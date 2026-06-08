@@ -198,10 +198,13 @@ export default function ToneArmContainer({
       } else if (
         isPlaying &&
         targetRotation === null &&
-        currentRotation < 47 &&
+        currentRotation < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION &&
         !isDragging
       ) {
-        newRotation = Math.min(currentRotation + 0.005, 47);
+        newRotation = Math.min(
+          currentRotation + VINYL_CONSTANTS.TONE_ARM_AUTO_SPEED,
+          VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION
+        );
         needsUpdate = true;
       }
 
@@ -218,7 +221,8 @@ export default function ToneArmContainer({
     };
 
     if (
-      (targetRotation !== null || (isPlaying && rotation < 47)) &&
+      (targetRotation !== null ||
+        (isPlaying && rotation < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION)) &&
       !isDragging
     ) {
       animationRef.current = requestAnimationFrame(animate);
