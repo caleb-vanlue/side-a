@@ -20,7 +20,7 @@ export default function LazyImage({
   placeholder,
 }: LazyImageProps) {
   const [containerRef, isVisible] = useLazyLoad<HTMLDivElement>({
-    rootMargin: "100px",
+    rootMargin: "400px",
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
