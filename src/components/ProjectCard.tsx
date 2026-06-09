@@ -33,7 +33,7 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
               </div>
               <div>
                 <h3 className="text-white text-sm font-medium">Now Playing</h3>
-                <p className="text-zinc-400 text-xs">A Plex Dashboard</p>
+                <p className="text-zinc-400 text-xs">A Media Dashboard</p>
               </div>
             </div>
 
