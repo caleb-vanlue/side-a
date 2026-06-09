@@ -206,7 +206,7 @@ export const COLLECTION_SORT_OPTIONS: SortConfig[] = [
 export const WANTLIST_SORT_OPTIONS: SortConfig[] =
   COLLECTION_SORT_OPTIONS.filter((option) => option.sort !== "rating");
 
-export const PAGE_SIZE_OPTIONS = [25, 50, 100];
+export const PAGE_SIZE_OPTIONS = [20, 40, 100];
 
 const fetchWithRetry = async (
   url: string,
