@@ -1,4 +1,7 @@
-import { FaPlay, FaStop } from "react-icons/fa";
+"use client";
+
+import { FaPlay, FaStop, FaVolumeUp } from "react-icons/fa";
+import { useRecordPlayer } from "./RecordPlayerContext";
 
 interface PlayerControlsProps {
   onStart: () => void;
@@ -13,9 +16,11 @@ export default function PlayerControls({
   isPlaying,
   isAutoPlaying,
 }: PlayerControlsProps) {
+  const { volume, setVolume } = useRecordPlayer();
+
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-6 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 z-50">
-      <div className="flex flex-row lg:flex-col gap-4 p-3 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
+    <div className="fixed bottom-6 left-4 lg:left-auto lg:right-6 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2 z-50">
+      <div className="flex flex-row lg:flex-col items-center gap-4 p-3 bg-black/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
         <button
           onClick={onStart}
           disabled={isPlaying || isAutoPlaying}
@@ -64,6 +69,20 @@ export default function PlayerControls({
             }`}
           />
         </button>
+
+        <div className="flex flex-col lg:flex-row items-center gap-1.5 px-1 lg:px-0 lg:py-1">
+          <FaVolumeUp className="text-gray-400 w-3 h-3 flex-shrink-0" />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            className="w-24 lg:w-8 lg:[writing-mode:vertical-lr] lg:[direction:rtl] accent-emerald-500 cursor-pointer"
+            aria-label="Volume"
+          />
+        </div>
       </div>
     </div>
   );

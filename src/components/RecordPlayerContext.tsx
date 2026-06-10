@@ -17,6 +17,8 @@ interface RecordPlayerContextType {
   setToneArmRotation: (rotation: number) => void;
   targetRotation: number | null;
   setTargetRotation: (rotation: number | null) => void;
+  volume: number;
+  setVolume: (volume: number) => void;
 }
 
 const RecordPlayerContext = createContext<RecordPlayerContextType>({
@@ -26,6 +28,8 @@ const RecordPlayerContext = createContext<RecordPlayerContextType>({
   setToneArmRotation: () => {},
   targetRotation: null,
   setTargetRotation: () => {},
+  volume: 0.5,
+  setVolume: () => {},
 });
 
 export const useRecordPlayer = () => useContext(RecordPlayerContext);
@@ -38,6 +42,7 @@ export function RecordPlayerProvider({
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [toneArmRotation, setToneArmRotation] = useState(0);
   const [targetRotation, setTargetRotation] = useState<number | null>(null);
+  const [volume, setVolume] = useState(0.5);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const granimRef = useRef<Granim | null>(null);
@@ -99,6 +104,8 @@ export function RecordPlayerProvider({
         setToneArmRotation,
         targetRotation,
         setTargetRotation,
+        volume,
+        setVolume,
       }}
     >
       <canvas

@@ -74,7 +74,7 @@ export default function HomePage() {
         <div
           className={`
             fixed z-20 
-            ${isDesktop ? "top-24 right-10" : "top-20 right-4"}
+            ${isDesktop ? "top-24 left-10" : "top-20 left-0 right-0 px-3"}
             transition-all duration-500 ease-in-out
           `}
         >
