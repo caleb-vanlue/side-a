@@ -26,6 +26,16 @@ export default function AudioPlayer() {
     }
   }, [volume]);
 
+  // Unlock iOS audio on first touch so subsequent programmatic plays work.
+  useEffect(() => {
+    const unlock = () => {
+      const silent = new Audio();
+      silent.play().catch(() => {});
+    };
+    document.addEventListener("touchstart", unlock, { once: true, passive: true });
+    return () => document.removeEventListener("touchstart", unlock);
+  }, []);
+
   const startPreload = useCallback((index: number) => {
     const audio = new Audio(TRACKS[index].src);
     audio.preload = "auto";
@@ -46,13 +56,17 @@ export default function AudioPlayer() {
       // Use preloaded audio if available for this index
       setCurrentTrackIndex(index);
 
+      // On iOS, preloaded elements often have readyState 0 (not loaded) because
+      // the browser ignores preload="auto" outside of a gesture context. Fall
+      // back to a fresh element so iOS can load+play it from the audio callback.
+      const preloaded = preloadRef.current;
       const usePreloaded =
-        preloadIndexRef.current === index && preloadRef.current !== null;
-      const audio = usePreloaded
-        ? (preloadRef.current as HTMLAudioElement)
-        : new Audio(TRACKS[index].src);
+        preloadIndexRef.current === index &&
+        preloaded !== null &&
+        preloaded.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA;
+      const audio = usePreloaded ? preloaded : new Audio(TRACKS[index].src);
 
-      if (usePreloaded) {
+      if (preloaded) {
         preloadRef.current = null;
         preloadIndexRef.current = null;
       }

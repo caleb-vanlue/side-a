@@ -70,7 +70,7 @@ export default function PlayerControls({
           />
         </button>
 
-        <div className="flex flex-col lg:flex-row items-center gap-1.5 px-1 lg:px-0 lg:py-1">
+        <div className="hidden lg:flex flex-col items-center gap-1.5 py-1">
           <FaVolumeUp className="text-gray-400 w-3 h-3 flex-shrink-0" />
           <input
             type="range"
@@ -79,7 +79,7 @@ export default function PlayerControls({
             step="0.05"
             value={volume}
             onChange={(e) => setVolume(parseFloat(e.target.value))}
-            className="w-24 lg:w-8 lg:[writing-mode:vertical-lr] lg:[direction:rtl] accent-emerald-500 cursor-pointer"
+            className="w-8 [writing-mode:vertical-lr] [direction:rtl] accent-emerald-500 cursor-pointer"
             aria-label="Volume"
           />
         </div>
