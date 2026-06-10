@@ -124,13 +124,13 @@ const defaultContext: CollectionContextType = {
   wantlistError: null,
   collectionPage: 1,
   collectionTotalPages: 1,
-  collectionPageSize: 50,
+  collectionPageSize: 20,
   collectionTotalItems: 0,
   setCollectionPage: () => {},
   setCollectionPageSize: () => {},
   wantlistPage: 1,
   wantlistTotalPages: 1,
-  wantlistPageSize: 50,
+  wantlistPageSize: 20,
   wantlistTotalItems: 0,
   setWantlistPage: () => {},
   setWantlistPageSize: () => {},
@@ -246,7 +246,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [collectionSortOrder, setCollectionSortOrder] =
     useState<SortOrder>("desc");
   const [collectionSortValue, setCollectionSortValue] = useState("added_desc");
-  const [collectionPageSize, setCollectionPageSize] = useState(50);
+  const [collectionPageSize, setCollectionPageSize] = useState(20);
   const [collectionTotalItems, setCollectionTotalItems] = useState(0);
 
   // Wantlist pagination and sorting
@@ -255,7 +255,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [wantlistSort, setWantlistSort] = useState<SortOption>("added");
   const [wantlistSortOrder, setWantlistSortOrder] = useState<SortOrder>("desc");
   const [wantlistSortValue, setWantlistSortValue] = useState("added_desc");
-  const [wantlistPageSize, setWantlistPageSize] = useState(50);
+  const [wantlistPageSize, setWantlistPageSize] = useState(20);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
   // Cache control - use a cache key that includes pagination params
