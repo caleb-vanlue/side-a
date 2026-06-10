@@ -1,7 +1,39 @@
+"use client";
+
 import React from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { VINYL_CONSTANTS } from "../lib/constants";
+import { TRACKS } from "../lib/tracks";
+import { useRecordPlayer } from "./RecordPlayerContext";
+
+const MAX_CHARS_SINGLE_LINE = 15;
+const LINE_HEIGHT = 10;
+const TITLE_CENTER_Y = 38;
+
+function splitTitle(title: string): string[] {
+  const words = title.split(" ");
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    const candidate = current ? `${current} ${word}` : word;
+    if (candidate.length > MAX_CHARS_SINGLE_LINE && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = candidate;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
 
 const VinylLabel = React.memo(() => {
+  const { currentTrackIndex, isAutoPlaying, toneArmRotation } =
+    useRecordPlayer();
+  const isPlaying =
+    isAutoPlaying ||
+    toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
+
   const currentYear = React.useMemo(() => {
     return Math.floor(
       (new Date().getTime() - new Date("2000-09-05").getTime()) /
@@ -11,14 +43,23 @@ const VinylLabel = React.memo(() => {
 
   const labelSize = `${VINYL_CONSTANTS.LABEL_SIZE_PERCENTAGE}%`;
 
+  const titleLines = isPlaying
+    ? splitTitle(TRACKS[currentTrackIndex]?.title.toUpperCase() ?? "SIDE A")
+    : ["SIDE A"];
+
+  const isMultiLine = titleLines.length > 1;
+  const fontSize = isMultiLine ? "5.5px" : "7px";
+  const letterSpacing = isMultiLine ? "0.5px" : "1px";
+  const totalSpan = (titleLines.length - 1) * LINE_HEIGHT;
+  const startY = TITLE_CENTER_Y - totalSpan / 2;
+
+  const animKey = isPlaying ? currentTrackIndex : "default";
+
   return (
     <>
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none overflow-hidden"
-        style={{
-          width: labelSize,
-          height: labelSize,
-        }}
+        style={{ width: labelSize, height: labelSize }}
       >
         <div
           className="w-full h-full"
@@ -54,10 +95,7 @@ const VinylLabel = React.memo(() => {
       </div>
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{
-          width: labelSize,
-          height: labelSize,
-        }}
+        style={{ width: labelSize, height: labelSize }}
       >
         <svg
           className="absolute inset-0 w-full h-full"
@@ -69,24 +107,33 @@ const VinylLabel = React.memo(() => {
             y="25"
             textAnchor="middle"
             className="fill-white/90"
-            style={{
-              fontSize: "5.5px",
-              letterSpacing: "1px",
-              fontWeight: "500",
-            }}
+            style={{ fontSize: "5.5px", letterSpacing: "1px", fontWeight: "500" }}
           >
             CALEB VAN LUE
           </text>
 
-          <text
-            x="50"
-            y="35"
-            textAnchor="middle"
-            className="fill-white"
-            style={{ fontSize: "7px", letterSpacing: "1px", fontWeight: "700" }}
-          >
-            SIDE A
-          </text>
+          <AnimatePresence mode="wait">
+            <motion.g
+              key={animKey}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              {titleLines.map((line, i) => (
+                <text
+                  key={i}
+                  x="50"
+                  y={startY + i * LINE_HEIGHT}
+                  textAnchor="middle"
+                  className="fill-white"
+                  style={{ fontSize, letterSpacing, fontWeight: "700" }}
+                >
+                  {line}
+                </text>
+              ))}
+            </motion.g>
+          </AnimatePresence>
 
           <text
             x="50"
@@ -103,10 +150,7 @@ const VinylLabel = React.memo(() => {
             y="75"
             textAnchor="middle"
             className="fill-white/70"
-            style={{
-              fontSize: "4px",
-              letterSpacing: "0.5px",
-            }}
+            style={{ fontSize: "4px", letterSpacing: "0.5px" }}
           >
             CV-2000-0{currentYear}
           </text>

@@ -3,15 +3,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useRecordPlayer } from "./RecordPlayerContext";
 import { VINYL_CONSTANTS } from "../lib/constants";
-
-const TRACKS = [
-  "/audio/track-01.ogg",
-  "/audio/track-02.ogg",
-  "/audio/track-03.ogg",
-];
+import { TRACKS } from "../lib/tracks";
 
 export default function AudioPlayer() {
-  const { isAutoPlaying, toneArmRotation, volume } = useRecordPlayer();
+  const { isAutoPlaying, toneArmRotation, volume, setCurrentTrackIndex } =
+    useRecordPlayer();
   const isPlaying =
     isAutoPlaying ||
     toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
@@ -31,7 +27,7 @@ export default function AudioPlayer() {
   }, [volume]);
 
   const startPreload = useCallback((index: number) => {
-    const audio = new Audio(TRACKS[index]);
+    const audio = new Audio(TRACKS[index].src);
     audio.preload = "auto";
     preloadRef.current = audio;
     preloadIndexRef.current = index;
@@ -48,11 +44,13 @@ export default function AudioPlayer() {
       nextIndexRef.current = nextIndex;
 
       // Use preloaded audio if available for this index
+      setCurrentTrackIndex(index);
+
       const usePreloaded =
         preloadIndexRef.current === index && preloadRef.current !== null;
       const audio = usePreloaded
         ? (preloadRef.current as HTMLAudioElement)
-        : new Audio(TRACKS[index]);
+        : new Audio(TRACKS[index].src);
 
       if (usePreloaded) {
         preloadRef.current = null;
@@ -70,7 +68,7 @@ export default function AudioPlayer() {
       startPreload(nextIndex);
       audio.play().catch(() => {});
     },
-    [startPreload]
+    [startPreload, setCurrentTrackIndex]
   );
 
   useEffect(() => {
