@@ -10,6 +10,7 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
+import { SiLetterboxd } from "react-icons/si";
 import { Button } from "./ui";
 import { CONTACT } from "../lib/constants";
 
@@ -149,6 +150,16 @@ export default function Hero() {
           aria-label="GitHub Profile"
         >
           <FaGithub className="w-5 h-5" />
+        </a>
+
+        <a
+          href={CONTACT.LETTERBOXD}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          aria-label="Letterboxd Profile"
+        >
+          <SiLetterboxd className="w-5 h-5" />
         </a>
 
         <a

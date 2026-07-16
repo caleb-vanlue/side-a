@@ -53,6 +53,7 @@ export const CONTACT = {
   LINKEDIN: "https://www.linkedin.com/in/calebvanlue/",
   GITHUB: "https://github.com/caleb-vanlue",
   REPO: "https://github.com/caleb-vanlue/side-a",
+  LETTERBOXD: "https://letterboxd.com/irrelativity/",
 } as const;
 
 export const BREAKPOINTS = {
