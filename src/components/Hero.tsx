@@ -27,18 +27,7 @@ export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  const yearsExperience = (() => {
-    const start = new Date("2022-05-09");
-    const now = new Date();
-    let diff = now.getFullYear() - start.getFullYear();
-    if (
-      now.getMonth() < start.getMonth() ||
-      (now.getMonth() === start.getMonth() && now.getDate() < start.getDate())
-    ) {
-      diff--;
-    }
-    return diff;
-  })();
+  const yearsExperience = 4;
 
   const goNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % PHOTOS.length);
