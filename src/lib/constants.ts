@@ -10,7 +10,6 @@ export const NAVIGATION_LINKS: NavigationLink[] = [
   { href: "/collection", label: "My Records" },
 ];
 
-
 export const VINYL_CONSTANTS = {
   MAX_TONE_ARM_ROTATION: 45,
   NEEDLE_ON_RECORD_THRESHOLD: 25,
@@ -50,7 +49,6 @@ export const ANIMATION_DURATIONS = {
 
 export const CONTACT = {
   EMAIL: "vanluecaleb@icloud.com",
-  LINKEDIN: "https://www.linkedin.com/in/calebvanlue/",
   GITHUB: "https://github.com/caleb-vanlue",
   REPO: "https://github.com/caleb-vanlue/side-a",
   LETTERBOXD: "https://letterboxd.com/irrelativity/",

@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
-  FaLinkedin,
   FaGithub,
   FaFileDownload,
   FaEnvelope,
@@ -119,16 +118,6 @@ export default function Hero() {
           aria-label="Email Contact"
         >
           <FaEnvelope className="w-5 h-5" />
-        </a>
-
-        <a
-          href={CONTACT.LINKEDIN}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
-          aria-label="LinkedIn Profile"
-        >
-          <FaLinkedin className="w-5 h-5" />
         </a>
 
         <a
