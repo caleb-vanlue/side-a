@@ -10,7 +10,7 @@ export default function FeaturedProjects() {
       title: "Now Playing",
       description:
         "A live dashboard of current activity from my self-hosted Plex and Jellyfin servers. Displays information about music, movies, and shows I'm watching or listening to. Integrates with Spotify for tracks.",
-      liveUrl: "https://nowplaying.calebvanlue.com",
+      liveUrl: "https://now-playing.calebvanlue.com",
       githubUrl: "https://github.com/caleb-vanlue/now-playing",
       tags: [
         "Next.js",

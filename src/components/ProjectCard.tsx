@@ -18,7 +18,10 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="w-full sm:max-w-[280px]"
         >
-          <Card className="bg-zinc-900/90 backdrop-blur-md text-white border-zinc-800 shadow-lg overflow-hidden" padding="sm">
+          <Card
+            className="bg-zinc-900/90 backdrop-blur-md text-white border-zinc-800 shadow-lg overflow-hidden"
+            padding="sm"
+          >
             <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-green-600 -mt-3 mb-2"></div>
 
             <div className="flex items-center justify-center mb-2">
@@ -46,7 +49,7 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
               size="sm"
               className="w-full text-sm"
               onClick={() =>
-                window.open("http://nowplaying.calebvanlue.com", "_blank")
+                window.open("http://now-playing.calebvanlue.com", "_blank")
               }
             >
               View Project
