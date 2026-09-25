@@ -16,8 +16,18 @@ import { CONTACT } from "../lib/constants";
 const PHOTOS = [
   "/images/avatar.jpeg",
   "/images/avatar-2.png",
+  "/images/mis padres.png",
+  "/images/grandest grands.png",
+  "/images/kitoonie baboonie!.png",
+  "/images/maine w: besties.png",
   "/images/avatar-3.png",
+  "/images/the best software team since gates.png",
+  "/images/steviehhh (like gibbehhhh).png",
+  "/images/culvers friends.png",
+  "/images/lila and gang.png",
   "/images/avatar-4.png",
+  "/images/jon freaking eden.png",
+  "/images/prom pals.png",
 ];
 
 const AUTO_ADVANCE_MS = 10000;
@@ -66,6 +76,7 @@ export default function Hero() {
                   src={src}
                   alt="Caleb Van Lue"
                   fill
+                  sizes="(max-width: 640px)"
                   className={`object-cover transition-opacity duration-500 ${
                     i === currentIndex ? "opacity-100" : "opacity-0"
                   }`}
