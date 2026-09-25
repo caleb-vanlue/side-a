@@ -19,7 +19,7 @@ const PHOTOS = [
   "/images/mis padres.png",
   "/images/grandest grands.png",
   "/images/kitoonie baboonie!.png",
-  "/images/maine w: besties.png",
+  "/images/maine with besties.png",
   "/images/avatar-3.png",
   "/images/the best software team since gates.png",
   "/images/steviehhh (like gibbehhhh).png",
