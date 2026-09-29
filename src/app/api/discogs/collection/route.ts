@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const DISCOGS_API_BASE = process.env.DISCOGS_API_BASE_URL;
-const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME;
-const API_KEY = process.env.DISCOGS_API_KEY;
+import { errorResponse, fetchDiscogsApi, getDiscogsConfig } from "@/lib/discogsApi";
 
 interface Release {
   discogsId: number;
@@ -82,14 +79,6 @@ interface TransformedResponse {
 }
 
 export async function GET(request: NextRequest) {
-  if (!API_KEY || !DISCOGS_API_BASE || !DISCOGS_USERNAME) {
-    console.error("Missing required environment variables: DISCOGS_API_KEY, DISCOGS_API_BASE_URL, DISCOGS_USERNAME");
-    return NextResponse.json(
-      { error: "API configuration error", details: "Server misconfiguration" },
-      { status: 500 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type") || "collection";
   const sort = searchParams.get("sort") || "added";
@@ -102,45 +91,15 @@ export async function GET(request: NextRequest) {
   const offset = (pageNum - 1) * perPageNum;
 
   try {
-    let url: string;
+    const config = getDiscogsConfig();
     const sortBy = mapSortField(sort, type);
     const sortOrderUpper = sortOrder.toUpperCase();
+    const resource = type === "wantlist" ? "/wantlist" : "";
+    const path = `/collection/${config.username}${resource}?limit=${perPageNum}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrderUpper}`;
 
-    if (type === "wantlist") {
-      url = `${DISCOGS_API_BASE}/collection/${DISCOGS_USERNAME}/wantlist?limit=${perPageNum}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrderUpper}`;
-    } else {
-      url = `${DISCOGS_API_BASE}/collection/${DISCOGS_USERNAME}?limit=${perPageNum}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrderUpper}`;
-    }
+    console.log(`Fetching from NestJS API: ${path}`);
 
-    console.log(`Fetching from NestJS API: ${url}`);
-
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "CalebVanLuePortfolio/1.0",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-      },
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        `NestJS API error: ${response.status} ${response.statusText}`,
-        errorText
-      );
-
-      if (response.status === 401) {
-        throw new Error("Unauthorized - Invalid API key");
-      }
-
-      throw new Error(
-        `API responded with ${response.status}: ${response.statusText}`
-      );
-    }
-
-    const data = (await response.json()) as ApiResponse;
+    const data = await fetchDiscogsApi<ApiResponse>(config, path);
 
     const transformedData = transformApiResponse(
       data,
@@ -151,16 +110,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(transformedData);
   } catch (error) {
-    console.error("Error fetching from NestJS API:", error);
-
-    return NextResponse.json(
-      {
-        error: `Failed to fetch ${type}`,
-        details: error instanceof Error ? error.message : "Unknown error",
-        timestamp: new Date().toISOString(),
-      },
-      { status: 500 }
-    );
+    return errorResponse(`Failed to fetch ${type}`, error);
   }
 }
 

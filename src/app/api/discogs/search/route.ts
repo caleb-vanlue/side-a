@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const DISCOGS_API_BASE = process.env.DISCOGS_API_BASE_URL;
-const API_KEY = process.env.DISCOGS_API_KEY;
+import { errorResponse, fetchDiscogsApi, getDiscogsConfig } from "@/lib/discogsApi";
 
 interface SearchResult {
   id: number;
@@ -32,14 +30,6 @@ interface SearchResponse {
 }
 
 export async function GET(request: NextRequest) {
-  if (!API_KEY || !DISCOGS_API_BASE) {
-    console.error("Missing required environment variables: DISCOGS_API_KEY, DISCOGS_API_BASE_URL");
-    return NextResponse.json(
-      { error: "API configuration error", details: "Server misconfiguration" },
-      { status: 500 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
   const page = searchParams.get("page") || "1";
@@ -59,51 +49,17 @@ export async function GET(request: NextRequest) {
   const perPageNum = Math.min(100, Math.max(1, parseInt(perPage)));
 
   try {
-    const url = `${DISCOGS_API_BASE}/discogs/search?query=${encodeURIComponent(
+    const config = getDiscogsConfig();
+    const path = `/discogs/search?query=${encodeURIComponent(
       query
     )}&page=${pageNum}&per_page=${perPageNum}`;
 
-    console.log(`Searching Discogs API: ${url}`);
+    console.log(`Searching Discogs API: ${path}`);
 
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "CalebVanLuePortfolio/1.0",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-      },
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        `Discogs API search error: ${response.status} ${response.statusText}`,
-        errorText
-      );
-
-      if (response.status === 401) {
-        throw new Error("Unauthorized - Invalid API key");
-      }
-
-      throw new Error(
-        `API responded with ${response.status}: ${response.statusText}`
-      );
-    }
-
-    const data = (await response.json()) as SearchResponse;
+    const data = await fetchDiscogsApi<SearchResponse>(config, path);
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error searching Discogs API:", error);
-
-    return NextResponse.json(
-      {
-        error: "Failed to search releases",
-        details: error instanceof Error ? error.message : "Unknown error",
-        timestamp: new Date().toISOString(),
-      },
-      { status: 500 }
-    );
+    return errorResponse("Failed to search releases", error);
   }
 }

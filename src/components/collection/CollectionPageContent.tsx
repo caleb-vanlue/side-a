@@ -133,6 +133,7 @@ function CollectionTabs() {
               pageSize={collectionPageSize}
               totalItems={collectionTotalItems}
               onPageChange={setCollectionPage}
+              onRetry={fetchCollection}
               showRating={true}
             />
           </div>
@@ -156,6 +157,7 @@ function CollectionTabs() {
               pageSize={wantlistPageSize}
               totalItems={wantlistTotalItems}
               onPageChange={setWantlistPage}
+              onRetry={fetchWantlist}
               showRating={false}
             />
           </div>

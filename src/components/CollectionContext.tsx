@@ -6,7 +6,9 @@ import React, {
   useState,
   ReactNode,
   useCallback,
+  useRef,
 } from "react";
+import { fetchJson } from "@/lib/apiClient";
 
 export interface Artist {
   name: string;
@@ -208,27 +210,11 @@ export const WANTLIST_SORT_OPTIONS: SortConfig[] =
 
 export const PAGE_SIZE_OPTIONS = [20, 40, 100];
 
-const fetchWithRetry = async (
-  url: string,
-  retries: number = 3,
-): Promise<Response> => {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        return response;
-      }
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    } catch (error) {
-      console.warn(`Attempt ${i + 1} failed:`, error);
-      if (i === retries - 1) throw error;
-      await new Promise((resolve) =>
-        setTimeout(resolve, Math.pow(2, i) * 1000),
-      );
-    }
-  }
-  throw new Error("Max retries exceeded");
-};
+interface CollectionResponse {
+  releases?: Release[];
+  wants?: Release[];
+  pagination: PaginationData;
+}
 
 export function CollectionProvider({ children }: { children: ReactNode }) {
   // Collection state
@@ -258,30 +244,17 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   const [wantlistPageSize, setWantlistPageSize] = useState(20);
   const [wantlistTotalItems, setWantlistTotalItems] = useState(0);
 
-  // Cache control - use a cache key that includes pagination params
-  const [, setCollectionCacheKey] = useState("");
-  const [, setWantlistCacheKey] = useState("");
-  const [collectionCache, setCollectionCache] = useState<
-    Map<string, Release[]>
-  >(new Map());
-  const [wantlistCache, setWantlistCache] = useState<Map<string, Release[]>>(
-    new Map(),
-  );
-
-  const getCollectionCacheKey = useCallback(() => {
-    return `${collectionPage}-${collectionPageSize}-${collectionSort}-${collectionSortOrder}`;
-  }, [collectionPage, collectionPageSize, collectionSort, collectionSortOrder]);
-
-  const getWantlistCacheKey = useCallback(() => {
-    return `${wantlistPage}-${wantlistPageSize}-${wantlistSort}-${wantlistSortOrder}`;
-  }, [wantlistPage, wantlistPageSize, wantlistSort, wantlistSortOrder]);
+  // Cache keyed by pagination/sort params. A ref (not state) so clearing it is
+  // visible immediately to the next fetch and doesn't re-create the fetch callbacks.
+  const collectionCache = useRef<Map<string, Release[]>>(new Map());
+  const wantlistCache = useRef<Map<string, Release[]>>(new Map());
 
   const fetchCollection = useCallback(async () => {
-    const cacheKey = getCollectionCacheKey();
+    const cacheKey = `${collectionPage}-${collectionPageSize}-${collectionSort}-${collectionSortOrder}`;
 
-    // Check cache first
-    if (collectionCache.has(cacheKey)) {
-      setCollection(collectionCache.get(cacheKey)!);
+    const cached = collectionCache.current.get(cacheKey);
+    if (cached) {
+      setCollection(cached);
       setLoadingCollection(false);
       return;
     }
@@ -291,9 +264,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollectionError(null);
 
       const url = `/api/discogs/collection?type=collection&folder=0&page=${collectionPage}&per_page=${collectionPageSize}&sort=${collectionSort}&sort_order=${collectionSortOrder}`;
-      const response = await fetchWithRetry(url);
-
-      const data = await response.json();
+      const data = await fetchJson<CollectionResponse>(url);
 
       if (!data.releases || !Array.isArray(data.releases)) {
         throw new Error("Invalid response format from API");
@@ -303,9 +274,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setCollectionTotalPages(data.pagination.pages);
       setCollectionTotalItems(data.pagination.items);
 
-      // Cache the result
-      setCollectionCache((prev) => new Map(prev).set(cacheKey, data.releases));
-      setCollectionCacheKey(cacheKey);
+      collectionCache.current.set(cacheKey, data.releases);
     } catch (err) {
       console.error("Collection fetch error:", err);
       setCollectionError(
@@ -314,21 +283,14 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoadingCollection(false);
     }
-  }, [
-    collectionPage,
-    collectionPageSize,
-    collectionSort,
-    collectionSortOrder,
-    getCollectionCacheKey,
-    collectionCache,
-  ]);
+  }, [collectionPage, collectionPageSize, collectionSort, collectionSortOrder]);
 
   const fetchWantlist = useCallback(async () => {
-    const cacheKey = getWantlistCacheKey();
+    const cacheKey = `${wantlistPage}-${wantlistPageSize}-${wantlistSort}-${wantlistSortOrder}`;
 
-    // Check cache first
-    if (wantlistCache.has(cacheKey)) {
-      setWantlist(wantlistCache.get(cacheKey)!);
+    const cached = wantlistCache.current.get(cacheKey);
+    if (cached) {
+      setWantlist(cached);
       setLoadingWantlist(false);
       return;
     }
@@ -338,9 +300,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlistError(null);
 
       const url = `/api/discogs/collection?type=wantlist&page=${wantlistPage}&per_page=${wantlistPageSize}&sort=${wantlistSort}&sort_order=${wantlistSortOrder}`;
-      const response = await fetchWithRetry(url);
-
-      const data = await response.json();
+      const data = await fetchJson<CollectionResponse>(url);
 
       if (!data.wants || !Array.isArray(data.wants)) {
         throw new Error("Invalid response format from API");
@@ -350,9 +310,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
       setWantlistTotalPages(data.pagination.pages);
       setWantlistTotalItems(data.pagination.items);
 
-      // Cache the result
-      setWantlistCache((prev) => new Map(prev).set(cacheKey, data.wants));
-      setWantlistCacheKey(cacheKey);
+      wantlistCache.current.set(cacheKey, data.wants);
     } catch (err) {
       console.error("Wantlist fetch error:", err);
       setWantlistError(
@@ -361,23 +319,16 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoadingWantlist(false);
     }
-  }, [
-    wantlistPage,
-    wantlistPageSize,
-    wantlistSort,
-    wantlistSortOrder,
-    getWantlistCacheKey,
-    wantlistCache,
-  ]);
+  }, [wantlistPage, wantlistPageSize, wantlistSort, wantlistSortOrder]);
 
   // Force refresh functions (clear cache)
   const refreshCollection = useCallback(async () => {
-    setCollectionCache(new Map());
+    collectionCache.current.clear();
     await fetchCollection();
   }, [fetchCollection]);
 
   const refreshWantlist = useCallback(async () => {
-    setWantlistCache(new Map());
+    wantlistCache.current.clear();
     await fetchWantlist();
   }, [fetchWantlist]);
 

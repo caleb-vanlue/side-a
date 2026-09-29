@@ -19,6 +19,7 @@ interface ReleaseGridProps {
   pageSize: number;
   totalItems: number;
   onPageChange: (page: number) => void;
+  onRetry: () => void;
   showRating?: boolean;
 }
 
@@ -58,6 +59,7 @@ export default function ReleaseGrid({
   pageSize,
   totalItems,
   onPageChange,
+  onRetry,
   showRating = true,
 }: ReleaseGridProps) {
   const { formatArtists, getVinylColor, getFormatInfo, handleReleaseClick } =
@@ -71,7 +73,7 @@ export default function ReleaseGrid({
     return (
       <div className="text-center py-12">
         <p className="text-red-500 text-sm sm:text-base mb-4">Error: {error}</p>
-        <Button variant="primary" onClick={() => onPageChange(currentPage)}>
+        <Button variant="primary" onClick={() => onRetry()}>
           Retry
         </Button>
       </div>

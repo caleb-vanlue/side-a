@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import ReleaseGrid from "./ReleaseGrid";
 import CollectionControls from "./CollectionControls";
 import { COLLECTION_SORT_OPTIONS, PAGE_SIZE_OPTIONS } from "./CollectionContext";
+import { fetchJson } from "@/lib/apiClient";
 
 interface Release {
   id: number;
@@ -51,6 +52,11 @@ interface SuggestedItem {
   basic_information: Release;
 }
 
+interface SuggestionsResponse {
+  releases?: SuggestedItem[];
+  pagination?: { pages: number; items: number };
+}
+
 export default function SuggestionsTab() {
   const [suggestions, setSuggestions] = useState<SuggestedItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -81,19 +87,14 @@ export default function SuggestionsTab() {
         ? (sortOption.order === "desc" ? "asc" : "desc")
         : sortOption?.order || "desc";
       
-      const response = await fetch(
+      const data = await fetchJson<SuggestionsResponse>(
         `/api/discogs/suggestions?limit=${pageSize}&offset=${offset}&sort_by=${sortBy}&sort_order=${sortOrder}`
       );
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch suggestions: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
       setSuggestions(data.releases || []);
       setTotalPages(data.pagination?.pages || 1);
       setTotalItems(data.pagination?.items || 0);
     } catch (err) {
+      console.error("Suggestions fetch error:", err);
       setError(err instanceof Error ? err.message : "Failed to fetch suggestions");
     } finally {
       setLoading(false);
@@ -107,17 +108,12 @@ export default function SuggestionsTab() {
     setSearchError(null);
     
     try {
-      const response = await fetch(
+      const data = await fetchJson<{ results?: SearchResult[] }>(
         `/api/discogs/search?q=${encodeURIComponent(searchQuery)}&type=release`
       );
-      
-      if (!response.ok) {
-        throw new Error(`Search failed: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
       setSearchResults(data.results || []);
     } catch (err) {
+      console.error("Search error:", err);
       setSearchError(err instanceof Error ? err.message : "Search failed");
     } finally {
       setSearchLoading(false);
@@ -127,17 +123,18 @@ export default function SuggestionsTab() {
   const suggestRelease = async (releaseId: number) => {
     setSuggestingId(releaseId);
     try {
-      const response = await fetch("/api/discogs/suggest", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Not idempotent, so no automatic retries.
+      await fetchJson(
+        "/api/discogs/suggest",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ releaseId }),
         },
-        body: JSON.stringify({ releaseId }),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Failed to suggest release: ${response.statusText}`);
-      }
+        { attempts: 1 }
+      );
       
       // Refresh suggestions list
       await fetchSuggestions();
@@ -151,6 +148,9 @@ export default function SuggestionsTab() {
       setSearchResults([]);
     } catch (err) {
       console.error("Failed to suggest release:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to suggest release"
+      );
     } finally {
       setSuggestingId(null);
     }
@@ -187,24 +187,6 @@ export default function SuggestionsTab() {
     };
     return sortMappings[sort] || "dateAdded";
   };
-
-  // Add simple error boundary
-  if (error) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-red-600 mb-4">Error loading suggestions: {error}</p>
-        <button 
-          onClick={() => {
-            setError(null);
-            fetchSuggestions();
-          }}
-          className="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="relative">
@@ -344,6 +326,7 @@ export default function SuggestionsTab() {
         pageSize={pageSize}
         totalItems={totalItems}
         onPageChange={setPage}
+        onRetry={fetchSuggestions}
         showRating={false}
       />
     </div>

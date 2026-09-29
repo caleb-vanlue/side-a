@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const DISCOGS_API_BASE = process.env.DISCOGS_API_BASE_URL;
-const DISCOGS_USERNAME = process.env.DISCOGS_USERNAME;
-const API_KEY = process.env.DISCOGS_API_KEY;
+import { errorResponse, fetchDiscogsApi, getDiscogsConfig } from "@/lib/discogsApi";
 
 interface Release {
   discogsId: number;
@@ -73,14 +70,6 @@ interface TransformedResponse {
 }
 
 export async function GET(request: NextRequest) {
-  if (!API_KEY || !DISCOGS_API_BASE || !DISCOGS_USERNAME) {
-    console.error("Missing required environment variables: DISCOGS_API_KEY, DISCOGS_API_BASE_URL, DISCOGS_USERNAME");
-    return NextResponse.json(
-      { error: "API configuration error", details: "Server misconfiguration" },
-      { status: 500 }
-    );
-  }
-
   const { searchParams } = new URL(request.url);
   const sort = searchParams.get("sort_by") || "dateAdded";
   const sortOrder = searchParams.get("sort_order") || "desc";
@@ -95,53 +84,19 @@ export async function GET(request: NextRequest) {
   const offsetNum = Math.max(0, parseInt(offset));
 
   try {
+    const config = getDiscogsConfig();
     const sortOrderUpper = sortOrder.toUpperCase();
-    const url = `${DISCOGS_API_BASE}/discogs/suggestions/${DISCOGS_USERNAME}?limit=${limitNum}&offset=${offsetNum}&sort_by=${sort}&sort_order=${sortOrderUpper}`;
+    const path = `/discogs/suggestions/${config.username}?limit=${limitNum}&offset=${offsetNum}&sort_by=${sort}&sort_order=${sortOrderUpper}`;
 
-    console.log(`Fetching suggestions from API: ${url}`);
+    console.log(`Fetching suggestions from API: ${path}`);
 
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "CalebVanLuePortfolio/1.0",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-      },
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(
-        `Suggestions API error: ${response.status} ${response.statusText}`,
-        errorText
-      );
-
-      if (response.status === 401) {
-        throw new Error("Unauthorized - Invalid API key");
-      }
-
-      throw new Error(
-        `API responded with ${response.status}: ${response.statusText}`
-      );
-    }
-
-    const data = (await response.json()) as ApiResponse;
+    const data = await fetchDiscogsApi<ApiResponse>(config, path);
 
     const transformedData = transformApiResponse(data, pageNum, perPageNum);
 
     return NextResponse.json(transformedData);
   } catch (error) {
-    console.error("Error fetching suggestions:", error);
-
-    return NextResponse.json(
-      {
-        error: "Failed to fetch suggestions",
-        details: error instanceof Error ? error.message : "Unknown error",
-        timestamp: new Date().toISOString(),
-      },
-      { status: 500 }
-    );
+    return errorResponse("Failed to fetch suggestions", error);
   }
 }
 
