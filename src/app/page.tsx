@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import {
   PlayerControls,
   ProjectCard,
@@ -9,60 +9,19 @@ import {
 } from "../components";
 import { GitHubBadge, Navigation } from "../components/layout";
 import { useResponsiveVinyl } from "../hooks/useResponsiveVinyl";
-import { VINYL_CONSTANTS, CONTACT } from "../lib/constants";
+import { CONTACT } from "../lib/constants";
 import { useRecordPlayer } from "../components/RecordPlayerContext";
 
 export default function HomePage() {
-  const {
-    isAutoPlaying,
-    setIsAutoPlaying,
-    toneArmRotation,
-    setToneArmRotation,
-    targetRotation,
-    setTargetRotation,
-  } = useRecordPlayer();
+  const { isPlaying, isSpinning, canStart, canStop, play, stop } =
+    useRecordPlayer();
 
   const { isDesktop, playingPosition, sizing } = useResponsiveVinyl();
 
-  const isNeedleOnRecord =
-    toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
-  const isPlaying = isNeedleOnRecord || isAutoPlaying;
-
-  const handleStart = useCallback(() => {
-    if (!isAutoPlaying) {
-      setIsAutoPlaying(true);
-      setTargetRotation(playingPosition);
-    }
-  }, [isAutoPlaying, setIsAutoPlaying, setTargetRotation, playingPosition]);
-
-  const handleStop = useCallback(() => {
-    setIsAutoPlaying(false);
-    setTargetRotation(0);
-  }, [setIsAutoPlaying, setTargetRotation]);
-
-  const handleRotationChange = useCallback((rotation: number) => {
-    setToneArmRotation(rotation);
-
-    if (
-      rotation <= VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD &&
-      isAutoPlaying &&
-      targetRotation === null
-    ) {
-      setIsAutoPlaying(false);
-    }
-  }, [setToneArmRotation, isAutoPlaying, targetRotation, setIsAutoPlaying]);
-
-  useEffect(() => {
-    if (
-      targetRotation !== null &&
-      Math.abs(toneArmRotation - targetRotation) < 1
-    ) {
-      const timeoutId = setTimeout(() => {
-        setTargetRotation(null);
-      }, 100);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [toneArmRotation, targetRotation, setTargetRotation]);
+  const handleStart = useCallback(
+    () => play(playingPosition),
+    [play, playingPosition]
+  );
 
   return (
     <main className="relative min-h-screen overflow-hidden">
@@ -70,7 +29,7 @@ export default function HomePage() {
         <Navigation />
       </div>
 
-      {isNeedleOnRecord && (
+      {isPlaying && (
         <div
           className={`
             fixed z-20 
@@ -88,6 +47,7 @@ export default function HomePage() {
         }`}
       >
         <div
+          data-record-player
           className={`flex items-center justify-center ${sizing.gap} ${sizing.offset}`}
           style={{
             transformStyle: "preserve-3d",
@@ -96,7 +56,7 @@ export default function HomePage() {
           }}
         >
           <div className={`${sizing.record} relative flex-shrink-0`}>
-            <VinylRecord backgroundColor="white" isSpinning={isPlaying} />
+            <VinylRecord backgroundColor="white" isSpinning={isSpinning} />
           </div>
 
           <div
@@ -107,19 +67,16 @@ export default function HomePage() {
               transform: "translateZ(0.1px)",
             }}
           >
-            <ToneArmContainer
-              onRotationChange={handleRotationChange}
-              isPlaying={isPlaying}
-              targetRotation={targetRotation}
-            />
+            <ToneArmContainer />
           </div>
         </div>
 
         <PlayerControls
           onStart={handleStart}
-          onStop={handleStop}
+          onStop={stop}
+          canStart={canStart}
+          canStop={canStop}
           isPlaying={isPlaying}
-          isAutoPlaying={isAutoPlaying}
         />
       </div>
       <GitHubBadge repoUrl={CONTACT.REPO} />

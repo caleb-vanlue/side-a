@@ -1,63 +1,58 @@
 import React from "react";
+import { motion, type MotionValue } from "framer-motion";
+
+// Arm geometry in SVG units. The pivot is shared with ToneArmContainer's
+// drag math, so both must use these values.
+export const TONE_ARM_VIEWBOX = { width: 100, height: 300 };
+export const TONE_ARM_PIVOT = { x: 50, y: 20 };
+
+const VIEWBOX = `0 0 ${TONE_ARM_VIEWBOX.width} ${TONE_ARM_VIEWBOX.height}`;
 
 interface ToneArmProps {
-  rotation?: number;
+  rotation: MotionValue<number>;
 }
 
-const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
-  const rotationStyle = React.useMemo(() => ({
-    transform: `rotate(${rotation}deg)`,
-    transformOrigin: "50px 20px",
-    willChange: "transform",
-    backfaceVisibility: "hidden" as const,
-    position: "relative" as const,
-    zIndex: 999,
-    transformStyle: "preserve-3d" as const,
-  }), [rotation]);
-
+/**
+ * The arm rotates on an HTML wrapper rather than an SVG <g>, so the browser
+ * can move it on the compositor instead of repainting the SVG every frame.
+ * Both layers must fill a box with the viewBox's aspect ratio for the
+ * transform origin to line up with the pivot.
+ */
+const ToneArm = React.memo<ToneArmProps>(({ rotation }) => {
   return (
-    <div className="relative w-full h-full overflow-visible">
+    <>
       <svg
-        viewBox="0 0 100 300"
-        className="w-full h-full overflow-visible"
-        preserveAspectRatio="xMidYMid meet"
-        style={{
-          isolation: "isolate",
-          transformStyle: "preserve-3d",
-          transform: "translateZ(0)",
-        }}
+        viewBox={VIEWBOX}
+        className="absolute inset-0 w-full h-full overflow-visible"
+        aria-hidden="true"
       >
         <circle
-          cx="50"
-          cy="20"
+          cx={TONE_ARM_PIVOT.x}
+          cy={TONE_ARM_PIVOT.y}
           r="12"
           fill="#2a2a2a"
           stroke="#1a1a1a"
           strokeWidth="1"
         />
-        <circle cx="50" cy="20" r="8" fill="#3a3a3a" />
-        <circle cx="50" cy="20" r="4" fill="#1a1a1a" />
+        <circle cx={TONE_ARM_PIVOT.x} cy={TONE_ARM_PIVOT.y} r="8" fill="#3a3a3a" />
+        <circle cx={TONE_ARM_PIVOT.x} cy={TONE_ARM_PIVOT.y} r="4" fill="#1a1a1a" />
+      </svg>
 
-        <g style={rotationStyle}>
-          <rect
-            x="35"
-            y="15"
-            width="30"
-            height="270"
-            fill="transparent"
-            className="cursor-grab active:cursor-grabbing md:hidden"
-            rx="15"
-          />
-
-          <rect
-            x="47"
-            y="20"
-            width="6"
-            height="180"
-            fill="#3a3a3a"
-            rx="3"
-            className="cursor-grab active:cursor-grabbing"
-          />
+      <motion.div
+        className="absolute inset-0"
+        style={{
+          rotate: rotation,
+          originX: TONE_ARM_PIVOT.x / TONE_ARM_VIEWBOX.width,
+          originY: TONE_ARM_PIVOT.y / TONE_ARM_VIEWBOX.height,
+          willChange: "transform",
+        }}
+      >
+        <svg
+          viewBox={VIEWBOX}
+          className="w-full h-full overflow-visible"
+          aria-hidden="true"
+        >
+          <rect x="47" y="20" width="6" height="180" fill="#3a3a3a" rx="3" />
 
           <circle
             cx="50"
@@ -66,20 +61,11 @@ const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
             fill="#2a2a2a"
             stroke="#1a1a1a"
             strokeWidth="1"
-            className="cursor-grab active:cursor-grabbing"
           />
 
-          <rect
-            x="48"
-            y="200"
-            width="4"
-            height="60"
-            fill="#3a3a3a"
-            rx="2"
-            className="cursor-grab active:cursor-grabbing"
-          />
+          <rect x="48" y="200" width="4" height="60" fill="#3a3a3a" rx="2" />
 
-          <g className="cursor-grab active:cursor-grabbing">
+          <g>
             <path
               d="M 45 260 L 45 270 L 50 275 L 55 270 L 55 260 Z"
               fill="#2a2a2a"
@@ -90,23 +76,7 @@ const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
             <path d="M 49 280 L 50 285 L 51 280 Z" fill="#888" />
           </g>
 
-          <circle
-            cx="50"
-            cy="275"
-            r="20"
-            fill="transparent"
-            className="cursor-grab active:cursor-grabbing md:hidden"
-          />
-
-          <rect
-            x="45"
-            y="5"
-            width="10"
-            height="15"
-            fill="#4a4a4a"
-            rx="5"
-            className="cursor-grab active:cursor-grabbing"
-          />
+          <rect x="45" y="5" width="10" height="15" fill="#4a4a4a" rx="5" />
 
           <rect
             x="49"
@@ -116,9 +86,9 @@ const ToneArm = React.memo<ToneArmProps>(({ rotation = 0 }) => {
             fill="rgba(255,255,255,0.1)"
             rx="0.5"
           />
-        </g>
-      </svg>
-    </div>
+        </svg>
+      </motion.div>
+    </>
   );
 });
 

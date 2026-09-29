@@ -28,11 +28,7 @@ function splitTitle(title: string): string[] {
 }
 
 const VinylLabel = React.memo(() => {
-  const { currentTrackIndex, isAutoPlaying, toneArmRotation } =
-    useRecordPlayer();
-  const isPlaying =
-    isAutoPlaying ||
-    toneArmRotation > VINYL_CONSTANTS.NEEDLE_ON_RECORD_THRESHOLD;
+  const { currentTrackIndex, isPlaying } = useRecordPlayer();
 
   const currentYear = React.useMemo(() => {
     return Math.floor(

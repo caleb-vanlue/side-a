@@ -1,221 +1,76 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import ToneArm from "./ToneArm";
-import { VINYL_CONSTANTS } from "../lib/constants";
+import { useCallback, useRef, useState } from "react";
+import ToneArm, { TONE_ARM_PIVOT, TONE_ARM_VIEWBOX } from "./ToneArm";
 import { useRecordPlayer } from "./RecordPlayerContext";
+import { armAngleFromPointer } from "../lib/recordPlayerMachine";
 
-interface ToneArmContainerProps {
-  onRotationChange?: (rotation: number) => void;
-  isPlaying?: boolean;
-  targetRotation?: number | null;
-  onDragStart?: () => void;
-}
+// Largest box with the arm's aspect ratio that fits the container, so the
+// rotation origin (a percentage of this box) always sits on the pivot.
+const ARM_BOX_STYLE = {
+  width: `min(100cqw, calc(100cqh * ${TONE_ARM_VIEWBOX.width / TONE_ARM_VIEWBOX.height}))`,
+  aspectRatio: `${TONE_ARM_VIEWBOX.width} / ${TONE_ARM_VIEWBOX.height}`,
+};
 
-export default function ToneArmContainer({
-  onRotationChange,
-  isPlaying,
-  targetRotation = null,
-  onDragStart,
-}: ToneArmContainerProps) {
-  const { toneArmRotation: contextRotation } = useRecordPlayer();
+export default function ToneArmContainer() {
+  const { armRotation, startArmDrag, endArmDrag } = useRecordPlayer();
 
-  const [rotation, setRotation] = useState(contextRotation);
   const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const armBoxRef = useRef<HTMLDivElement>(null);
   const pivotRef = useRef<{ x: number; y: number } | null>(null);
-  const animationRef = useRef<number | null>(null);
-
-  const rotationRef = useRef(contextRotation);
   const isDraggingRef = useRef(false);
-  const targetRotationRef = useRef<number | null>(null);
-  const isPlayingRef = useRef(isPlaying);
-  const onRotationChangeRef = useRef(onRotationChange);
 
-  useEffect(() => {
-    targetRotationRef.current = targetRotation;
-  }, [targetRotation]);
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!e.isPrimary || e.button !== 0 || !armBoxRef.current) return;
 
-  useEffect(() => {
-    isPlayingRef.current = isPlaying;
-  }, [isPlaying]);
+      // Measure on every grab: scrolling, layout shifts and breakpoint
+      // changes all move the pivot without a resize event.
+      const rect = armBoxRef.current.getBoundingClientRect();
+      pivotRef.current = {
+        x: rect.left + (rect.width * TONE_ARM_PIVOT.x) / TONE_ARM_VIEWBOX.width,
+        y: rect.top + (rect.height * TONE_ARM_PIVOT.y) / TONE_ARM_VIEWBOX.height,
+      };
 
-  useEffect(() => {
-    onRotationChangeRef.current = onRotationChange;
-  }, [onRotationChange]);
-
-  const calculateRotation = useCallback((clientX: number, clientY: number) => {
-    if (!pivotRef.current) return 0;
-    const deltaX = clientX - pivotRef.current.x;
-    const deltaY = clientY - pivotRef.current.y;
-    const angle = Math.atan2(-deltaX, deltaY) * (180 / Math.PI);
-    return Math.max(0, Math.min(VINYL_CONSTANTS.MAX_TONE_ARM_ROTATION, angle));
-  }, []);
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      const target = e.target as SVGElement;
-      if (target.closest("svg") || target.tagName === "svg") {
-        isDraggingRef.current = true;
-        setIsDragging(true);
-        onDragStart?.();
-        e.preventDefault();
-      }
+      e.currentTarget.setPointerCapture(e.pointerId);
+      e.preventDefault();
+      isDraggingRef.current = true;
+      setIsDragging(true);
+      startArmDrag();
     },
-    [onDragStart]
+    [startArmDrag]
   );
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => {
-      if (isDraggingRef.current) {
-        const newRotation = calculateRotation(e.clientX, e.clientY);
-        rotationRef.current = newRotation;
-        setRotation(newRotation);
-        onRotationChangeRef.current?.(newRotation);
-      }
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDraggingRef.current || !pivotRef.current) return;
+      armRotation.set(armAngleFromPointer(pivotRef.current, e.clientX, e.clientY));
     },
-    [calculateRotation]
+    [armRotation]
   );
 
-  const handleMouseUp = useCallback(() => {
+  const handlePointerEnd = useCallback(() => {
+    if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
     setIsDragging(false);
-  }, []);
-
-  useEffect(() => {
-    const updatePivotPoint = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        pivotRef.current = {
-          x: rect.left + rect.width / 2,
-          y: rect.top + (rect.height * 20) / 300,
-        };
-      }
-    };
-
-    updatePivotPoint();
-    window.addEventListener("resize", updatePivotPoint);
-    return () => window.removeEventListener("resize", updatePivotPoint);
-  }, []);
-
-  useEffect(() => {
-    const element = containerRef.current;
-    if (!element) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        isDraggingRef.current = true;
-        setIsDragging(true);
-        onDragStart?.();
-        e.preventDefault();
-      }
-    };
-
-    element.addEventListener("touchstart", handleTouchStart, { passive: false });
-    return () => element.removeEventListener("touchstart", handleTouchStart);
-  }, [onDragStart]);
-
-  useEffect(() => {
-    if (!isDragging) return;
-
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      const newRotation = calculateRotation(e.clientX, e.clientY);
-      rotationRef.current = newRotation;
-      setRotation(newRotation);
-      onRotationChangeRef.current?.(newRotation);
-    };
-
-    const handleGlobalTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const newRotation = calculateRotation(touch.clientX, touch.clientY);
-        rotationRef.current = newRotation;
-        setRotation(newRotation);
-        onRotationChangeRef.current?.(newRotation);
-      }
-    };
-
-    const handleGlobalEnd = () => {
-      isDraggingRef.current = false;
-      setIsDragging(false);
-    };
-
-    document.addEventListener("mousemove", handleGlobalMouseMove);
-    document.addEventListener("mouseup", handleGlobalEnd);
-    document.addEventListener("touchmove", handleGlobalTouchMove, {
-      passive: false,
-    });
-    document.addEventListener("touchend", handleGlobalEnd);
-
-    return () => {
-      document.removeEventListener("mousemove", handleGlobalMouseMove);
-      document.removeEventListener("mouseup", handleGlobalEnd);
-      document.removeEventListener("touchmove", handleGlobalTouchMove);
-      document.removeEventListener("touchend", handleGlobalEnd);
-    };
-  }, [isDragging, calculateRotation]);
-
-  useEffect(() => {
-    const animate = () => {
-      const target = targetRotationRef.current;
-      const dragging = isDraggingRef.current;
-      const playing = isPlayingRef.current;
-      const current = rotationRef.current;
-
-      let newRotation = current;
-
-      if (target !== null && !dragging) {
-        const diff = target - current;
-        if (Math.abs(diff) >= 0.5) {
-          newRotation = current + diff * 0.02;
-        }
-      } else if (
-        playing &&
-        target === null &&
-        current < VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION &&
-        !dragging
-      ) {
-        newRotation = Math.min(
-          current + VINYL_CONSTANTS.TONE_ARM_AUTO_SPEED,
-          VINYL_CONSTANTS.NEEDLE_SETTLED_POSITION
-        );
-      }
-
-      if (newRotation !== current) {
-        rotationRef.current = newRotation;
-        setRotation(newRotation);
-        onRotationChangeRef.current?.(newRotation);
-      }
-
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
-    };
-  }, []);
+    endArmDrag();
+  }, [endArmDrag]);
 
   return (
     <div
-      ref={containerRef}
-      className="w-full h-full overflow-visible cursor-grab active:cursor-grabbing"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      style={{
-        transformStyle: "preserve-3d",
-        transform: "translateZ(0)",
-        backfaceVisibility: "hidden",
-        position: "relative",
-        zIndex: 50,
-      }}
+      className={`w-full h-full flex items-center justify-center overflow-visible touch-none select-none [container-type:size] ${
+        isDragging ? "cursor-grabbing" : "cursor-grab"
+      }`}
+      style={{ position: "relative", zIndex: 50 }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerEnd}
+      onLostPointerCapture={handlePointerEnd}
     >
-      <ToneArm rotation={rotation} />
+      <div ref={armBoxRef} className="relative" style={ARM_BOX_STYLE}>
+        <ToneArm rotation={armRotation} />
+      </div>
     </div>
   );
 }

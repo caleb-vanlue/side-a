@@ -13,9 +13,12 @@ export const NAVIGATION_LINKS: NavigationLink[] = [
 export const VINYL_CONSTANTS = {
   MAX_TONE_ARM_ROTATION: 45,
   NEEDLE_ON_RECORD_THRESHOLD: 25,
+  // Lower than the drop threshold so jitter around 25° doesn't toggle playback
+  NEEDLE_LIFT_THRESHOLD: 23,
   PLAYING_POSITION: 28,
   NEEDLE_SETTLED_POSITION: 47,
-  TONE_ARM_AUTO_SPEED: 0.00167,
+  // Degrees per second the arm drifts inward while a record plays
+  TONE_ARM_CREEP_SPEED: 0.1,
   DEFAULT_ROTATION_SPEED: 1,
   GROOVE_COUNT: 30,
   LABEL_SIZE_PERCENTAGE: 35,
