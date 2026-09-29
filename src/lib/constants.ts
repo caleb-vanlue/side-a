@@ -18,9 +18,8 @@ export const VINYL_CONSTANTS = {
   PLAYING_POSITION: 28,
   NEEDLE_SETTLED_POSITION: 47,
   // Degrees per second the arm drifts inward while a record plays
-  TONE_ARM_CREEP_SPEED: 0.1,
+  TONE_ARM_CREEP_SPEED: 0.025,
   DEFAULT_ROTATION_SPEED: 1,
-  GROOVE_COUNT: 30,
   LABEL_SIZE_PERCENTAGE: 35,
   SPINDLE_HOLE_SIZE_PERCENTAGE: 3,
 } as const;

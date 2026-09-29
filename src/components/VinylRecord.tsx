@@ -33,7 +33,7 @@ const VinylRecord = React.memo<VinylRecordProps>(
           } touch-none select-none`}
           style={{
             rotate: rotation,
-            background: "#0f0f0f",
+            background: "radial-gradient(circle, #141414 0%, #0b0b0b 100%)",
             isolation: "isolate",
             maskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
             WebkitMaskImage: `radial-gradient(circle at center, transparent 2%, black 2%)`,
@@ -46,9 +46,9 @@ const VinylRecord = React.memo<VinylRecordProps>(
           {...handlers}
         >
           <VinylGrooves />
-          <VinylReflection />
           <VinylLabel />
         </motion.div>
+        <VinylReflection />
         {/* Outside the rotating layer: it's centred, so rotation is invisible,
             and its backdrop blur would otherwise be recomputed every frame. */}
         <SpindleHole backgroundColor={backgroundColor} isPlaying={isSpinning} />
