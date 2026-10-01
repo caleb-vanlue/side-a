@@ -22,14 +22,17 @@ export default function ToneArmContainer() {
 
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!e.isPrimary || e.button !== 0 || !armBoxRef.current) return;
+      // Mouse only: touch dragging is unreliable, so touch users get the play button.
+      if (e.pointerType !== "mouse" || e.button !== 0 || !armBoxRef.current)
+        return;
 
       // Measure on every grab: scrolling, layout shifts and breakpoint
       // changes all move the pivot without a resize event.
       const rect = armBoxRef.current.getBoundingClientRect();
       pivotRef.current = {
         x: rect.left + (rect.width * TONE_ARM_PIVOT.x) / TONE_ARM_VIEWBOX.width,
-        y: rect.top + (rect.height * TONE_ARM_PIVOT.y) / TONE_ARM_VIEWBOX.height,
+        y:
+          rect.top + (rect.height * TONE_ARM_PIVOT.y) / TONE_ARM_VIEWBOX.height,
       };
 
       e.currentTarget.setPointerCapture(e.pointerId);
@@ -38,15 +41,17 @@ export default function ToneArmContainer() {
       setIsDragging(true);
       startArmDrag();
     },
-    [startArmDrag]
+    [startArmDrag],
   );
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDraggingRef.current || !pivotRef.current) return;
-      armRotation.set(armAngleFromPointer(pivotRef.current, e.clientX, e.clientY));
+      armRotation.set(
+        armAngleFromPointer(pivotRef.current, e.clientX, e.clientY),
+      );
     },
-    [armRotation]
+    [armRotation],
   );
 
   const handlePointerEnd = useCallback(() => {
@@ -58,8 +63,8 @@ export default function ToneArmContainer() {
 
   return (
     <div
-      className={`w-full h-full flex items-center justify-center overflow-visible touch-none select-none [container-type:size] ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"
+      className={`w-full h-full flex items-center justify-center overflow-visible select-none [container-type:size] ${
+        isDragging ? "cursor-grabbing" : "pointer-fine:cursor-grab"
       }`}
       style={{ position: "relative", zIndex: 50 }}
       onPointerDown={handlePointerDown}
