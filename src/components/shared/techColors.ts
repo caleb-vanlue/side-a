@@ -17,9 +17,13 @@ export const TECH_COLORS = {
   TypeScript: "bg-indigo-100 text-indigo-700",
   "C#": "bg-violet-100 text-violet-700",
   Kotlin: "bg-purple-100 text-purple-700",
+  "C++": "bg-blue-100 text-blue-700",
+  Python: "bg-yellow-100 text-yellow-700",
 
   // Databases
   PostgreSQL: "bg-sky-100 text-sky-700",
+  Supabase: "bg-emerald-100 text-emerald-700",
+  MongoDB: "bg-green-100 text-green-700",
 
   // APIs & Services
   GraphQL: "bg-pink-100 text-pink-700",
@@ -46,6 +50,8 @@ export const TECH_COLORS = {
   Immich: "bg-blue-100 text-blue-700",
   Frigate: "bg-teal-100 text-teal-700",
   "Pi-hole": "bg-red-100 text-red-700",
+  "ESP32 / ESP-IDF": "bg-red-100 text-red-700",
+  "Claude Code": "bg-orange-100 text-orange-700",
 } as const;
 
 export const TECH_URLS = {
@@ -67,9 +73,13 @@ export const TECH_URLS = {
   TypeScript: "https://www.typescriptlang.org",
   "C#": "https://docs.microsoft.com/en-us/dotnet/csharp/",
   Kotlin: "https://kotlinlang.org",
+  "C++": "https://isocpp.org",
+  Python: "https://www.python.org",
 
   // Databases
   PostgreSQL: "https://www.postgresql.org",
+  Supabase: "https://supabase.com",
+  MongoDB: "https://www.mongodb.com",
 
   // APIs & Services
   GraphQL: "https://graphql.org",
@@ -96,6 +106,8 @@ export const TECH_URLS = {
   Immich: "https://immich.app",
   Frigate: "https://frigate.video",
   "Pi-hole": "https://pi-hole.net",
+  "ESP32 / ESP-IDF": "https://www.espressif.com/en/products/sdks/esp-idf",
+  "Claude Code": "https://claude.com/product/claude-code",
 } as const;
 
 const FALLBACK_COLORS = [
