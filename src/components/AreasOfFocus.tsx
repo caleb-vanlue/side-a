@@ -19,12 +19,18 @@ export default function AreasOfFocus() {
       title: "Infrastructure & Systems",
       description: "Self-hosting, containerization, server administration, and infrastructure automation",
     },
+    {
+      icon: "📟",
+      title: "Embedded & Hardware",
+      description:
+        "Firmware for microcontrollers: sensor drivers, signal processing, and hardware abstraction layers built to be tested on the host machine",
+    },
   ];
 
   return (
     <Section>
       <SectionTitle>Areas of Focus</SectionTitle>
-      <div className="grid sm:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 gap-6">
         {focusAreas.map((area) => (
           <div
             key={area.title}

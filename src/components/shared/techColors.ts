@@ -25,6 +25,8 @@ export const TECH_COLORS = {
   GraphQL: "bg-pink-100 text-pink-700",
   OpenAPI: "bg-amber-100 text-amber-700",
   "Spotify Web API": "bg-emerald-100 text-emerald-700",
+  WebSockets: "bg-rose-100 text-rose-700",
+  SSE: "bg-lime-100 text-lime-700",
 
   // Infrastructure & Deployment
   Railway: "bg-slate-100 text-slate-700",
@@ -73,6 +75,8 @@ export const TECH_URLS = {
   GraphQL: "https://graphql.org",
   OpenAPI: "https://www.openapis.org",
   "Spotify Web API": "https://developer.spotify.com/documentation/web-api/",
+  WebSockets: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+  SSE: "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events",
 
   // Infrastructure & Deployment
   Railway: "https://railway.app",

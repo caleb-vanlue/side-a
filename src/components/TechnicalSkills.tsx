@@ -16,6 +16,14 @@ import {
   SiReact,
   SiVuedotjs,
   SiGraphql,
+  SiVite,
+  SiPython,
+  SiClaude,
+  SiSupabase,
+  SiCplusplus,
+  SiEspressif,
+  SiCmake,
+  SiGithubactions,
 } from "react-icons/si";
 
 export default function TechnicalSkills() {
@@ -45,6 +53,21 @@ export default function TechnicalSkills() {
       icon: SiTailwindcss,
       url: "https://tailwindcss.com/",
     },
+    {
+      name: "Vite",
+      icon: SiVite,
+      url: "https://vite.dev",
+    },
+    {
+      name: "Python",
+      icon: SiPython,
+      url: "https://www.python.org",
+    },
+    {
+      name: "Claude Code",
+      icon: SiClaude,
+      url: "https://claude.com/product/claude-code",
+    },
   ];
 
   const backendTech = [
@@ -59,6 +82,11 @@ export default function TechnicalSkills() {
       url: "https://www.postgresql.org",
     },
     {
+      name: "Supabase",
+      icon: SiSupabase,
+      url: "https://supabase.com",
+    },
+    {
       name: "GraphQL",
       icon: SiGraphql,
       url: "https://graphql.org",
@@ -67,6 +95,24 @@ export default function TechnicalSkills() {
       name: "Apache Kafka",
       icon: SiApachekafka,
       url: "https://kafka.apache.org",
+    },
+  ];
+
+  const embeddedTech = [
+    {
+      name: "C++",
+      icon: SiCplusplus,
+      url: "https://isocpp.org",
+    },
+    {
+      name: "ESP32 / ESP-IDF",
+      icon: SiEspressif,
+      url: "https://www.espressif.com/en/products/sdks/esp-idf",
+    },
+    {
+      name: "CMake",
+      icon: SiCmake,
+      url: "https://cmake.org",
     },
   ];
 
@@ -96,6 +142,11 @@ export default function TechnicalSkills() {
       icon: SiRailway,
       url: "https://railway.app",
     },
+    {
+      name: "GitHub Actions",
+      icon: SiGithubactions,
+      url: "https://github.com/features/actions",
+    },
   ];
 
   return (
@@ -111,7 +162,7 @@ export default function TechnicalSkills() {
           <h3 className="text-lg font-medium text-gray-800 mb-4">
             Development
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {developmentTech.map((tech) => (
               <TechBadge
                 key={tech.name}
@@ -127,8 +178,24 @@ export default function TechnicalSkills() {
           <h3 className="text-lg font-medium text-gray-800 mb-4">
             Backend & Data
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {backendTech.map((tech) => (
+              <TechBadge
+                key={tech.name}
+                name={tech.name}
+                icon={tech.icon}
+                url={tech.url}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-medium text-gray-800 mb-4">
+            Embedded Systems
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {embeddedTech.map((tech) => (
               <TechBadge
                 key={tech.name}
                 name={tech.name}
@@ -143,7 +210,7 @@ export default function TechnicalSkills() {
           <h3 className="text-lg font-medium text-gray-800 mb-4">
             Infrastructure & DevOps
           </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {infrastructureTech.map((tech) => (
               <TechBadge
                 key={tech.name}
