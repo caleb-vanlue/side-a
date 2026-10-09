@@ -29,7 +29,7 @@ export default function Education() {
             href="https://www.bsu.edu/academics/collegesanddepartments/kinesiology/facilities/adult-fitness"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50"
+            className="text-navy-600 hover:text-navy-700 transition-colors duration-200 underline decoration-navy-600/30 hover:decoration-navy-700/50"
           >
             Adult Physical Fitness Program
           </a>
@@ -63,12 +63,12 @@ export default function Education() {
                         href={item.schoolUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
+                        className="text-navy-600 hover:text-navy-700 transition-colors duration-200 underline decoration-navy-600/30 hover:decoration-navy-700/50 font-medium"
                       >
                         {item.school}
                       </a>
                     ) : (
-                      <span className="text-emerald-600 font-medium">
+                      <span className="text-navy-600 font-medium">
                         {item.school}
                       </span>
                     )}
@@ -90,7 +90,7 @@ export default function Education() {
                       key={detailIndex}
                       className="text-gray-600 leading-relaxed flex items-start gap-2"
                     >
-                      <span className="text-emerald-600 mt-2 text-xs">•</span>
+                      <span className="text-navy-600 mt-2 text-xs">•</span>
                       <span className="text-sm">{detail}</span>
                     </li>
                   ))}

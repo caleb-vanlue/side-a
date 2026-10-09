@@ -22,12 +22,12 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
             className="bg-zinc-900/90 backdrop-blur-md text-white border-zinc-800 shadow-lg overflow-hidden"
             padding="sm"
           >
-            <div className="h-1 w-full bg-gradient-to-r from-emerald-500 to-green-600 -mt-3 mb-2"></div>
+            <div className="h-1 w-full bg-gradient-to-r from-navy-500 to-navy-600 -mt-3 mb-2"></div>
 
             <div className="flex items-center justify-center mb-2">
-              <div className="w-7 h-7 rounded-full bg-emerald-800 flex items-center justify-center mr-2.5">
+              <div className="w-7 h-7 rounded-full bg-navy-800 flex items-center justify-center mr-2.5">
                 <svg
-                  className="w-3.5 h-3.5 text-emerald-300"
+                  className="w-3.5 h-3.5 text-navy-300"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >

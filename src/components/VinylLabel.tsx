@@ -91,9 +91,9 @@ const VinylLabel = React.memo(() => {
       >
         <defs>
           <radialGradient id="label-paper" cx="42%" cy="40%" r="62%">
-            <stop offset="0%" stopColor="#2f6d45" />
-            <stop offset="70%" stopColor="#275c3a" />
-            <stop offset="100%" stopColor="#173822" />
+            <stop offset="0%" stopColor="#25426f" />
+            <stop offset="70%" stopColor="#1c3459" />
+            <stop offset="100%" stopColor="#0e1b33" />
           </radialGradient>
           <filter id="label-grain" x="0" y="0" width="100%" height="100%">
             <feTurbulence

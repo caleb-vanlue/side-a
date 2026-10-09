@@ -32,7 +32,7 @@ export default function FeaturedProjects() {
           the{" "}
           <Link
             href="/collection"
-            className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50"
+            className="text-navy-600 hover:text-navy-700 transition-colors duration-200 underline decoration-navy-600/30 hover:decoration-navy-700/50"
           >
             My Records
           </Link>{" "}

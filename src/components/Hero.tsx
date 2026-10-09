@@ -68,7 +68,7 @@ export default function Hero() {
             <FaChevronLeft className="w-3 h-3" />
           </button>
 
-          <div className="p-1 rounded-full bg-gradient-to-r from-emerald-200/50 to-blue-200/50 backdrop-blur-sm">
+          <div className="p-1 rounded-full bg-gradient-to-r from-navy-200/50 to-blue-200/50 backdrop-blur-sm">
             <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden border-4 border-white/70 shadow-lg hover:shadow-xl transition-all duration-300">
               {PHOTOS.map((src, i) => (
                 <Image
@@ -125,7 +125,7 @@ export default function Hero() {
 
         <a
           href={`mailto:${CONTACT.EMAIL}`}
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-navy-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="Email Contact"
         >
           <FaEnvelope className="w-5 h-5" />
@@ -135,7 +135,7 @@ export default function Hero() {
           href={CONTACT.GITHUB}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-navy-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="GitHub Profile"
         >
           <FaGithub className="w-5 h-5" />
@@ -145,7 +145,7 @@ export default function Hero() {
           href={CONTACT.LETTERBOXD}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-navy-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="Letterboxd Profile"
         >
           <SiLetterboxd className="w-5 h-5" />
@@ -155,7 +155,7 @@ export default function Hero() {
           href="https://www.thetrevorproject.org"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-emerald-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/60 backdrop-blur-[2px] border border-white/30 text-gray-700 hover:text-navy-600 hover:bg-white/80 transition-all duration-200 shadow-lg"
           aria-label="The Trevor Project"
         >
           🏳️‍🌈

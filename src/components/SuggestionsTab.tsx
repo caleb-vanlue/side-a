@@ -205,7 +205,7 @@ export default function SuggestionsTab() {
           {!showSearch ? (
             <button
               onClick={() => setShowSearch(true)}
-              className="w-full sm:w-auto px-4 sm:px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base"
+              className="w-full sm:w-auto px-4 sm:px-6 py-3 bg-navy-600 text-white rounded-lg font-medium hover:bg-navy-700 transition-all duration-200 shadow-sm hover:shadow-md text-sm sm:text-base"
             >
               Suggest an Album
             </button>
@@ -218,14 +218,14 @@ export default function SuggestionsTab() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for an album to suggest..."
-                    className="flex-1 px-3 sm:px-4 py-2 border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm sm:text-base"
+                    className="flex-1 px-3 sm:px-4 py-2 border border-gray-300/60 rounded-md bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-navy-500 focus:border-navy-500 text-sm sm:text-base"
                     autoFocus
                   />
                   <div className="flex gap-2 sm:gap-3">
                     <button
                       type="submit"
                       disabled={searchLoading || !searchQuery.trim()}
-                      className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-emerald-600 text-white rounded-md font-medium hover:bg-emerald-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
+                      className="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-navy-600 text-white rounded-md font-medium hover:bg-navy-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base"
                     >
                       {searchLoading ? "Searching..." : "Search"}
                     </button>
@@ -280,7 +280,7 @@ export default function SuggestionsTab() {
                         className={`px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex-shrink-0 self-start mt-1 ${
                           suggestingId !== null
                             ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                            : "bg-emerald-600 text-white hover:bg-emerald-700"
+                            : "bg-navy-600 text-white hover:bg-navy-700"
                         }`}
                       >
                         {suggestingId !== null ? (

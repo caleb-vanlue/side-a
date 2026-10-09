@@ -50,7 +50,7 @@ export default function RootLayout({
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#059669',
+              background: '#355187',
               color: '#ffffff',
               fontWeight: '500',
             },

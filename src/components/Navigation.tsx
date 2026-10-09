@@ -109,8 +109,8 @@ export default function Navigation() {
               prefetch={true}
               className={`block py-3 text-center text-base ${
                 pathname === link.href
-                  ? "text-emerald-600 font-medium border-b-2 border-emerald-600 mx-8"
-                  : "text-gray-800 hover:text-emerald-600 border-b border-gray-100"
+                  ? "text-navy-600 font-medium border-b-2 border-navy-600 mx-8"
+                  : "text-gray-800 hover:text-navy-600 border-b border-gray-100"
               } transition-colors duration-200`}
             >
               {link.label}
@@ -146,7 +146,7 @@ export default function Navigation() {
               prefetch={true}
               className={`text-base font-medium transition-colors duration-200 ${
                 pathname === link.href
-                  ? "text-gray-900 border-b-2 border-emerald-600"
+                  ? "text-gray-900 border-b-2 border-navy-600"
                   : "text-gray-800 hover:text-gray-900"
               }`}
             >

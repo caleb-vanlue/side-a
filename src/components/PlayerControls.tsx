@@ -33,7 +33,7 @@ export default function PlayerControls({
             ${
               !canStart
                 ? "bg-gray-600 cursor-not-allowed opacity-60"
-                : "bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/25 active:scale-95"
+                : "bg-gradient-to-br from-navy-500 to-navy-600 hover:from-navy-400 hover:to-navy-500 hover:scale-110 hover:shadow-lg hover:shadow-navy-500/25 active:scale-95"
             }
           `}
           aria-label={canStart ? "Start playback" : "Currently playing"}
@@ -47,7 +47,7 @@ export default function PlayerControls({
             }`}
           />
           {isPlaying && (
-            <div className="absolute inset-0 rounded-full bg-emerald-500/20 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-navy-500/20 animate-pulse" />
           )}
         </button>
 
@@ -83,7 +83,7 @@ export default function PlayerControls({
             step="0.05"
             value={volume}
             onChange={(e) => setVolume(parseFloat(e.target.value))}
-            className="w-8 [writing-mode:vertical-lr] [direction:rtl] accent-emerald-500 cursor-pointer"
+            className="w-8 [writing-mode:vertical-lr] [direction:rtl] accent-navy-500 cursor-pointer"
             aria-label="Volume"
           />
         </div>

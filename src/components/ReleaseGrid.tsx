@@ -28,11 +28,11 @@ const GridKey = () => (
     <h3 className="text-sm font-medium text-gray-800 mb-3">Legend:</h3>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
       <div className="flex items-center gap-2">
-        <div className="w-3 h-3 bg-emerald-600 rounded"></div>
+        <div className="w-3 h-3 bg-navy-400 rounded"></div>
         <span className="text-gray-700">Vinyl color/variant</span>
       </div>
       <div className="flex items-center gap-2">
-        <div className="w-3 h-3 bg-green-50 border border-green-200 rounded"></div>
+        <div className="w-3 h-3 bg-navy-100 border border-navy-300 rounded"></div>
         <span className="text-gray-700">Personal notes</span>
       </div>
       <div className="flex items-center gap-2">
@@ -167,7 +167,7 @@ export default function ReleaseGrid({
                     </div>
                   )}
                   {vinylColor && (
-                    <div className="text-xs text-emerald-600 font-medium mt-1">
+                    <div className="text-xs text-navy-500 font-medium mt-1">
                       {vinylColor}
                     </div>
                   )}
@@ -175,7 +175,7 @@ export default function ReleaseGrid({
 
                 <div className="mt-2 space-y-1">
                   {release.notes && (
-                    <div className="text-xs text-gray-700 font-medium bg-green-50 px-2 py-1 rounded border border-green-200">
+                    <div className="text-xs text-gray-700 font-medium bg-navy-100 px-2 py-1 rounded border border-navy-300">
                       {typeof release.notes === "string"
                         ? release.notes
                         : "Custom notes"}

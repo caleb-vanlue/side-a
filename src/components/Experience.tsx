@@ -152,12 +152,12 @@ export default function Experience() {
                           href={experience.companyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-emerald-600 hover:text-emerald-700 transition-colors duration-200 underline decoration-emerald-600/30 hover:decoration-emerald-700/50 font-medium"
+                          className="text-navy-600 hover:text-navy-700 transition-colors duration-200 underline decoration-navy-600/30 hover:decoration-navy-700/50 font-medium"
                         >
                           {experience.company}
                         </a>
                       ) : (
-                        <span className="text-emerald-600 font-medium">
+                        <span className="text-navy-600 font-medium">
                           {experience.company}
                         </span>
                       )}
@@ -183,7 +183,7 @@ export default function Experience() {
 
                 <button
                   onClick={() => toggleExpanded(index)}
-                  className="flex items-center gap-2 text-emerald-600 hover:text-emerald-700 transition-colors duration-200 text-sm font-medium cursor-pointer"
+                  className="flex items-center gap-2 text-navy-600 hover:text-navy-700 transition-colors duration-200 text-sm font-medium cursor-pointer"
                 >
                   <span>{isExpanded ? "Show less" : "Show details"}</span>
                   <svg
@@ -219,7 +219,7 @@ export default function Experience() {
                         key={itemIndex}
                         className="text-gray-600 leading-relaxed flex items-start gap-2"
                       >
-                        <span className="text-emerald-600 mt-2 text-xs">•</span>
+                        <span className="text-navy-600 mt-2 text-xs">•</span>
                         <span className="text-sm">{item}</span>
                       </li>
                     ))}
