@@ -1,7 +1,6 @@
 // src/components/ProjectCard.tsx
 import { motion, AnimatePresence } from "framer-motion";
 import Card from "./Card";
-import Button from "./Button";
 
 interface ProjectCardProps {
   isVisible: boolean;
@@ -44,16 +43,14 @@ export default function ProjectCard({ isVisible }: ProjectCardProps) {
               Come check out what I&apos;m watching or listening to right now!
             </p>
 
-            <Button
-              variant="secondary"
-              size="sm"
-              className="w-full text-sm"
-              onClick={() =>
-                window.open("http://now-playing.calebvanlue.com", "_blank")
-              }
+            <a
+              href="https://now-playing.calebvanlue.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full rounded-lg px-3 py-1.5 text-center text-sm font-medium bg-zinc-800 bg-opacity-90 text-zinc-200 hover:bg-zinc-700 active:scale-95 transition-all duration-200 focus:outline-none"
             >
               View Project
-            </Button>
+            </a>
           </Card>
         </motion.div>
       )}
