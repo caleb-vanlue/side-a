@@ -24,7 +24,7 @@ export default function HomePage() {
   );
 
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-svh overflow-hidden">
       <div className="relative z-30">
         <Navigation />
       </div>
@@ -42,8 +42,8 @@ export default function HomePage() {
       )}
 
       <div
-        className={`relative z-10 flex min-h-screen flex-col items-center justify-center p-4 ${
-          isDesktop ? "pt-24" : "pt-28"
+        className={`relative z-10 flex min-h-svh flex-col items-center justify-center p-4 ${
+          isDesktop ? "pt-24" : "pt-16"
         }`}
       >
         <div
