@@ -5,6 +5,7 @@ export const TECH_COLORS = {
   React: "bg-cyan-100 text-cyan-700",
   SwiftUI: "bg-orange-100 text-orange-700",
   "Jetpack Compose": "bg-lime-100 text-lime-700",
+  Expo: "bg-zinc-100 text-zinc-700",
 
   // Styling
   "Tailwind CSS": "bg-teal-100 text-teal-700",
@@ -38,6 +39,7 @@ export const TECH_COLORS = {
   "Google Cloud": "bg-yellow-100 text-yellow-700",
   Docker: "bg-blue-100 text-blue-700",
   TrueNAS: "bg-cyan-100 text-cyan-700",
+  Cloudflare: "bg-orange-100 text-orange-700",
   Linux: "bg-amber-100 text-amber-700",
 
   // CMS & Tools
@@ -61,6 +63,7 @@ export const TECH_URLS = {
   React: "https://reactjs.org",
   SwiftUI: "https://developer.apple.com/xcode/swiftui/",
   "Jetpack Compose": "https://developer.android.com/jetpack/compose",
+  Expo: "https://expo.dev",
 
   // Styling
   "Tailwind CSS": "https://tailwindcss.com",
@@ -94,6 +97,7 @@ export const TECH_URLS = {
   "Google Cloud": "https://cloud.google.com",
   Docker: "https://www.docker.com",
   TrueNAS: "https://www.truenas.com",
+  Cloudflare: "https://www.cloudflare.com",
   Linux: "https://www.linux.org",
 
   // CMS & Tools
