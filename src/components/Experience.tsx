@@ -22,7 +22,7 @@ export default function Experience() {
     {
       company: "Fifty Thirds",
       companyUrl: "https://fiftythirds.com",
-      position: "Founder & Software Engineer",
+      position: "Founder & Principal Engineer",
       duration: "September 2025 - Present",
       location: "Fort Wayne, IN",
       description: [
